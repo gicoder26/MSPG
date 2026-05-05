@@ -1,1338 +1,980 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cinturones de Guitarra — Método Progresivo</title>
-  <meta name="description" content="Un método progresivo de guitarra organizado por niveles. Descubre tu cinturón, explora muestras gratuitas y accede al contenido completo desde Patreon." />
-  <meta name="theme-color" content="#1a1a2e" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>GuitarBelts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#0d0d14;
+  --surface:#161622;
+  --surface2:#1e1e2e;
+  --border:#2a2a3e;
+  --text:#f0f0f8;
+  --muted:#7070a0;
+  --accent:#f5c842;
+  --accent2:#f07d2a;
+  --green:#3ecf8e;
+  --blue:#5b8dee;
+  --red:#f06060;
 
-  <!-- PWA manifest -->
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  --belt-white:#e8e8f0;
+  --belt-yellow:#f5c842;
+  --belt-orange:#f07d2a;
+  --belt-green:#3ecf8e;
+  --belt-blue:#5b8dee;
+  --belt-brown:#a0673a;
+  --belt-black:#f0f0f8;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;}
+button{font-family:'Outfit',sans-serif;cursor:pointer;border:none;background:none;color:inherit;}
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+/* APP SHELL */
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:430px;margin:0 auto;position:relative;overflow:hidden;}
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            serif: ['Cormorant Garamond', 'serif'],
-            sans: ['DM Sans', 'sans-serif'],
-          },
-          colors: {
-            cream: '#faf8f4',
-            ink: '#1a1a2e',
-            muted: '#6b6b7b',
-          }
-        }
-      }
-    }
-  </script>
+/* SCREENS */
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1),opacity 0.35s ease;overflow:hidden;}
+.screen.hidden{transform:translateX(100%);opacity:0;pointer-events:none;}
+.screen.slide-left{transform:translateX(-100%);opacity:0;pointer-events:none;}
 
-  <style>
-    * { box-sizing: border-box; }
-    body { font-family: 'DM Sans', sans-serif; background: #faf8f4; color: #1a1a2e; margin: 0; }
-    .font-serif { font-family: 'Cormorant Garamond', serif; }
+/* TOP BAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;flex-shrink:0;border-bottom:1px solid var(--border);}
+.topbar-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;}
+.back-btn{width:36px;height:36px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:18px;}
 
-    /* Belt color tokens */
-    :root {
-      --belt-white:  #f5f5f0;
-      --belt-yellow: #f5c842;
-      --belt-orange: #f07d2a;
-      --belt-green:  #3a9e6a;
-      --belt-blue:   #2b6cb0;
-      --belt-brown:  #7b4a2d;
-      --belt-black:  #1a1a2e;
-    }
+/* SCROLL AREA */
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:100px;}
+.scroll::-webkit-scrollbar{display:none;}
 
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #faf8f4; }
-    ::-webkit-scrollbar-thumb { background: #d1cfc8; border-radius: 3px; }
+/* BOTTOM NAV */
+.bottom-nav{position:absolute;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:50;}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;font-size:10px;font-weight:500;color:var(--muted);transition:color 0.2s;}
+.nav-btn.active{color:var(--accent);}
+.nav-icon{font-size:22px;line-height:1;}
 
-    /* Nav */
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px;}
+.card+.card{margin-top:12px;}
 
-    /* Animations */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes shimmer {
-      0%   { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-    .fade-up { animation: fadeUp 0.6s ease both; }
-    .fade-up-2 { animation: fadeUp 0.6s 0.15s ease both; }
-    .fade-up-3 { animation: fadeUp 0.6s 0.3s ease both; }
-    .fade-up-4 { animation: fadeUp 0.6s 0.45s ease both; }
+/* BELT PILL */
+.belt-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:100px;font-size:12px;font-weight:600;}
+.belt-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 
-    /* Belt badge */
-    .belt-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 4px 12px; border-radius: 100px; font-size: 13px; font-weight: 500;
-    }
-    .belt-dot { width: 10px; height: 10px; border-radius: 50%; }
+/* PROGRESS RING */
+.ring-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;}
+.ring-wrap svg{transform:rotate(-90deg);}
+.ring-label{position:absolute;font-family:'Syne',sans-serif;font-weight:800;font-size:22px;}
 
-    /* Progress bar */
-    .progress-bar { height: 4px; background: #e8e6df; border-radius: 2px; overflow: hidden; }
-    .progress-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+/* CHORD DIAGRAM */
+.chord-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface2);}
+.fret-row{display:contents;}
+.fret-cell{height:36px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;position:relative;}
+.fret-cell:last-child{border-right:none;}
+.fret-cell.nut{background:var(--surface);border-bottom:3px solid var(--text);}
+.finger{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#000;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;position:absolute;}
+.string-label{font-size:10px;color:var(--muted);font-weight:600;}
+.open-mark{font-size:14px;color:var(--green);}
+.muted-mark{font-size:14px;color:var(--red);}
 
-    /* Sample reader watermark */
-    .watermark {
-      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-      pointer-events: none;
-    }
-    .watermark span {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(20px, 4vw, 36px);
-      color: rgba(26,26,46,0.07);
-      transform: rotate(-35deg);
-      white-space: nowrap; letter-spacing: 4px;
-      user-select: none;
-    }
+/* PLAY BTN */
+.play-btn{width:56px;height:56px;border-radius:50%;background:var(--accent);color:#000;font-size:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.15s,opacity 0.15s;}
+.play-btn:active{transform:scale(0.92);}
+.play-btn.playing{background:var(--green);}
 
-    /* Mobile nav open */
-    .mobile-menu { display: none; }
-    .mobile-menu.open { display: flex; }
+/* EXERCISE */
+.exercise-bar{background:var(--surface2);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:14px;margin-bottom:10px;}
+.ex-num{width:32px;height:32px;border-radius:10px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;}
+.ex-num.done{background:var(--green);color:#000;}
 
-    /* Hover card lift */
-    .card-lift { transition: transform 0.25s ease, box-shadow 0.25s ease; }
-    .card-lift:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(26,26,46,0.10); }
+/* TABS */
+.tab-row{display:flex;gap:8px;padding:4px;background:var(--surface2);border-radius:14px;margin-bottom:20px;}
+.tab-btn{flex:1;padding:9px;border-radius:10px;font-size:13px;font-weight:600;color:var(--muted);transition:all 0.2s;}
+.tab-btn.active{background:var(--surface);color:var(--text);}
 
-    /* Section scroll offset */
-    section[id] { scroll-margin-top: 72px; }
+/* METRONOME */
+.metro-beat{width:14px;height:14px;border-radius:50%;background:var(--border);transition:background 0.05s;}
+.metro-beat.active{background:var(--accent);}
 
-    /* Metric card */
-    .metric-card { background: white; border: 1px solid #e8e6df; border-radius: 16px; padding: 20px; }
+/* FRETBOARD */
+.fretboard{background:var(--surface2);border-radius:16px;padding:16px;overflow-x:auto;}
+.fretboard-inner{display:grid;min-width:320px;}
+.fb-string{display:flex;align-items:center;height:36px;position:relative;}
+.fb-line{flex:1;height:2px;background:var(--border);}
+.fb-fret{width:52px;height:100%;border-left:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;cursor:pointer;}
+.fb-fret.nut{border-left:4px solid var(--text);}
+.fb-note{width:26px;height:26px;border-radius:50%;background:var(--accent);color:#000;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;position:absolute;transition:all 0.2s;}
+.fb-note.root{background:var(--accent2);}
 
-    /* Smooth scroll */
-    html { scroll-behavior: smooth; }
+/* LESSON STEP */
+.step-indicator{display:flex;gap:6px;justify-content:center;padding:16px 0 8px;}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all 0.3s;}
+.step-dot.active{background:var(--accent);width:20px;border-radius:4px;}
+.step-dot.done{background:var(--green);}
 
-    /* Sample page sim */
-    .sample-page {
-      background: white; border-radius: 12px; border: 1px solid #e8e6df;
-      min-height: 360px; position: relative; overflow: hidden;
-      display: flex; flex-direction: column; padding: 32px;
-    }
+/* ANIMATIONS */
+@keyframes pop{0%{transform:scale(0.8);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.pop{animation:pop 0.3s ease both;}
+.fade-in{animation:fadeIn 0.4s ease both;}
 
-    /* Belt path line */
-    .belt-path { position: relative; }
-    .belt-path::before {
-      content: '';
-      position: absolute; left: 20px; top: 0; bottom: 0;
-      width: 2px; background: linear-gradient(to bottom, #e8e6df, #e8e6df);
-    }
-    @media (min-width: 768px) {
-      .belt-path::before { display: none; }
-    }
-  </style>
+/* BIG ACCENT */
+.big-accent{font-family:'Syne',sans-serif;font-size:clamp(36px,10vw,52px);font-weight:800;line-height:1.05;}
+.sub-text{font-size:14px;color:var(--muted);line-height:1.6;}
+
+/* SUCCESS FLASH */
+.success-overlay{position:absolute;inset:0;background:rgba(62,207,142,0.15);display:flex;align-items:center;justify-content:center;z-index:200;animation:fadeIn 0.2s ease;pointer-events:none;}
+
+/* TOGGLE */
+.toggle{width:48px;height:26px;border-radius:13px;background:var(--border);position:relative;transition:background 0.2s;flex-shrink:0;}
+.toggle.on{background:var(--green);}
+.toggle-thumb{width:20px;height:20px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:left 0.2s;}
+.toggle.on .toggle-thumb{left:25px;}
+
+/* STREAK */
+.streak-flame{font-size:28px;animation:pulse 2s ease infinite;}
+</style>
 </head>
 <body>
+<div id="app">
 
-<!-- ============================================================
-  GOOGLE ANALYTICS 4 SETUP
-  1. Reemplaza G-XXXXXXXXXX con tu Measurement ID real de GA4
-  2. Puedes obtenerlo en: Google Analytics > Admin > Data Streams
-  3. Mientras no esté configurado, los eventos se muestran en consola
-  ============================================================ -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
-</script> -->
-
-<div id="root"></div>
-
-<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-<script type="text/babel">
-const { useState, useEffect, useRef, useCallback } = React;
-
-/* ============================================================
-   ANALYTICS
-   - Si gtag está disponible, envía el evento a GA4.
-   - Si no, lo muestra en consola para desarrollo/demo.
-   El evento patreon_click debe marcarse como KEY EVENT en GA4
-   porque representa intención de compra.
-   ============================================================ */
-function trackEvent(eventName, properties = {}) {
-  if (window.gtag) {
-    window.gtag('event', eventName, properties);
-  } else {
-    console.log('[Analytics]', eventName, properties);
-  }
-}
-
-/* ============================================================
-   DATA — Editar aquí para actualizar el contenido
-   ============================================================ */
-
-// ▸ Cambia este link por tu URL real de Patreon
-const PATREON_URL = "https://www.patreon.com/tu_usuario";
-
-const BELTS = [
-  {
-    id: "white",
-    name: "Cinturón Blanco",
-    color: "#e8e6df",
-    textColor: "#1a1a2e",
-    emoji: "⬜",
-    tagline: "Fundamentos",
-    description: "Comienzas desde cero. Aprenderás la postura correcta, cómo afinar la guitarra, los primeros acordes y tu primer ritmo.",
-    skills: ["Postura y sujeción de la guitarra", "Acordes Am, Em, E, D", "Ritmo básico en 4/4", "Primera canción completa"],
-    book: "Libro Blanco: El Primer Paso",
-    bookId: "white",
-    forWho: "Para quien nunca ha tocado guitarra o lleva menos de 2 meses.",
-  },
-  {
-    id: "yellow",
-    name: "Cinturón Amarillo",
-    color: "#f5c842",
-    textColor: "#1a1a2e",
-    emoji: "🟡",
-    tagline: "Cambios y ritmo",
-    description: "Ya tienes algunos acordes. Ahora aprenderás a cambiarlos fluidamente, desarrollarás el sentido del ritmo y tocarás canciones reconocibles.",
-    skills: ["Cambios de acorde sin detenerse", "Ritmo en 3/4 y 6/8", "Canciones populares simples", "Introducción a la tablatura"],
-    book: "Libro Amarillo: Fluidez",
-    bookId: "yellow",
-    forWho: "Para quien lleva 2 a 6 meses y ya conoce algunos acordes.",
-  },
-  {
-    id: "orange",
-    name: "Cinturón Naranja",
-    color: "#f07d2a",
-    textColor: "#fff",
-    emoji: "🟠",
-    tagline: "Técnica y lectura",
-    description: "Desarrollarás mayor control en tus dedos, aprenderás a leer tablatura con fluidez, y trabajarás coordinación mano derecha/izquierda.",
-    skills: ["Técnica fingerpicking básica", "Lectura de tablatura completa", "Metrónomo y tempo estable", "Barré en posición básica"],
-    book: "Libro Naranja: Coordinación",
-    bookId: "orange",
-    forWho: "Para quien lleva 6 meses a 1 año tocando.",
-  },
-  {
-    id: "green",
-    name: "Cinturón Verde",
-    color: "#3a9e6a",
-    textColor: "#fff",
-    emoji: "🟢",
-    tagline: "Escalas y arpegios",
-    description: "Entras en el mundo de las escalas pentatónicas, arpegios y un repertorio más variado. La guitarra empieza a sentirse parte de ti.",
-    skills: ["Escala pentatónica en 5 posiciones", "Arpegios básicos", "Repertorio de 10 piezas", "Introducción a la improvisación"],
-    book: "Libro Verde: Expresión",
-    bookId: "green",
-    forWho: "Para quien lleva 1 a 2 años con práctica regular.",
-  },
-  {
-    id: "blue",
-    name: "Cinturón Azul",
-    color: "#2b6cb0",
-    textColor: "#fff",
-    emoji: "🔵",
-    tagline: "Teoría aplicada",
-    description: "Entiendes por qué suena lo que suena. Aplicas teoría musical a la guitarra, improvisas sobre progresiones y desarrollas tu oído.",
-    skills: ["Teoría de acordes y progresiones", "Improvisación sobre backing tracks", "Modos de la escala mayor", "Análisis de canciones"],
-    book: "Libro Azul: Comprensión",
-    bookId: "blue",
-    forWho: "Para quien lleva más de 2 años y quiere entender lo que toca.",
-  },
-  {
-    id: "brown",
-    name: "Cinturón Marrón",
-    color: "#7b4a2d",
-    textColor: "#fff",
-    emoji: "🟫",
-    tagline: "Composición e interpretación",
-    description: "Compones tus propias piezas, desarrollas un estilo personal y trabajas la interpretación expresiva con matices y dinámica.",
-    skills: ["Composición de canciones propias", "Dinámica y expresión", "Estilo y técnica avanzada", "Grabación básica"],
-    book: "Libro Marrón: Autoría",
-    bookId: "brown",
-    forWho: "Para guitarristas con más de 3 años buscando una voz propia.",
-  },
-  {
-    id: "black",
-    name: "Cinturón Negro",
-    color: "#1a1a2e",
-    textColor: "#f5c842",
-    emoji: "⬛",
-    tagline: "Dominio y expresión",
-    description: "El nivel más avanzado del método. Repertorio complejo, dominio técnico completo y capacidad de enseñar a otros.",
-    skills: ["Repertorio de alta dificultad", "Técnicas extendidas", "Pedagogía básica", "Expresión musical plena"],
-    book: "Libro Negro: Maestría",
-    bookId: "black",
-    forWho: "Para guitarristas avanzados que buscan el siguiente nivel.",
-  },
-];
-
-// ▸ Reemplaza las portadas con imágenes reales (URLs o archivos locales)
-// ▸ El contenido de muestra son páginas simuladas — no incluye el libro completo
-const BOOKS = [
-  {
-    id: "white",
-    title: "El Primer Paso",
-    belt: "Cinturón Blanco",
-    beltId: "white",
-    beltColor: "#e8e6df",
-    beltTextColor: "#1a1a2e",
-    // ▸ REEMPLAZA con la portada real de tu libro (URL o path local)
-    cover: null,
-    shortDesc: "Tu puerta de entrada a la guitarra. Fundamentos claros, ejercicios progresivos y tu primera canción.",
-    longDesc: "Este libro te lleva de cero a tocar tu primera canción completa. Cada ejercicio está diseñado para construir sobre el anterior, asegurando que nunca avances sin una base sólida. Aprenderás a sujetar la guitarra, afinarla, y tocar tus primeros acordes con un ritmo reconocible.",
-    forWho: "Diseñado para quienes nunca han tocado una guitarra o llevan menos de 2 meses. No necesitas saber nada de música.",
-    youllLearn: ["Postura y técnica básica", "Acordes Am, Em, E y D", "Cambio fluido entre acordes", "Ritmo en 4/4", "Tu primera canción completa"],
-    includes: ["72 páginas de contenido", "45 ejercicios progresivos", "Audio de referencia por ejercicio", "Backing tracks para practicar", "Acceso a videos demostrativos"],
-    // ▸ Muestra gratuita — páginas simuladas, NO el libro completo
-    samplePages: [
-      {
-        title: "Presentación del método",
-        content: "Bienvenido a Cinturones de Guitarra.\n\nEste libro es tu primer paso en un método diseñado para acompañarte durante años. Cada ejercicio tiene un propósito claro y una progresión lógica.\n\nAntes de tocar la primera nota, entenderás por qué hacemos cada cosa.",
-        type: "intro"
-      },
-      {
-        title: "Capítulo 1: La guitarra",
-        content: "Partes de la guitarra\n\n• Cabezal y clavijas\n• Mástil y trastes\n• Cuerpo y boca\n• Cuerdas: E A D G B e\n\nEjercicio 1.1: Nombra cada parte mientras la tocas con el dedo.",
-        type: "theory"
-      },
-      {
-        title: "Ejercicio 2.1: Acorde Am",
-        content: "El acorde de La menor (Am)\n\nDedos:\n• Índice: cuerda 2, traste 1\n• Medio: cuerda 4, traste 2\n• Anular: cuerda 3, traste 2\n\nStrumming: ↓ ↓ ↓ ↓\n\nPractica 2 minutos con metrónomo a 60 BPM.",
-        type: "exercise"
-      },
-      {
-        title: "Ejercicio 2.3: Tu primer cambio",
-        content: "Cambio Am → Em\n\n1. Toca Am durante 4 tiempos\n2. Cambia lentamente a Em\n3. Repite 10 veces\n\nTip: Anticipa el cambio un tiempo antes. No busques velocidad, busca que suene limpio.",
-        type: "exercise"
-      },
-      {
-        title: "Fin de la muestra gratuita",
-        content: "Has visto una muestra de los primeros capítulos.\n\nEl libro completo incluye 72 páginas con ejercicios progresivos, backing tracks y audio de referencia.",
-        type: "end"
-      }
-    ]
-  },
-  {
-    id: "yellow",
-    title: "Fluidez",
-    belt: "Cinturón Amarillo",
-    beltId: "yellow",
-    beltColor: "#f5c842",
-    beltTextColor: "#1a1a2e",
-    cover: null,
-    shortDesc: "Cambios fluidos, ritmo sólido y tus primeras canciones reconocibles.",
-    longDesc: "Con el Libro Amarillo desarrollarás la fluidez que distingue a un guitarrista que suena bien de uno que suena a ejercicio. Trabajo de ritmo, cambios de acordes sin pausas y repertorio real.",
-    forWho: "Para quien ya conoce algunos acordes y quiere sonar fluido.",
-    youllLearn: ["Cambios de acorde sin detenerse", "Ritmo en 3/4 y 6/8", "Tablatura básica", "5 canciones completas"],
-    includes: ["68 páginas", "50 ejercicios", "5 canciones completas con tablatura"],
-    samplePages: [
-      { title: "Introducción: El ritmo como base", content: "El ritmo no es algo que se agrega a la guitarra. Es la guitarra misma.\n\nEn este nivel trabajaremos el ritmo de forma sistemática para que fluya de manera natural.", type: "intro" },
-      { title: "Ejercicio 1: Metrónomo y palmas", content: "Antes de tocar, practica el ritmo con palmas.\n\n4/4: 1 2 3 4 — palmas en 1 y 3\nPractica 5 minutos diarios durante una semana.\n\nSi el metrónomo te estresa, es porque aún no es tu amigo. Hazlo tu amigo.", type: "exercise" },
-      { title: "Fin de la muestra", content: "Muestra gratuita completada.\nEl libro completo tiene 68 páginas de ejercicios progresivos.", type: "end" }
-    ]
-  },
-  {
-    id: "orange",
-    title: "Coordinación",
-    belt: "Cinturón Naranja",
-    beltId: "orange",
-    beltColor: "#f07d2a",
-    beltTextColor: "#fff",
-    cover: null,
-    shortDesc: "Técnica más refinada, fingerpicking y lectura de tablatura con fluidez.",
-    longDesc: "El Libro Naranja es donde la técnica se vuelve seria. Trabajarás la independencia de dedos, el fingerpicking y desarrollarás un tiempo interno sólido.",
-    forWho: "Para guitarristas con 6 meses a 1 año de práctica regular.",
-    youllLearn: ["Fingerpicking básico", "Tablatura completa", "Técnica barré básica", "Coordinación mano derecha/izquierda"],
-    includes: ["80 páginas", "60 ejercicios", "Backing tracks", "Ejercicios de técnica aislada"],
-    samplePages: [
-      { title: "La técnica no es el objetivo", content: "La técnica es el camino, no el destino.\n\nEn este libro trabajaremos la técnica al servicio de la música, no como exhibición.", type: "intro" },
-      { title: "Fin de la muestra", content: "Muestra gratuita completada.\nEl libro completo incluye 80 páginas de técnica progresiva.", type: "end" }
-    ]
-  },
-  {
-    id: "green",
-    title: "Expresión",
-    belt: "Cinturón Verde",
-    beltId: "green",
-    beltColor: "#3a9e6a",
-    beltTextColor: "#fff",
-    cover: null,
-    shortDesc: "Escalas pentatónicas, arpegios y los primeros pasos en la improvisación.",
-    longDesc: "El Libro Verde abre el mundo de las escalas y los arpegios. Empezarás a entender el diapasón como un mapa y darás tus primeros pasos improvisando.",
-    forWho: "Para guitarristas con 1 a 2 años buscando expandirse.",
-    youllLearn: ["Escala pentatónica en 5 posiciones", "Arpegios básicos", "Improvisación inicial", "Repertorio de 10 piezas"],
-    includes: ["88 páginas", "65 ejercicios", "Backing tracks de blues y rock"],
-    samplePages: [
-      { title: "La pentatónica: tu primer idioma", content: "La escala pentatónica menor es la primera herramienta real de improvisación.\n\nCon solo 5 notas, puedes sonar como un guitarrista que sabe lo que hace.", type: "intro" },
-      { title: "Fin de la muestra", content: "Muestra gratuita completada.\nAccede al libro completo desde Patreon.", type: "end" }
-    ]
-  },
-  {
-    id: "blue",
-    title: "Comprensión",
-    belt: "Cinturón Azul",
-    beltId: "blue",
-    beltColor: "#2b6cb0",
-    beltTextColor: "#fff",
-    cover: null,
-    shortDesc: "Teoría aplicada, modos y improvisación sobre progresiones reales.",
-    longDesc: "Con el Libro Azul dejas de tocar por intuición y empiezas a tocar con entendimiento. La teoría al servicio de la guitarra, no al revés.",
-    forWho: "Para guitarristas con más de 2 años que quieren entender lo que tocan.",
-    youllLearn: ["Teoría de acordes aplicada", "Modos de la escala mayor", "Improvisación con criterio", "Análisis de canciones"],
-    includes: ["96 páginas", "70 ejercicios", "Análisis de canciones reales"],
-    samplePages: [
-      { title: "¿Por qué suena bien?", content: "Cuando una progresión de acordes te genera emoción, hay una razón teórica detrás.\n\nEste libro te da las herramientas para entenderla y usarla.", type: "intro" },
-      { title: "Fin de la muestra", content: "Muestra gratuita completada.\nAccede al libro completo desde Patreon.", type: "end" }
-    ]
-  },
-  {
-    id: "brown",
-    title: "Autoría",
-    belt: "Cinturón Marrón",
-    beltId: "brown",
-    beltColor: "#7b4a2d",
-    beltTextColor: "#fff",
-    cover: null,
-    shortDesc: "Composición, estilo propio e interpretación con expresión real.",
-    longDesc: "El Libro Marrón es para el guitarrista que quiere dejar de reproducir y empezar a crear. Composición, arreglos y desarrollo de un estilo personal.",
-    forWho: "Para guitarristas con más de 3 años listos para crear.",
-    youllLearn: ["Composición de canciones", "Arreglos para guitarra sola", "Dinámica y expresión", "Desarrollo de estilo"],
-    includes: ["100 páginas", "Proyectos de composición guiada"],
-    samplePages: [
-      { title: "Tu voz musical", content: "Llegar a este nivel significa que ya tienes algo que decir con la guitarra.\n\nEste libro te ayuda a decirlo con claridad.", type: "intro" },
-      { title: "Fin de la muestra", content: "Muestra gratuita completada.\nAccede al libro completo desde Patreon.", type: "end" }
-    ]
-  },
-  {
-    id: "black",
-    title: "Maestría",
-    belt: "Cinturón Negro",
-    beltId: "black",
-    beltColor: "#1a1a2e",
-    beltTextColor: "#f5c842",
-    cover: null,
-    shortDesc: "Dominio avanzado, repertorio complejo y capacidad de transmitir el conocimiento.",
-    longDesc: "El Cinturón Negro no es el final del camino. Es el nivel donde el guitarrista tiene las herramientas para seguir evolucionando de forma autónoma.",
-    forWho: "Para guitarristas avanzados que buscan completar el método.",
-    youllLearn: ["Técnicas avanzadas y extendidas", "Repertorio de alta dificultad", "Pedagogía básica", "Grabación y producción simple"],
-    includes: ["112 páginas", "Repertorio de 15 piezas avanzadas"],
-    samplePages: [
-      { title: "El negro no es el final", content: "El Cinturón Negro representa autonomía, no perfección.\n\nUn guitarrista de nivel negro sabe lo que no sabe y sabe cómo aprenderlo.", type: "intro" },
-      { title: "Fin de la muestra", content: "Muestra gratuita completada.\nAccede al libro completo desde Patreon.", type: "end" }
-    ]
-  }
-];
-
-// Test questions
-const TEST_QUESTIONS = [
-  {
-    id: 1,
-    question: "¿Hace cuánto tiempo tocas guitarra?",
-    options: [
-      { text: "Nunca he tocado / acabo de empezar", score: 0 },
-      { text: "2 a 6 meses", score: 1 },
-      { text: "6 meses a 1 año", score: 2 },
-      { text: "1 a 2 años", score: 3 },
-      { text: "2 a 4 años", score: 4 },
-      { text: "Más de 4 años", score: 5 },
-    ]
-  },
-  {
-    id: 2,
-    question: "¿Puedes cambiar entre acordes sin detenerte?",
-    options: [
-      { text: "Aún no conozco acordes", score: 0 },
-      { text: "Me detengo bastante entre cada cambio", score: 1 },
-      { text: "A veces me detengo pero cada vez menos", score: 2 },
-      { text: "Sí, fluye bastante bien", score: 3 },
-    ]
-  },
-  {
-    id: 3,
-    question: "¿Puedes tocar siguiendo un metrónomo sin perder el pulso?",
-    options: [
-      { text: "No sé qué es un metrónomo", score: 0 },
-      { text: "Lo conozco pero me cuesta mucho", score: 1 },
-      { text: "Lo logro a tempo lento", score: 2 },
-      { text: "Sí, con buen control de tiempo", score: 3 },
-    ]
-  },
-  {
-    id: 4,
-    question: "¿Lees tablatura?",
-    options: [
-      { text: "No, nunca lo he intentado", score: 0 },
-      { text: "Entiendo lo básico", score: 1 },
-      { text: "Sí, sin problemas", score: 2 },
-    ]
-  },
-  {
-    id: 5,
-    question: "¿Conoces escalas en el diapasón?",
-    options: [
-      { text: "No, ninguna", score: 0 },
-      { text: "Conozco la pentatónica básica", score: 1 },
-      { text: "Manejo varias posiciones y escalas", score: 2 },
-      { text: "Conozco modos y sistemas completos", score: 3 },
-    ]
-  },
-  {
-    id: 6,
-    question: "¿Has improvisado sobre una progresión de acordes?",
-    options: [
-      { text: "No, no sé cómo", score: 0 },
-      { text: "He intentado pero sin dirección", score: 1 },
-      { text: "Sí, con algunas ideas claras", score: 2 },
-      { text: "Sí, con criterio musical real", score: 3 },
-    ]
-  },
-  {
-    id: 7,
-    question: "¿Cuál es tu objetivo principal?",
-    options: [
-      { text: "Tocar mis canciones favoritas", score: 0 },
-      { text: "Mejorar mi técnica", score: 1 },
-      { text: "Entender teoría musical", score: 2 },
-      { text: "Improvisar y crear música propia", score: 3 },
-    ]
-  }
-];
-
-// Belt result mapping by score
-function getBeltFromScore(total) {
-  if (total <= 3) return "white";
-  if (total <= 6) return "yellow";
-  if (total <= 9) return "orange";
-  if (total <= 12) return "green";
-  if (total <= 15) return "blue";
-  if (total <= 18) return "brown";
-  return "black";
-}
-
-/* ============================================================
-   COMPONENTS
-   ============================================================ */
-
-// Belt color helper
-function beltStyle(beltId) {
-  const belt = BELTS.find(b => b.id === beltId) || BELTS[0];
-  return { backgroundColor: belt.color, color: belt.textColor };
-}
-
-// Patreon redirect with tracking
-function goToPatreon(bookId, bookTitle, beltLevel, source) {
-  // Este evento es el KEY EVENT en GA4 — representa intención de compra
-  trackEvent("patreon_click", {
-    book_id: bookId,
-    book_title: bookTitle,
-    belt_level: beltLevel,
-    source_section: source
-  });
-  window.open(PATREON_URL, "_blank", "noopener");
-}
-
-/* ── NAV ─────────────────────────────────────────────────── */
-function Nav({ currentSection, navigate }) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const links = [
-    { id: "home", label: "Inicio" },
-    { id: "method", label: "El Método" },
-    { id: "test", label: "Test" },
-    { id: "books", label: "Libros" },
-    { id: "author", label: "Autor" },
-  ];
-  return (
-    <nav style={{ background: "rgba(250,248,244,0.95)", backdropFilter: "blur(12px)", borderBottom: "1px solid #e8e6df" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <button onClick={() => navigate("home")} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ fontSize: 20 }}>🎸</span>
-          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 600, color: "#1a1a2e" }}>Cinturones de Guitarra</span>
-        </button>
-        {/* Desktop nav */}
-        <div style={{ display: "flex", gap: 32, alignItems: "center" }} className="hidden md:flex">
-          {links.map(l => (
-            <button key={l.id} onClick={() => navigate(l.id)}
-              style={{ background: "none", border: "none", cursor: "pointer", fontSize: 14, fontWeight: 500,
-                color: currentSection === l.id ? "#1a1a2e" : "#6b6b7b",
-                borderBottom: currentSection === l.id ? "2px solid #f5c842" : "2px solid transparent",
-                paddingBottom: 2, transition: "all 0.2s" }}>
-              {l.label}
-            </button>
-          ))}
-          <button onClick={() => { trackEvent("patreon_click", { source_section: "nav" }); window.open(PATREON_URL, "_blank", "noopener"); }}
-            style={{ background: "#1a1a2e", color: "#f5c842", border: "none", borderRadius: 8, padding: "8px 20px", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
-            Patreon
-          </button>
-        </div>
-        {/* Mobile hamburger */}
-        <button onClick={() => setMenuOpen(!menuOpen)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 22, display: "block" }} className="md:hidden">
-          {menuOpen ? "✕" : "☰"}
-        </button>
-      </div>
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div style={{ background: "#faf8f4", borderTop: "1px solid #e8e6df", padding: "16px 20px", display: "flex", flexDirection: "column", gap: 16 }}>
-          {links.map(l => (
-            <button key={l.id} onClick={() => { navigate(l.id); setMenuOpen(false); }}
-              style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, fontWeight: 500,
-                color: "#1a1a2e", textAlign: "left", padding: "8px 0", borderBottom: "1px solid #e8e6df" }}>
-              {l.label}
-            </button>
-          ))}
-          <button onClick={() => { trackEvent("patreon_click", { source_section: "mobile_nav" }); window.open(PATREON_URL, "_blank", "noopener"); setMenuOpen(false); }}
-            style={{ background: "#1a1a2e", color: "#f5c842", border: "none", borderRadius: 8, padding: "12px 20px", fontSize: 15, fontWeight: 600, cursor: "pointer", marginTop: 8 }}>
-            Ir a Patreon
-          </button>
-        </div>
-      )}
-    </nav>
-  );
-}
-
-/* ── HOME ────────────────────────────────────────────────── */
-function Home({ navigate }) {
-  useEffect(() => { trackEvent("page_view", { section: "home" }); }, []);
-  return (
+<!-- ═══════════════════ HOME SCREEN ═══════════════════ -->
+<div class="screen" id="screen-home">
+  <div class="topbar">
     <div>
-      {/* HERO */}
-      <section style={{ minHeight: "90vh", display: "flex", alignItems: "center", padding: "80px 20px 60px", position: "relative", overflow: "hidden" }}>
-        {/* Background decoration */}
-        <div style={{ position: "absolute", top: 0, right: 0, width: "50%", height: "100%", background: "linear-gradient(135deg, #f5c84210 0%, #f07d2a08 50%, transparent 100%)", zIndex: 0 }} />
-        <div style={{ position: "absolute", top: "20%", right: "5%", fontSize: 200, opacity: 0.03, userSelect: "none", zIndex: 0 }}>🎸</div>
-
-        <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%", position: "relative", zIndex: 1 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}
-               className="grid-cols-1 md:grid-cols-2">
-            <div>
-              <div className="fade-up" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#f5c84220", border: "1px solid #f5c84260", borderRadius: 100, padding: "6px 16px", marginBottom: 24 }}>
-                <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#f5c842", display: "inline-block" }} />
-                <span style={{ fontSize: 13, fontWeight: 500, color: "#7b5a00" }}>Método progresivo para guitarra</span>
-              </div>
-              <h1 className="fade-up-2" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(40px, 6vw, 72px)", fontWeight: 600, lineHeight: 1.05, margin: "0 0 24px", color: "#1a1a2e" }}>
-                Descubre tu<br />
-                <span style={{ color: "#f07d2a", fontStyle: "italic" }}>cinturón</span><br />
-                de guitarra
-              </h1>
-              <p className="fade-up-3" style={{ fontSize: "clamp(16px, 2vw, 20px)", color: "#4a4a5a", lineHeight: 1.7, margin: "0 0 16px", maxWidth: 480 }}>
-                Un método progresivo para aprender guitarra paso a paso, explorar muestras gratuitas y acceder al contenido completo desde Patreon.
-              </p>
-              <p className="fade-up-3" style={{ fontSize: 15, color: "#7b7b8b", fontStyle: "italic", margin: "0 0 40px", borderLeft: "3px solid #f5c842", paddingLeft: 16 }}>
-                "La IA puede darte respuestas sueltas. Este método te da una ruta."
-              </p>
-              <div className="fade-up-4" style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-                <button onClick={() => navigate("test")}
-                  style={{ background: "#1a1a2e", color: "#f5c842", border: "none", borderRadius: 12, padding: "16px 32px", fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "transform 0.2s" }}
-                  onMouseOver={e => e.target.style.transform = "translateY(-2px)"}
-                  onMouseOut={e => e.target.style.transform = "translateY(0)"}>
-                  Descubrir mi cinturón →
-                </button>
-                <button onClick={() => navigate("books")}
-                  style={{ background: "transparent", color: "#1a1a2e", border: "2px solid #1a1a2e", borderRadius: 12, padding: "16px 32px", fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}
-                  onMouseOver={e => { e.target.style.background = "#1a1a2e"; e.target.style.color = "#fff"; }}
-                  onMouseOut={e => { e.target.style.background = "transparent"; e.target.style.color = "#1a1a2e"; }}>
-                  Explorar libros
-                </button>
-              </div>
-            </div>
-            {/* Belt visual */}
-            <div className="hidden md:block fade-up-2" style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {BELTS.map((belt, i) => (
-                <div key={belt.id} style={{ display: "flex", alignItems: "center", gap: 16, padding: "14px 20px", background: "white", border: "1px solid #e8e6df", borderRadius: 12, cursor: "pointer", transition: "all 0.2s", animation: `fadeUp 0.5s ${i * 0.06}s ease both` }}
-                  onMouseOver={e => { e.currentTarget.style.borderColor = belt.color; e.currentTarget.style.transform = "translateX(4px)"; }}
-                  onMouseOut={e => { e.currentTarget.style.borderColor = "#e8e6df"; e.currentTarget.style.transform = "translateX(0)"; }}
-                  onClick={() => navigate("books")}>
-                  <div style={{ width: 32, height: 32, borderRadius: "50%", background: belt.color, border: "2px solid " + (belt.id === "white" ? "#e8e6df" : belt.color), flexShrink: 0 }} />
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: "#1a1a2e" }}>{belt.name}</div>
-                    <div style={{ fontSize: 12, color: "#7b7b8b" }}>{belt.tagline}</div>
-                  </div>
-                  <span style={{ fontSize: 12, color: "#b0b0c0" }}>→</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* WHY THIS METHOD */}
-      <section id="why" style={{ background: "#1a1a2e", padding: "80px 20px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 64 }}>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(32px, 5vw, 52px)", fontWeight: 600, color: "#faf8f4", margin: "0 0 20px" }}>
-              ¿Por qué este método?
-            </h2>
-            <p style={{ fontSize: 18, color: "#9898a8", maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
-              La información suelta no alcanza. El aprendizaje necesita estructura.
-            </p>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24 }}>
-            {[
-              { icon: "🗺️", title: "Un camino ordenado", desc: "Cada cinturón construye sobre el anterior. Sabes exactamente dónde estás y cuál es tu próximo paso." },
-              { icon: "👨‍🏫", title: "Creado por un profesor real", desc: "No son ejercicios generados. Son lecciones diseñadas por alguien que ha enseñado guitarra por años." },
-              { icon: "📈", title: "Progresión lógica", desc: "Los ejercicios siguen una curva de dificultad pensada. Nunca avanzas sin una base sólida." },
-              { icon: "🎧", title: "Muestra antes de comprar", desc: "Lee páginas reales del libro antes de decidir. No compras a ciegas." },
-              { icon: "🎯", title: "Tu nivel, tu libro", desc: "El test te recomienda el libro correcto según dónde estás realmente, no donde crees estar." },
-              { icon: "🔒", title: "Compra segura en Patreon", desc: "El contenido completo vive en Patreon. Tu compra es segura y el acceso es inmediato." },
-            ].map((item, i) => (
-              <div key={i} style={{ background: "#252540", borderRadius: 16, padding: "28px 24px", border: "1px solid #35355a" }}>
-                <div style={{ fontSize: 28, marginBottom: 16 }}>{item.icon}</div>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "#faf8f4", margin: "0 0 10px" }}>{item.title}</h3>
-                <p style={{ fontSize: 15, color: "#9898a8", lineHeight: 1.7, margin: 0 }}>{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* HOW IT WORKS */}
-      <section style={{ padding: "80px 20px", background: "#faf8f4" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 600, color: "#1a1a2e", margin: "0 0 56px" }}>Cómo funciona</h2>
-          <p style={{ fontSize: 15, color: "#7b7b8b", marginTop: -40, marginBottom: 56, fontStyle: "italic" }}>La app te ayuda a encontrar el libro correcto antes de comprar.</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 32, position: "relative" }}>
-            {[
-              { n: "1", title: "Haz el test de nivel", desc: "7 preguntas rápidas para descubrir tu cinturón actual." },
-              { n: "2", title: "Explora la muestra gratis", desc: "Lee páginas reales del libro recomendado sin pagar nada." },
-              { n: "3", title: "Accede al libro completo", desc: "Si el contenido es lo que necesitas, continúa en Patreon." },
-            ].map((step, i) => (
-              <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
-                <div style={{ width: 56, height: 56, borderRadius: "50%", background: "#1a1a2e", color: "#f5c842", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 700 }}>{step.n}</div>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 600, color: "#1a1a2e", margin: 0 }}>{step.title}</h3>
-                <p style={{ fontSize: 15, color: "#6b6b7b", lineHeight: 1.6, margin: 0 }}>{step.desc}</p>
-              </div>
-            ))}
-          </div>
-          <button onClick={() => navigate("test")}
-            style={{ marginTop: 56, background: "#f07d2a", color: "#fff", border: "none", borderRadius: 12, padding: "16px 40px", fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "transform 0.2s" }}
-            onMouseOver={e => e.target.style.transform = "translateY(-2px)"}
-            onMouseOut={e => e.target.style.transform = "translateY(0)"}>
-            Descubrir mi cinturón →
-          </button>
-        </div>
-      </section>
+      <div style="font-size:11px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:1px;">GuitarBelts</div>
+      <div class="topbar-title" id="home-greeting">¡Hola! 👋</div>
     </div>
-  );
-}
+    <button class="back-btn" onclick="goTo('profile')" style="font-size:20px;">👤</button>
+  </div>
+  <div class="scroll" style="padding:20px 20px 0;">
 
-/* ── BELT MAP (Method section) ───────────────────────────── */
-function Method({ navigate }) {
-  const [expanded, setExpanded] = useState(null);
-  useEffect(() => { trackEvent("page_view", { section: "method" }); trackEvent("belt_path_viewed"); }, []);
-  return (
-    <section style={{ padding: "80px 20px", minHeight: "80vh" }}>
-      <div style={{ maxWidth: 900, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: 64 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(28px, 5vw, 52px)", fontWeight: 600, color: "#1a1a2e", margin: "0 0 16px" }}>
-            El Mapa del Método
-          </h2>
-          <p style={{ fontSize: 18, color: "#6b6b7b", maxWidth: 540, margin: "0 auto", lineHeight: 1.7 }}>
-            Siete cinturones. Un camino claro de principiante a avanzado.
-          </p>
+    <!-- Belt progress card -->
+    <div class="card fade-in" style="background:linear-gradient(135deg,#1e1e2e,#252538);border-color:#3a3a5a;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div class="ring-wrap">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <circle cx="36" cy="36" r="30" fill="none" stroke="var(--border)" stroke-width="6"/>
+            <circle cx="36" cy="36" r="30" fill="none" stroke="var(--accent)" stroke-width="6"
+              stroke-dasharray="188.5" id="home-ring" stroke-dashoffset="150" stroke-linecap="round"/>
+          </svg>
+          <div class="ring-label" id="home-pct">20%</div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {BELTS.map((belt, i) => (
-            <div key={belt.id}
-              style={{ background: "white", border: "1px solid " + (expanded === i ? belt.color : "#e8e6df"), borderRadius: 16, overflow: "hidden", transition: "all 0.3s", boxShadow: expanded === i ? "0 8px 32px rgba(0,0,0,0.08)" : "none" }}
-              className="card-lift">
-              <button onClick={() => setExpanded(expanded === i ? null : i)}
-                style={{ width: "100%", background: "none", border: "none", padding: "20px 24px", display: "flex", alignItems: "center", gap: 20, cursor: "pointer", textAlign: "left" }}>
-                <div style={{ width: 44, height: 44, borderRadius: "50%", background: belt.color, flexShrink: 0, border: belt.id === "white" ? "2px solid #d0cec8" : "none" }} />
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 18, fontWeight: 600, color: "#1a1a2e", fontFamily: "'Cormorant Garamond', serif" }}>{belt.name}</div>
-                  <div style={{ fontSize: 14, color: "#7b7b8b" }}>{belt.tagline}</div>
-                </div>
-                <span style={{ fontSize: 18, color: "#b0b0c0", transition: "transform 0.3s", transform: expanded === i ? "rotate(180deg)" : "none" }}>▾</span>
-              </button>
-              {expanded === i && (
-                <div style={{ padding: "0 24px 24px", borderTop: "1px solid #f0ede8" }}>
-                  <p style={{ fontSize: 15, color: "#4a4a5a", lineHeight: 1.7, margin: "16px 0 20px" }}>{belt.description}</p>
-                  <div style={{ marginBottom: 20 }}>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: "#7b7b8b", textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>Habilidades que desarrollas</div>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                      {belt.skills.map((s, j) => (
-                        <span key={j} style={{ background: belt.color + "25", color: "#1a1a2e", border: "1px solid " + belt.color + "50", borderRadius: 100, padding: "4px 14px", fontSize: 13 }}>{s}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                    <button onClick={() => navigate("sample", belt.id)}
-                      style={{ background: belt.color, color: belt.textColor, border: "none", borderRadius: 10, padding: "10px 22px", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
-                      Ver muestra gratis
-                    </button>
-                    <button onClick={() => navigate("book", belt.id)}
-                      style={{ background: "transparent", color: "#1a1a2e", border: "1px solid #d0cec8", borderRadius: 10, padding: "10px 22px", fontSize: 14, fontWeight: 500, cursor: "pointer" }}>
-                      Ver libro completo
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
+        <div style="flex:1;">
+          <div id="home-belt-pill" class="belt-pill" style="background:#f5c84222;color:var(--accent);margin-bottom:8px;">
+            <div class="belt-dot" style="background:var(--accent);"></div>
+            <span>Cinturón Amarillo</span>
+          </div>
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:2px;" id="home-lesson-title">Cambios de Acorde</div>
+          <div class="sub-text">Lección 3 de 8</div>
         </div>
       </div>
-    </section>
-  );
-}
-
-/* ── TEST ────────────────────────────────────────────────── */
-function Test({ navigate }) {
-  const [step, setStep] = useState(0); // 0 = intro, 1-7 = questions, 8 = result
-  const [answers, setAnswers] = useState({});
-  const [result, setResult] = useState(null);
-
-  useEffect(() => { trackEvent("page_view", { section: "test" }); }, []);
-
-  function startTest() {
-    setStep(1);
-    trackEvent("belt_test_started");
-  }
-
-  function answer(score) {
-    const newAnswers = { ...answers, [step]: score };
-    setAnswers(newAnswers);
-    if (step === TEST_QUESTIONS.length) {
-      const total = Object.values(newAnswers).reduce((a, b) => a + b, 0);
-      const beltId = getBeltFromScore(total);
-      const belt = BELTS.find(b => b.id === beltId);
-      const book = BOOKS.find(b => b.id === beltId);
-      setResult({ belt, book, total });
-      setStep(8);
-      trackEvent("belt_test_completed", { test_result: beltId, total_score: total });
-      trackEvent("belt_result_viewed", { test_result: beltId });
-    } else {
-      setStep(step + 1);
-    }
-  }
-
-  function restart() {
-    setStep(0); setAnswers({}); setResult(null);
-  }
-
-  const q = TEST_QUESTIONS[step - 1];
-  const progress = step <= TEST_QUESTIONS.length ? (step - 1) / TEST_QUESTIONS.length * 100 : 100;
-
-  return (
-    <section style={{ padding: "80px 20px", minHeight: "80vh", display: "flex", alignItems: "center" }}>
-      <div style={{ maxWidth: 640, margin: "0 auto", width: "100%" }}>
-        {/* INTRO */}
-        {step === 0 && (
-          <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: 64, marginBottom: 24 }}>🥋</div>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(28px, 5vw, 48px)", fontWeight: 600, color: "#1a1a2e", margin: "0 0 20px" }}>
-              ¿Cuál es tu cinturón de guitarra?
-            </h2>
-            <p style={{ fontSize: 17, color: "#6b6b7b", lineHeight: 1.7, margin: "0 0 40px" }}>
-              7 preguntas rápidas para descubrir en qué nivel estás y qué libro del método te conviene empezar.
-            </p>
-            <button onClick={startTest}
-              style={{ background: "#1a1a2e", color: "#f5c842", border: "none", borderRadius: 12, padding: "18px 48px", fontSize: 17, fontWeight: 600, cursor: "pointer" }}>
-              Empezar el test →
-            </button>
-          </div>
-        )}
-        {/* QUESTIONS */}
-        {step >= 1 && step <= TEST_QUESTIONS.length && q && (
-          <div>
-            <div style={{ marginBottom: 32 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, fontSize: 13, color: "#9898a8" }}>
-                <span>Pregunta {step} de {TEST_QUESTIONS.length}</span>
-                <span>{Math.round(progress)}%</span>
-              </div>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{ width: progress + "%", background: "#f5c842" }} />
-              </div>
-            </div>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(22px, 4vw, 34px)", fontWeight: 600, color: "#1a1a2e", margin: "0 0 32px", lineHeight: 1.3 }}>
-              {q.question}
-            </h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {q.options.map((opt, i) => (
-                <button key={i} onClick={() => answer(opt.score)}
-                  style={{ background: "white", border: "1px solid #e8e6df", borderRadius: 12, padding: "16px 20px", fontSize: 15, color: "#1a1a2e", cursor: "pointer", textAlign: "left", transition: "all 0.2s" }}
-                  onMouseOver={e => { e.currentTarget.style.borderColor = "#f5c842"; e.currentTarget.style.background = "#fffdf0"; }}
-                  onMouseOut={e => { e.currentTarget.style.borderColor = "#e8e6df"; e.currentTarget.style.background = "white"; }}>
-                  <span style={{ fontWeight: 400 }}>{opt.text}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-        {/* RESULT */}
-        {step === 8 && result && (
-          <div>
-            <div style={{ textAlign: "center", marginBottom: 40 }}>
-              <div style={{ width: 80, height: 80, borderRadius: "50%", background: result.belt.color, margin: "0 auto 20px", border: result.belt.id === "white" ? "3px solid #d0cec8" : "none" }} />
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(28px, 5vw, 48px)", fontWeight: 600, color: "#1a1a2e", margin: "0 0 8px" }}>
-                {result.belt.name}
-              </h2>
-              <p style={{ fontSize: 16, color: "#6b6b7b", fontStyle: "italic" }}>{result.belt.tagline}</p>
-            </div>
-            <div style={{ background: "white", border: "1px solid #e8e6df", borderRadius: 20, padding: "28px 28px" }}>
-              <p style={{ fontSize: 16, color: "#4a4a5a", lineHeight: 1.75, margin: "0 0 20px" }}>{result.belt.description}</p>
-              <div style={{ marginBottom: 20, paddingBottom: 20, borderBottom: "1px solid #f0ede8" }}>
-                <div style={{ fontSize: 12, fontWeight: 600, color: "#9898a8", textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>Para quién es</div>
-                <p style={{ fontSize: 14, color: "#6b6b7b", margin: 0 }}>{result.belt.forWho}</p>
-              </div>
-              <div style={{ marginBottom: 24 }}>
-                <div style={{ fontSize: 12, fontWeight: 600, color: "#9898a8", textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>Libro recomendado</div>
-                <div style={{ fontSize: 16, fontWeight: 600, color: "#1a1a2e" }}>📖 {result.book?.title}</div>
-              </div>
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                <button onClick={() => navigate("book", result.belt.id)}
-                  style={{ background: "#1a1a2e", color: "#f5c842", border: "none", borderRadius: 10, padding: "12px 24px", fontSize: 15, fontWeight: 600, cursor: "pointer", flex: 1, minWidth: 160 }}>
-                  Ver libro recomendado
-                </button>
-                <button onClick={() => navigate("sample", result.belt.id)}
-                  style={{ background: result.belt.color, color: result.belt.textColor, border: "none", borderRadius: 10, padding: "12px 24px", fontSize: 15, fontWeight: 600, cursor: "pointer", flex: 1, minWidth: 160 }}>
-                  Leer muestra gratis
-                </button>
-              </div>
-            </div>
-            <div style={{ textAlign: "center", marginTop: 24 }}>
-              <button onClick={restart}
-                style={{ background: "none", border: "none", color: "#9898a8", fontSize: 14, cursor: "pointer", textDecoration: "underline" }}>
-                Repetir el test
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
-
-/* ── BOOKS CATALOG ───────────────────────────────────────── */
-function Books({ navigate }) {
-  useEffect(() => { trackEvent("page_view", { section: "books" }); }, []);
-  return (
-    <section style={{ padding: "80px 20px", minHeight: "80vh" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: 56 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(28px, 5vw, 52px)", fontWeight: 600, color: "#1a1a2e", margin: "0 0 16px" }}>
-            Los Libros del Método
-          </h2>
-          <p style={{ fontSize: 17, color: "#6b6b7b", maxWidth: 500, margin: "0 auto", lineHeight: 1.7 }}>
-            Cada libro es un cinturón. Cada cinturón es un nivel claro de tu aprendizaje.
-          </p>
+      <div style="margin-top:16px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px;">
+          <span>Progreso del cinturón</span>
+          <span id="home-progress-label">3/8 lecciones</span>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 24 }}>
-          {BOOKS.map((book) => {
-            const belt = BELTS.find(b => b.id === book.beltId);
-            return (
-              <div key={book.id} className="card-lift"
-                style={{ background: "white", border: "1px solid #e8e6df", borderRadius: 20, overflow: "hidden" }}>
-                {/* Cover area */}
-                <div style={{ height: 180, background: book.beltColor, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-                  {/* ▸ Si tienes portada real, reemplaza este bloque con: <img src={book.cover} style={{width:"100%",height:"100%",objectFit:"cover"}} /> */}
-                  <div style={{ textAlign: "center" }}>
-                    <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 600, color: book.beltTextColor, marginBottom: 4 }}>{book.title}</div>
-                    <div style={{ fontSize: 13, color: book.beltTextColor, opacity: 0.7 }}>{book.belt}</div>
-                  </div>
-                  <div style={{ position: "absolute", top: 12, right: 12, background: "rgba(0,0,0,0.2)", borderRadius: 100, padding: "4px 12px" }}>
-                    <span style={{ fontSize: 12, color: book.beltTextColor, fontWeight: 500 }}>Nivel {BELTS.findIndex(b => b.id === book.beltId) + 1}/7</span>
-                  </div>
-                </div>
-                {/* Content */}
-                <div style={{ padding: "20px 22px 22px" }}>
-                  <div style={{ marginBottom: 12 }}>
-                    <span style={{ background: book.beltColor + "30", color: "#1a1a2e", border: "1px solid " + book.beltColor + "60", borderRadius: 100, padding: "3px 12px", fontSize: 12, fontWeight: 500 }}>
-                      {book.belt}
-                    </span>
-                  </div>
-                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "#1a1a2e", margin: "0 0 10px" }}>{book.title}</h3>
-                  <p style={{ fontSize: 14, color: "#6b6b7b", lineHeight: 1.6, margin: "0 0 20px" }}>{book.shortDesc}</p>
-                  <div style={{ display: "flex", gap: 10 }}>
-                    <button onClick={() => { trackEvent("book_opened", { book_id: book.id, book_title: book.title, belt_level: book.beltId, source_section: "catalog" }); navigate("book", book.id); }}
-                      style={{ flex: 1, background: "#1a1a2e", color: "#fff", border: "none", borderRadius: 10, padding: "10px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
-                      Ver libro
-                    </button>
-                    <button onClick={() => { trackEvent("sample_started", { book_id: book.id, book_title: book.title, belt_level: book.beltId, source_section: "catalog" }); navigate("sample", book.id); }}
-                      style={{ flex: 1, background: book.beltColor, color: book.beltTextColor, border: "none", borderRadius: 10, padding: "10px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
-                      Muestra gratis
-                    </button>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;">
+          <div id="home-progress-bar" style="height:100%;background:var(--accent);border-radius:3px;width:37%;transition:width 0.6s;"></div>
         </div>
       </div>
-    </section>
-  );
-}
+    </div>
 
-/* ── BOOK DETAIL ─────────────────────────────────────────── */
-function BookDetail({ bookId, navigate }) {
-  const book = BOOKS.find(b => b.id === bookId) || BOOKS[0];
-  const belt = BELTS.find(b => b.id === book.beltId);
-  useEffect(() => {
-    trackEvent("book_opened", { book_id: book.id, book_title: book.title, belt_level: book.beltId, source_section: "detail" });
-    window.scrollTo(0, 0);
-  }, [bookId]);
-  return (
-    <section style={{ padding: "80px 20px", minHeight: "80vh" }}>
-      <div style={{ maxWidth: 900, margin: "0 auto" }}>
-        <button onClick={() => navigate("books")}
-          style={{ background: "none", border: "none", color: "#7b7b8b", fontSize: 14, cursor: "pointer", marginBottom: 32, display: "flex", alignItems: "center", gap: 6 }}>
-          ← Volver a libros
+    <!-- Continue button -->
+    <button onclick="goTo('lesson')" style="width:100%;padding:16px;background:var(--accent);color:#000;border-radius:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:20px;transition:transform 0.15s;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.97)'" ontouchend="this.style.transform='scale(1)'">
+      ▶  Continuar lección
+    </button>
+
+    <!-- Stats row -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;">
+      <div class="card" style="padding:14px;text-align:center;">
+        <div class="streak-flame">🔥</div>
+        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;" id="stat-streak">5</div>
+        <div style="font-size:11px;color:var(--muted);">días seguidos</div>
+      </div>
+      <div class="card" style="padding:14px;text-align:center;">
+        <div style="font-size:24px;">⭐</div>
+        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;" id="stat-xp">320</div>
+        <div style="font-size:11px;color:var(--muted);">puntos XP</div>
+      </div>
+      <div class="card" style="padding:14px;text-align:center;">
+        <div style="font-size:24px;">🎯</div>
+        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;" id="stat-done">12</div>
+        <div style="font-size:11px;color:var(--muted);">ejercicios</div>
+      </div>
+    </div>
+
+    <!-- Quick practice -->
+    <div style="margin-bottom:20px;">
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:12px;">Práctica rápida</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <button class="card" onclick="goTo('chords')" style="padding:18px;text-align:left;transition:border-color 0.2s;" onmousedown="this.style.borderColor='var(--accent)'" onmouseup="this.style.borderColor='var(--border)'" ontouchstart="this.style.borderColor='var(--accent)'" ontouchend="this.style.borderColor='var(--border)'">
+          <div style="font-size:28px;margin-bottom:8px;">🎸</div>
+          <div style="font-size:14px;font-weight:600;">Acordes</div>
+          <div style="font-size:12px;color:var(--muted);">Toca y escucha</div>
         </button>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: 56, alignItems: "start" }} className="grid-cols-1 md:grid-cols-2">
-          {/* Cover */}
-          <div style={{ background: book.beltColor, borderRadius: 20, minHeight: 280, display: "flex", alignItems: "center", justifyContent: "center", padding: 32, position: "sticky", top: 80 }}>
-            {/* ▸ Reemplaza con: <img src={book.cover} style={{width:"100%",borderRadius:12}} /> */}
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 32, fontWeight: 700, color: book.beltTextColor, marginBottom: 8 }}>{book.title}</div>
-              <div style={{ fontSize: 14, color: book.beltTextColor, opacity: 0.75 }}>{book.belt}</div>
-            </div>
-          </div>
-          {/* Info */}
-          <div>
-            <span style={{ background: book.beltColor + "30", color: "#1a1a2e", border: "1px solid " + book.beltColor, borderRadius: 100, padding: "4px 14px", fontSize: 13, fontWeight: 500 }}>
-              {book.belt}
-            </span>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 600, color: "#1a1a2e", margin: "16px 0 16px" }}>{book.title}</h1>
-            <p style={{ fontSize: 16, color: "#4a4a5a", lineHeight: 1.75, margin: "0 0 28px" }}>{book.longDesc}</p>
-
-            <div style={{ borderTop: "1px solid #e8e6df", paddingTop: 24, marginBottom: 24 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: "#9898a8", textTransform: "uppercase", letterSpacing: 1, marginBottom: 12 }}>¿Para quién es?</div>
-              <p style={{ fontSize: 15, color: "#4a4a5a", margin: 0 }}>{book.forWho}</p>
-            </div>
-
-            <div style={{ borderTop: "1px solid #e8e6df", paddingTop: 24, marginBottom: 24 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: "#9898a8", textTransform: "uppercase", letterSpacing: 1, marginBottom: 12 }}>Qué aprenderás</div>
-              <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 8 }}>
-                {book.youllLearn.map((item, i) => (
-                  <li key={i} style={{ fontSize: 15, color: "#4a4a5a", display: "flex", alignItems: "flex-start", gap: 10 }}>
-                    <span style={{ color: book.beltColor, fontSize: 18, lineHeight: 1 }}>✓</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div style={{ borderTop: "1px solid #e8e6df", paddingTop: 24, marginBottom: 32 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: "#9898a8", textTransform: "uppercase", letterSpacing: 1, marginBottom: 12 }}>El libro completo incluye</div>
-              <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 8 }}>
-                {book.includes.map((item, i) => (
-                  <li key={i} style={{ fontSize: 15, color: "#4a4a5a", display: "flex", alignItems: "flex-start", gap: 10 }}>
-                    <span style={{ color: "#3a9e6a", fontSize: 16 }}>📌</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Audio/video placeholder */}
-            <div style={{ background: "#f5f3ef", borderRadius: 12, padding: "16px 20px", marginBottom: 28, border: "1px dashed #d0cec8" }}>
-              <div style={{ fontSize: 13, color: "#9898a8", marginBottom: 6 }}>🎧 Ejemplo de audio</div>
-              {/* ▸ Reemplaza con un <audio> o <iframe> de YouTube real */}
-              <div style={{ fontSize: 13, color: "#b0b0c0", fontStyle: "italic" }}>[ Aquí va el audio o video de muestra del libro ]</div>
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <button onClick={() => navigate("sample", book.id)}
-                style={{ background: book.beltColor, color: book.beltTextColor, border: "none", borderRadius: 12, padding: "14px 28px", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>
-                Leer muestra gratuita
-              </button>
-              <button onClick={() => goToPatreon(book.id, book.title, book.beltId, "book_detail")}
-                style={{ background: "#1a1a2e", color: "#f5c842", border: "none", borderRadius: 12, padding: "14px 28px", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>
-                Comprar en Patreon →
-              </button>
-              <p style={{ fontSize: 12, color: "#9898a8", textAlign: "center", margin: 0, lineHeight: 1.6 }}>
-                🔒 Compra segura a través de Patreon. Esta app no almacena datos de pago ni procesa tarjetas.
-              </p>
-            </div>
-          </div>
-        </div>
+        <button class="card" onclick="goTo('exercises')" style="padding:18px;text-align:left;transition:border-color 0.2s;" onmousedown="this.style.borderColor='var(--accent2)'" onmouseup="this.style.borderColor='var(--border)'" ontouchstart="this.style.borderColor='var(--accent2)'" ontouchend="this.style.borderColor='var(--border)'">
+          <div style="font-size:28px;margin-bottom:8px;">💪</div>
+          <div style="font-size:14px;font-weight:600;">Ejercicios</div>
+          <div style="font-size:12px;color:var(--muted);">Técnica y ritmo</div>
+        </button>
       </div>
-    </section>
-  );
+    </div>
+
+    <!-- Belt path mini -->
+    <div style="margin-bottom:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;">Tu ruta</div>
+        <button onclick="goTo('belts')" style="font-size:13px;color:var(--accent);">Ver todo →</button>
+      </div>
+      <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;" id="belt-mini-row"></div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <button class="nav-btn active" onclick="goTo('home')"><div class="nav-icon">🏠</div>Inicio</button>
+    <button class="nav-btn" onclick="goTo('belts')"><div class="nav-icon">🥋</div>Cinturones</button>
+    <button class="nav-btn" onclick="goTo('chords')"><div class="nav-icon">🎸</div>Acordes</button>
+    <button class="nav-btn" onclick="goTo('exercises')"><div class="nav-icon">💪</div>Ejercicios</button>
+  </div>
+</div>
+
+<!-- ═══════════════════ LESSON SCREEN ═══════════════════ -->
+<div class="screen hidden" id="screen-lesson">
+  <div class="topbar">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <div class="topbar-title" id="lesson-title">Cambios de Acorde</div>
+    <div style="font-size:13px;color:var(--muted);" id="lesson-step-label">1/4</div>
+  </div>
+  <div class="step-indicator" id="lesson-steps"></div>
+  <div class="scroll" style="padding:0 20px;" id="lesson-content"></div>
+</div>
+
+<!-- ═══════════════════ CHORDS SCREEN ═══════════════════ -->
+<div class="screen hidden" id="screen-chords">
+  <div class="topbar">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <div class="topbar-title">Acordes</div>
+    <div style="font-size:12px;color:var(--muted);" id="chord-belt-label">Cinturón Amarillo</div>
+  </div>
+  <div class="scroll" style="padding:20px;">
+    <div class="tab-row" id="chord-tabs"></div>
+    <div id="chord-display"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ EXERCISES SCREEN ═══════════════════ -->
+<div class="screen hidden" id="screen-exercises">
+  <div class="topbar">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <div class="topbar-title">Ejercicios</div>
+  </div>
+  <div class="scroll" style="padding:20px;" id="exercise-list"></div>
+</div>
+
+<!-- ═══════════════════ EXERCISE DETAIL ═══════════════════ -->
+<div class="screen hidden" id="screen-exercise-detail">
+  <div class="topbar">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <div class="topbar-title" id="ex-detail-title">Ejercicio</div>
+    <div></div>
+  </div>
+  <div class="scroll" style="padding:20px;" id="ex-detail-content"></div>
+</div>
+
+<!-- ═══════════════════ BELTS SCREEN ═══════════════════ -->
+<div class="screen hidden" id="screen-belts">
+  <div class="topbar">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <div class="topbar-title">Tu Ruta</div>
+  </div>
+  <div class="scroll" style="padding:20px;" id="belts-content"></div>
+</div>
+
+<!-- ═══════════════════ PROFILE SCREEN ═══════════════════ -->
+<div class="screen hidden" id="screen-profile">
+  <div class="topbar">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <div class="topbar-title">Mi Perfil</div>
+  </div>
+  <div class="scroll" style="padding:20px;" id="profile-content"></div>
+</div>
+
+</div><!-- #app -->
+
+<script>
+/* =========================================================
+   STATE
+   ========================================================= */
+const STATE = JSON.parse(localStorage.getItem('gb_state') || 'null') || {
+  name: 'Guitarrista',
+  belt: 'yellow',
+  lessonIndex: 2,
+  xp: 320,
+  streak: 5,
+  exercisesDone: [],
+  lessonsDone: [],
+};
+function save(){ localStorage.setItem('gb_state', JSON.stringify(STATE)); }
+
+/* =========================================================
+   BELT DATA
+   ========================================================= */
+const BELTS = [
+  { id:'white',  name:'Blanco',  color:'#e8e8f0', textColor:'#0d0d14', lessons:6,  done:6,  locked:false },
+  { id:'yellow', name:'Amarillo',color:'#f5c842', textColor:'#0d0d14', lessons:8,  done:3,  locked:false },
+  { id:'orange', name:'Naranja', color:'#f07d2a', textColor:'#fff',    lessons:10, done:0,  locked:true  },
+  { id:'green',  name:'Verde',   color:'#3ecf8e', textColor:'#0d0d14', lessons:10, done:0,  locked:true  },
+  { id:'blue',   name:'Azul',    color:'#5b8dee', textColor:'#fff',    lessons:12, done:0,  locked:true  },
+  { id:'brown',  name:'Marrón',  color:'#a0673a', textColor:'#fff',    lessons:12, done:0,  locked:true  },
+  { id:'black',  name:'Negro',   color:'#f0f0f8', textColor:'#0d0d14', lessons:15, done:0,  locked:true  },
+];
+
+/* =========================================================
+   CHORD DATA (tocables con Web Audio)
+   ========================================================= */
+const CHORDS = {
+  white: [
+    { name:'Em', fingers:[
+      {string:1,fret:0,open:true},{string:2,fret:0,open:true},
+      {string:3,fret:0,open:true},{string:4,fret:2,finger:2},
+      {string:5,fret:2,finger:3},{string:6,fret:0,open:true}
+    ], frequencies:[82,110,165,247,330,392] },
+    { name:'Am', fingers:[
+      {string:1,fret:0,open:true},{string:2,fret:1,finger:1},
+      {string:3,fret:2,finger:3},{string:4,fret:2,finger:2},
+      {string:5,fret:0,open:true},{string:6,muted:true}
+    ], frequencies:[0,110,165,220,330,440] },
+    { name:'E', fingers:[
+      {string:1,fret:0,open:true},{string:2,fret:0,open:true},
+      {string:3,fret:1,finger:1},{string:4,fret:2,finger:3},
+      {string:5,fret:2,finger:2},{string:6,fret:0,open:true}
+    ], frequencies:[82,124,165,249,330,415] },
+  ],
+  yellow: [
+    { name:'D', fingers:[
+      {string:1,fret:2,finger:1},{string:2,fret:3,finger:3},
+      {string:3,fret:2,finger:2},{string:4,fret:0,open:true},
+      {string:5,muted:true},{string:6,muted:true}
+    ], frequencies:[0,0,147,220,294,370] },
+    { name:'G', fingers:[
+      {string:1,fret:3,finger:4},{string:2,fret:0,open:true},
+      {string:3,fret:0,open:true},{string:4,fret:0,open:true},
+      {string:5,fret:2,finger:2},{string:6,fret:3,finger:1}
+    ], frequencies:[98,147,196,247,330,392] },
+    { name:'C', fingers:[
+      {string:1,fret:0,open:true},{string:2,fret:1,finger:1},
+      {string:3,fret:0,open:true},{string:4,fret:2,finger:2},
+      {string:5,fret:3,finger:3},{string:6,muted:true}
+    ], frequencies:[0,131,165,196,262,330] },
+    { name:'A', fingers:[
+      {string:1,fret:0,open:true},{string:2,fret:2,finger:3},
+      {string:3,fret:2,finger:2},{string:4,fret:2,finger:1},
+      {string:5,fret:0,open:true},{string:6,muted:true}
+    ], frequencies:[0,110,165,220,277,330] },
+  ],
+};
+
+/* =========================================================
+   LESSON DATA
+   ========================================================= */
+const LESSONS = [
+  {
+    id:'l1', belt:'yellow', title:'Cambios de Acorde',
+    steps:[
+      { type:'text', title:'¿Qué aprenderás?', body:'En esta lección practicarás los cambios entre Am y E, dos de los acordes más usados en música popular. El objetivo no es velocidad — es que el cambio no interrumpa el ritmo.', icon:'🎯' },
+      { type:'chord-pair', title:'Am → E', chordA:'Am', chordB:'E', tip:'Toca Am 4 tiempos, luego cambia a E sin pausar. El dedo índice sirve de guía.' },
+      { type:'metronome', title:'Practica con metrónomo', bpm:60, bars:8, tip:'Empieza a 60 BPM. Cuando lo domines, súbelo a 70.' },
+      { type:'complete', title:'¡Lección completada!', xp:50 }
+    ]
+  }
+];
+
+/* =========================================================
+   EXERCISES DATA
+   ========================================================= */
+const EXERCISES = [
+  { id:'ex1', title:'Cambio Am→E', desc:'30 cambios en 60 segundos', belt:'yellow', reps:30, time:60, done:false },
+  { id:'ex2', title:'Ritmo básico 4/4', desc:'Strumming pattern: ↓ ↓↑ ↓↑', belt:'yellow', reps:4, time:120, done:false },
+  { id:'ex3', title:'Escala pentatónica', desc:'Posición 1, sube y baja 3x', belt:'yellow', reps:3, time:90, done:false },
+  { id:'ex4', title:'Tablatura sencilla', desc:'Lee y toca la melodía de muestra', belt:'yellow', reps:1, time:180, done:false },
+  { id:'ex5', title:'Acorde Am postura', desc:'10 repeticiones perfectas', belt:'white', reps:10, time:60, done:true },
+  { id:'ex6', title:'Acorde Em limpio', desc:'Todas las cuerdas suenan', belt:'white', reps:10, time:60, done:true },
+];
+
+/* =========================================================
+   ROUTER
+   ========================================================= */
+let currentScreen = 'home';
+let screenHistory = [];
+
+function goTo(screen, param){
+  if(screen === currentScreen) return;
+  screenHistory.push(currentScreen);
+  const curr = document.getElementById('screen-'+currentScreen);
+  const next = document.getElementById('screen-'+screen);
+  if(!next) return;
+  curr.classList.add('slide-left');
+  next.classList.remove('hidden');
+  next.classList.remove('slide-left');
+  currentScreen = screen;
+  // render
+  if(screen==='chords') renderChords();
+  if(screen==='exercises') renderExercises();
+  if(screen==='belts') renderBelts();
+  if(screen==='profile') renderProfile();
+  if(screen==='lesson') renderLesson(LESSONS[0], 0);
+  if(screen==='exercise-detail' && param) renderExerciseDetail(param);
+  // update nav
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const active = document.querySelector(`.nav-btn[onclick="goTo('${screen}')"]`);
+  if(active) active.classList.add('active');
 }
 
-/* ── SAMPLE READER ───────────────────────────────────────── */
-function SampleReader({ bookId, navigate }) {
-  const book = BOOKS.find(b => b.id === bookId) || BOOKS[0];
-  const [page, setPage] = useState(0);
-  const pages = book.samplePages;
-  const currentPage = pages[page];
-  const isLast = page === pages.length - 1;
+function goBack(){
+  if(!screenHistory.length) return;
+  const prev = screenHistory.pop();
+  const curr = document.getElementById('screen-'+currentScreen);
+  const prevEl = document.getElementById('screen-'+prev);
+  curr.classList.add('hidden');
+  curr.classList.remove('slide-left');
+  prevEl.classList.remove('slide-left');
+  prevEl.classList.remove('hidden');
+  currentScreen = prev;
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const active = document.querySelector(`.nav-btn[onclick="goTo('${prev}')"]`);
+  if(active) active.classList.add('active');
+}
 
-  useEffect(() => {
-    trackEvent("sample_started", { book_id: book.id, book_title: book.title, belt_level: book.beltId });
-    window.scrollTo(0, 0);
-  }, [bookId]);
+/* =========================================================
+   AUDIO ENGINE
+   ========================================================= */
+let audioCtx = null;
+function getAudio(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
 
-  function nextPage() {
-    if (!isLast) {
-      const newPage = page + 1;
-      setPage(newPage);
-      trackEvent("sample_page_viewed", { book_id: book.id, book_title: book.title, belt_level: book.beltId, page_number: newPage + 1 });
-      if (newPage === pages.length - 1) {
-        trackEvent("sample_completed", { book_id: book.id, book_title: book.title, belt_level: book.beltId });
+function playNote(freq, time, duration=0.6){
+  if(!freq || freq<50) return;
+  const ctx = getAudio();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.frequency.value = freq;
+  osc.type = 'triangle';
+  gain.gain.setValueAtTime(0,time);
+  gain.gain.linearRampToValueAtTime(0.3,time+0.01);
+  gain.gain.exponentialRampToValueAtTime(0.001,time+duration);
+  osc.start(time); osc.stop(time+duration);
+}
+
+function playChord(freqs){
+  const ctx = getAudio();
+  const now = ctx.currentTime;
+  freqs.forEach((f,i)=>{ if(f>0) playNote(f, now + i*0.04, 1.2); });
+}
+
+function playClick(time, accent=false){
+  const ctx = getAudio();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.frequency.value = accent ? 1200 : 800;
+  osc.type = 'square';
+  gain.gain.setValueAtTime(0.4,time);
+  gain.gain.exponentialRampToValueAtTime(0.001,time+0.05);
+  osc.start(time); osc.stop(time+0.06);
+}
+
+/* =========================================================
+   RENDER HOME
+   ========================================================= */
+function renderHome(){
+  const belt = BELTS.find(b=>b.id===STATE.belt)||BELTS[1];
+  const pct = Math.round(belt.done/belt.lessons*100);
+  const offset = 188.5 - (188.5 * pct/100);
+  document.getElementById('home-ring').style.strokeDashoffset = offset;
+  document.getElementById('home-pct').textContent = pct+'%';
+  document.getElementById('home-belt-pill').innerHTML = `<div class="belt-dot" style="background:${belt.color};"></div><span>Cinturón ${belt.name}</span>`;
+  document.getElementById('home-belt-pill').style.cssText += `;background:${belt.color}22;color:${belt.color};`;
+  document.getElementById('home-progress-bar').style.width = (belt.done/belt.lessons*100)+'%';
+  document.getElementById('home-progress-label').textContent = `${belt.done}/${belt.lessons} lecciones`;
+  document.getElementById('stat-streak').textContent = STATE.streak;
+  document.getElementById('stat-xp').textContent = STATE.xp;
+  document.getElementById('stat-done').textContent = STATE.exercisesDone.length + EXERCISES.filter(e=>e.done).length;
+  // mini belt row
+  const row = document.getElementById('belt-mini-row');
+  row.innerHTML = BELTS.map(b=>`
+    <div onclick="goTo('belts')" style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;">
+      <div style="width:40px;height:40px;border-radius:50%;background:${b.color};opacity:${b.locked?'0.3':'1'};border:${STATE.belt===b.id?'3px solid white':'2px solid transparent'};transition:all 0.2s;${b.locked?'filter:grayscale(0.5)':''}"></div>
+      <div style="font-size:10px;color:${STATE.belt===b.id?'var(--accent)':'var(--muted)'};">${b.name}</div>
+    </div>
+  `).join('');
+}
+
+/* =========================================================
+   RENDER CHORDS
+   ========================================================= */
+let currentChordBelt = STATE.belt;
+function renderChords(){
+  const beltsWithChords = Object.keys(CHORDS);
+  // tabs
+  const tabs = document.getElementById('chord-tabs');
+  tabs.innerHTML = beltsWithChords.map(bid=>{
+    const b = BELTS.find(x=>x.id===bid);
+    return `<button class="tab-btn${bid===currentChordBelt?' active':''}" onclick="switchChordBelt('${bid}')">${b.name}</button>`;
+  }).join('');
+  renderChordDisplay();
+}
+
+function switchChordBelt(bid){
+  currentChordBelt = bid;
+  document.querySelectorAll('#chord-tabs .tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active', Object.keys(CHORDS)[i]===bid);
+  });
+  renderChordDisplay();
+}
+
+function renderChordDisplay(){
+  const chords = CHORDS[currentChordBelt]||[];
+  const belt = BELTS.find(b=>b.id===currentChordBelt);
+  const display = document.getElementById('chord-display');
+  display.innerHTML = chords.map((c,ci)=>`
+    <div class="card fade-in" style="margin-bottom:14px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;">${c.name}</div>
+          <div style="font-size:12px;color:var(--muted);">Acorde de ${c.name}</div>
+        </div>
+        <button class="play-btn" id="play-${ci}" onclick="handlePlayChord(${ci})">▶</button>
+      </div>
+      ${renderChordDiagram(c)}
+      <div style="display:flex;gap:8px;margin-top:14px;font-size:12px;color:var(--muted);align-items:center;">
+        <span style="color:var(--green);">○ = al aire</span>
+        <span style="color:var(--red);">✕ = no tocar</span>
+        <span style="background:var(--accent);color:#000;padding:2px 8px;border-radius:100px;">número = dedo</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderChordDiagram(chord){
+  // 6 strings, 4 frets
+  const strings = ['e','B','G','D','A','E'];
+  const fingerMap = {};
+  chord.fingers.forEach(f=>{ fingerMap[f.string] = f; });
+
+  // Top labels
+  let top = '<div style="display:flex;gap:0;margin-bottom:4px;padding-left:0;">';
+  for(let s=1;s<=6;s++){
+    const f = fingerMap[s];
+    top += `<div style="flex:1;text-align:center;font-size:16px;">`;
+    if(f && f.muted) top += `<span class="muted-mark">✕</span>`;
+    else if(f && f.open) top += `<span class="open-mark">○</span>`;
+    else top += `<span style="font-size:11px;color:var(--muted);">${strings[s-1]}</span>`;
+    top += '</div>';
+  }
+  top += '</div>';
+
+  // Fret grid
+  let grid = '<div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface2);">';
+  for(let fret=1;fret<=4;fret++){
+    grid += `<div style="display:flex;border-bottom:${fret<4?'1px solid var(--border)':'none'};">`;
+    for(let s=1;s<=6;s++){
+      const f = fingerMap[s];
+      const hasNote = f && f.fret===fret && !f.open && !f.muted;
+      grid += `<div style="flex:1;height:40px;display:flex;align-items:center;justify-content:center;border-right:${s<6?'1px solid var(--border)':'none'};position:relative;${fret===1?'border-top:3px solid var(--border)':''}">`;
+      if(hasNote) grid += `<div class="finger pop">${f.finger}</div>`;
+      grid += '</div>';
+    }
+    grid += '</div>';
+  }
+  grid += '</div>';
+  return top + grid;
+}
+
+function handlePlayChord(ci){
+  const chords = CHORDS[currentChordBelt]||[];
+  const chord = chords[ci];
+  if(!chord) return;
+  playChord(chord.frequencies);
+  const btn = document.getElementById('play-'+ci);
+  if(btn){ btn.classList.add('playing'); setTimeout(()=>btn.classList.remove('playing'),800); }
+  STATE.xp += 2; save();
+}
+
+/* =========================================================
+   EXERCISES
+   ========================================================= */
+function renderExercises(){
+  const list = document.getElementById('exercise-list');
+  const pending = EXERCISES.filter(e=>!e.done && !STATE.exercisesDone.includes(e.id));
+  const done = EXERCISES.filter(e=>e.done || STATE.exercisesDone.includes(e.id));
+  list.innerHTML = `
+    <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:6px;">Ejercicios de hoy</div>
+    <div class="sub-text" style="margin-bottom:20px;">${pending.length} pendientes · ${done.length} completados</div>
+    ${pending.map(ex=>exerciseCard(ex, false)).join('')}
+    ${done.length?`
+      <div style="font-size:13px;font-weight:600;color:var(--muted);margin:20px 0 12px;text-transform:uppercase;letter-spacing:1px;">Completados ✓</div>
+      ${done.map(ex=>exerciseCard(ex, true)).join('')}
+    `:''}
+  `;
+}
+
+function exerciseCard(ex, isDone){
+  const belt = BELTS.find(b=>b.id===ex.belt);
+  return `
+    <div class="exercise-bar" onclick="${isDone?'':'goToExDetail(\''+ex.id+'\')'}">
+      <div class="ex-num${isDone?' done':''}">
+        ${isDone?'✓':ex.reps}
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:15px;font-weight:600;${isDone?'color:var(--muted);text-decoration:line-through;':''}">${ex.title}</div>
+        <div style="font-size:13px;color:var(--muted);">${ex.desc}</div>
+      </div>
+      <div style="font-size:13px;color:${belt?belt.color:'var(--muted)'};">◉ ${belt?belt.name:''}</div>
+      ${!isDone?'<div style="font-size:18px;color:var(--muted);">›</div>':''}
+    </div>
+  `;
+}
+
+function goToExDetail(id){
+  const ex = EXERCISES.find(e=>e.id===id);
+  if(!ex) return;
+  screenHistory.push(currentScreen);
+  const curr = document.getElementById('screen-'+currentScreen);
+  const next = document.getElementById('screen-exercise-detail');
+  curr.classList.add('slide-left');
+  next.classList.remove('hidden');
+  currentScreen = 'exercise-detail';
+  renderExerciseDetail(ex);
+}
+
+let exTimer = null;
+let exElapsed = 0;
+let exRunning = false;
+
+function renderExerciseDetail(ex){
+  if(typeof ex === 'string') ex = EXERCISES.find(e=>e.id===ex);
+  document.getElementById('ex-detail-title').textContent = ex.title;
+  const belt = BELTS.find(b=>b.id===ex.belt);
+  const isDone = ex.done || STATE.exercisesDone.includes(ex.id);
+
+  document.getElementById('ex-detail-content').innerHTML = `
+    <div class="card" style="text-align:center;margin-bottom:16px;padding:32px 20px;">
+      <div style="font-size:52px;margin-bottom:16px;">💪</div>
+      <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;margin-bottom:8px;">${ex.title}</div>
+      <div style="color:var(--muted);font-size:15px;margin-bottom:20px;">${ex.desc}</div>
+      <div style="display:flex;justify-content:center;gap:24px;margin-bottom:28px;">
+        <div><div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;">${ex.reps}x</div><div style="font-size:12px;color:var(--muted);">Repeticiones</div></div>
+        <div style="width:1px;background:var(--border);"></div>
+        <div><div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;">${ex.time}s</div><div style="font-size:12px;color:var(--muted);">Tiempo</div></div>
+      </div>
+      <!-- Timer -->
+      <div style="font-family:'Syne',sans-serif;font-size:56px;font-weight:800;margin-bottom:20px;" id="ex-timer-display">${formatTime(ex.time)}</div>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <button onclick="toggleExTimer(${ex.time})" id="ex-start-btn" style="background:var(--accent);color:#000;border-radius:14px;padding:14px 32px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;">${isDone?'Repetir':'Iniciar'}</button>
+        ${!isDone?`<button onclick="markExDone('${ex.id}')" id="ex-done-btn" style="background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:14px;padding:14px 20px;font-size:15px;font-weight:600;">✓ Listo</button>`:''}
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Cómo hacerlo</div>
+      <p style="font-size:15px;line-height:1.7;color:#c0c0d8;">Practica ${ex.desc.toLowerCase()} durante ${ex.time} segundos. Enfócate en la calidad, no en la velocidad. Si algo duele, para.</p>
+    </div>
+  `;
+  exElapsed = 0; exRunning = false;
+  if(exTimer){ clearInterval(exTimer); exTimer = null; }
+}
+
+function formatTime(s){ return Math.floor(s/60)+':'+(s%60<10?'0':'')+s%60; }
+
+let exTimeLeft = 0;
+function toggleExTimer(total){
+  const btn = document.getElementById('ex-start-btn');
+  const disp = document.getElementById('ex-timer-display');
+  if(!exRunning){
+    exRunning = true;
+    exTimeLeft = exTimeLeft || total;
+    btn.textContent = 'Pausar';
+    btn.style.background = 'var(--muted)';
+    exTimer = setInterval(()=>{
+      exTimeLeft--;
+      if(disp) disp.textContent = formatTime(exTimeLeft);
+      if(exTimeLeft <= 0){
+        clearInterval(exTimer); exTimer = null; exRunning = false;
+        if(btn){ btn.textContent = 'Completado ✓'; btn.style.background = 'var(--green)'; btn.style.color = '#000'; }
       }
+    }, 1000);
+  } else {
+    exRunning = false;
+    clearInterval(exTimer); exTimer = null;
+    if(btn){ btn.textContent = 'Continuar'; btn.style.background = 'var(--accent)'; btn.style.color = '#000'; }
+  }
+}
+
+function markExDone(id){
+  if(!STATE.exercisesDone.includes(id)){
+    STATE.exercisesDone.push(id);
+    STATE.xp += 30;
+    STATE.streak = Math.max(STATE.streak, 1);
+    save();
+  }
+  // Flash
+  const overlay = document.createElement('div');
+  overlay.className = 'success-overlay';
+  overlay.innerHTML = '<div style="font-size:80px;animation:pop 0.4s ease;">⭐</div>';
+  document.getElementById('screen-exercise-detail').appendChild(overlay);
+  setTimeout(()=>{ overlay.remove(); goBack(); renderExercises(); renderHome(); }, 1200);
+}
+
+/* =========================================================
+   LESSON
+   ========================================================= */
+let lessonStep = 0;
+let currentLesson = null;
+let metroInterval = null;
+let metroBeat = 0;
+let metroRunning = false;
+
+function renderLesson(lesson, step){
+  currentLesson = lesson;
+  lessonStep = step;
+  const steps = lesson.steps;
+  // Steps indicator
+  const ind = document.getElementById('lesson-steps');
+  ind.innerHTML = steps.map((_,i)=>`<div class="step-dot${i===step?' active':i<step?' done':''}"></div>`).join('');
+  document.getElementById('lesson-step-label').textContent = `${step+1}/${steps.length}`;
+  document.getElementById('lesson-title').textContent = lesson.title;
+
+  const s = steps[step];
+  const content = document.getElementById('lesson-content');
+
+  if(s.type === 'text'){
+    content.innerHTML = `
+      <div class="fade-in" style="padding-top:20px;">
+        <div style="font-size:48px;text-align:center;margin-bottom:20px;">${s.icon}</div>
+        <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin-bottom:16px;">${s.title}</div>
+        <div class="card" style="margin-bottom:20px;"><p style="font-size:16px;line-height:1.8;color:#c0c0d8;">${s.body}</p></div>
+        <button onclick="nextLessonStep()" style="width:100%;padding:16px;background:var(--accent);color:#000;border-radius:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;">Continuar →</button>
+      </div>
+    `;
+  }
+
+  else if(s.type === 'chord-pair'){
+    const cA = findChord(s.chordA);
+    const cB = findChord(s.chordB);
+    content.innerHTML = `
+      <div class="fade-in" style="padding-top:20px;">
+        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px;">${s.title}</div>
+        <div class="sub-text" style="margin-bottom:20px;">${s.tip}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+          <div class="card">
+            <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:12px;">${s.chordA}</div>
+            ${cA?renderChordDiagram(cA):''}
+            <button onclick="playChord([${cA?cA.frequencies:[]}])" style="width:100%;margin-top:10px;padding:10px;background:var(--surface2);border-radius:10px;font-size:13px;font-weight:600;">▶ Escuchar</button>
+          </div>
+          <div class="card">
+            <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:12px;">${s.chordB}</div>
+            ${cB?renderChordDiagram(cB):''}
+            <button onclick="playChord([${cB?cB.frequencies:[]}])" style="width:100%;margin-top:10px;padding:10px;background:var(--surface2);border-radius:10px;font-size:13px;font-weight:600;">▶ Escuchar</button>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:20px;background:#f5c84210;border-color:#f5c84240;">
+          <div style="font-size:13px;font-weight:600;color:var(--accent);margin-bottom:6px;">💡 Tip</div>
+          <div style="font-size:14px;line-height:1.6;color:#c0c0d8;">${s.tip}</div>
+        </div>
+        <button onclick="nextLessonStep()" style="width:100%;padding:16px;background:var(--accent);color:#000;border-radius:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;">Ya practiqué →</button>
+      </div>
+    `;
+  }
+
+  else if(s.type === 'metronome'){
+    content.innerHTML = `
+      <div class="fade-in" style="padding-top:20px;">
+        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px;">${s.title}</div>
+        <div class="sub-text" style="margin-bottom:24px;">${s.tip}</div>
+        <div class="card" style="text-align:center;padding:32px 20px;margin-bottom:16px;">
+          <div style="font-family:'Syne',sans-serif;font-size:64px;font-weight:800;margin-bottom:4px;" id="metro-bpm">${s.bpm}</div>
+          <div style="font-size:14px;color:var(--muted);margin-bottom:24px;">BPM</div>
+          <div style="display:flex;gap:10px;justify-content:center;margin-bottom:28px;" id="metro-beats">
+            ${[0,1,2,3].map(i=>`<div class="metro-beat" id="mb-${i}"></div>`).join('')}
+          </div>
+          <div style="display:flex;gap:12px;justify-content:center;margin-bottom:20px;">
+            <button onclick="changeBPM(-5)" style="width:44px;height:44px;border-radius:12px;background:var(--surface2);font-size:20px;font-weight:700;">−</button>
+            <button onclick="toggleMetro(${s.bpm})" id="metro-btn" style="padding:12px 32px;background:var(--accent);color:#000;border-radius:14px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;">▶ Iniciar</button>
+            <button onclick="changeBPM(5)" style="width:44px;height:44px;border-radius:12px;background:var(--surface2);font-size:20px;font-weight:700;">+</button>
+          </div>
+          <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;"><div id="metro-bar" style="height:100%;background:var(--accent);width:0%;transition:width 0.1s;"></div></div>
+        </div>
+        <button onclick="nextLessonStep()" style="width:100%;padding:16px;background:var(--accent);color:#000;border-radius:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;">Continuar →</button>
+      </div>
+    `;
+    metroBpm = s.bpm; metroBeat = 0; metroRunning = false;
+  }
+
+  else if(s.type === 'complete'){
+    if(metroInterval){ clearInterval(metroInterval); metroInterval = null; metroRunning = false; }
+    STATE.xp += s.xp;
+    if(!STATE.lessonsDone.includes(currentLesson.id)){
+      STATE.lessonsDone.push(currentLesson.id);
+      const belt = BELTS.find(b=>b.id===STATE.belt);
+      if(belt) belt.done = Math.min(belt.done+1, belt.lessons);
     }
+    save();
+    content.innerHTML = `
+      <div class="fade-in" style="padding-top:40px;text-align:center;">
+        <div style="font-size:80px;margin-bottom:20px;animation:pop 0.5s ease;">🎉</div>
+        <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:12px;">${s.title}</div>
+        <div style="color:var(--muted);margin-bottom:32px;">Ganaste +${s.xp} XP</div>
+        <div style="display:flex;gap:16px;justify-content:center;margin-bottom:32px;">
+          <div class="card" style="padding:20px 28px;"><div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--accent);">+${s.xp}</div><div style="font-size:12px;color:var(--muted);">XP ganados</div></div>
+          <div class="card" style="padding:20px 28px;"><div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--green);">🔥${STATE.streak}</div><div style="font-size:12px;color:var(--muted);">días seguidos</div></div>
+        </div>
+        <button onclick="goTo('home');renderHome();" style="width:100%;padding:16px;background:var(--accent);color:#000;border-radius:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:12px;">Ir al inicio</button>
+        <button onclick="goTo('exercises')" style="width:100%;padding:16px;background:var(--surface2);color:var(--text);border-radius:16px;font-size:16px;font-weight:600;border:1px solid var(--border);">Hacer ejercicios</button>
+      </div>
+    `;
   }
-
-  return (
-    <section style={{ padding: "80px 20px", minHeight: "80vh" }}>
-      <div style={{ maxWidth: 680, margin: "0 auto" }}>
-        <button onClick={() => navigate("book", book.id)}
-          style={{ background: "none", border: "none", color: "#7b7b8b", fontSize: 14, cursor: "pointer", marginBottom: 24, display: "flex", alignItems: "center", gap: 6 }}>
-          ← Volver al libro
-        </button>
-        {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
-          <div>
-            <div style={{ fontSize: 13, color: "#9898a8" }}>Muestra gratuita</div>
-            <div style={{ fontSize: 18, fontWeight: 600, color: "#1a1a2e", fontFamily: "'Cormorant Garamond', serif" }}>{book.title}</div>
-          </div>
-          <div style={{ fontSize: 13, color: "#9898a8" }}>Página {page + 1} de {pages.length}</div>
-        </div>
-        {/* Progress */}
-        <div className="progress-bar" style={{ marginBottom: 24 }}>
-          <div className="progress-fill" style={{ width: ((page + 1) / pages.length * 100) + "%", background: book.beltColor }} />
-        </div>
-        {/* Page */}
-        <div className="sample-page" style={{ minHeight: isLast ? 300 : 400 }}>
-          <div className="watermark"><span>Muestra Gratuita</span></div>
-          {isLast ? (
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", flex: 1, textAlign: "center", gap: 20, position: "relative", zIndex: 1 }}>
-              <div style={{ fontSize: 40 }}>🎸</div>
-              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 600, color: "#1a1a2e", margin: 0 }}>
-                Fin de la muestra gratuita
-              </h3>
-              <p style={{ fontSize: 16, color: "#6b6b7b", lineHeight: 1.7, maxWidth: 420, margin: 0 }}>
-                Accede al libro completo desde Patreon y continúa tu aprendizaje con {book.includes[0]}.
-              </p>
-              <button onClick={() => goToPatreon(book.id, book.title, book.beltId, "sample_final_page")}
-                style={{ background: "#1a1a2e", color: "#f5c842", border: "none", borderRadius: 12, padding: "16px 40px", fontSize: 16, fontWeight: 600, cursor: "pointer", marginTop: 8 }}>
-                Continuar en Patreon →
-              </button>
-              <p style={{ fontSize: 12, color: "#b0b0c0", margin: 0 }}>
-                🔒 Compra segura. Esta app no procesa pagos.
-              </p>
-            </div>
-          ) : (
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: "#9898a8", textTransform: "uppercase", letterSpacing: 1, marginBottom: 16 }}>
-                {currentPage.type === "exercise" ? "Ejercicio" : currentPage.type === "theory" ? "Teoría" : "Introducción"}
-              </div>
-              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 600, color: "#1a1a2e", margin: "0 0 20px" }}>
-                {currentPage.title}
-              </h3>
-              <div style={{ fontSize: 16, color: "#4a4a5a", lineHeight: 1.8, whiteSpace: "pre-line" }}>
-                {currentPage.content}
-              </div>
-            </div>
-          )}
-        </div>
-        {/* Navigation */}
-        {!isLast && (
-          <div style={{ display: "flex", justifyContent: "space-between", marginTop: 20, gap: 12 }}>
-            <button onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0}
-              style={{ background: "white", border: "1px solid #e8e6df", borderRadius: 10, padding: "12px 24px", fontSize: 14, cursor: page === 0 ? "default" : "pointer", color: page === 0 ? "#c0c0d0" : "#1a1a2e" }}>
-              ← Anterior
-            </button>
-            <button onClick={nextPage}
-              style={{ background: book.beltColor, color: book.beltTextColor, border: "none", borderRadius: 10, padding: "12px 28px", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
-              Siguiente →
-            </button>
-          </div>
-        )}
-      </div>
-    </section>
-  );
 }
 
-/* ── AUTHOR ──────────────────────────────────────────────── */
-function Author({ navigate }) {
-  useEffect(() => {
-    trackEvent("page_view", { section: "author" });
-    trackEvent("author_viewed");
-  }, []);
-  return (
-    <section style={{ padding: "80px 20px", minHeight: "80vh" }}>
-      <div style={{ maxWidth: 900, margin: "0 auto" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: 64, alignItems: "start" }} className="grid-cols-1 md:grid-cols-2">
-          <div>
-            {/* ▸ Reemplaza con tu foto real */}
-            <div style={{ width: "100%", aspectRatio: "3/4", background: "#1a1a2e", borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontSize: 80, marginBottom: 12 }}>👨‍🎸</div>
-                <div style={{ fontSize: 13, color: "#9898a8" }}>[ Tu foto aquí ]</div>
-              </div>
-            </div>
-            <button onClick={() => navigate("test")}
-              style={{ width: "100%", background: "#f5c842", color: "#1a1a2e", border: "none", borderRadius: 12, padding: "14px", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>
-              Descubrir mi cinturón
-            </button>
-          </div>
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 600, color: "#9898a8", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 16 }}>El autor del método</div>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 600, color: "#1a1a2e", margin: "0 0 20px" }}>
-              {/* ▸ Reemplaza con tu nombre */}
-              Nombre del Profesor
-            </h2>
-            <p style={{ fontSize: 16, color: "#4a4a5a", lineHeight: 1.8, margin: "0 0 20px" }}>
-              {/* ▸ Reemplaza con tu bio real */}
-              Guitarrista y pedagogo con más de [X] años enseñando guitarra. He trabajado con alumnos de todos los niveles, desde principiantes absolutos hasta músicos profesionales.
-            </p>
-            <p style={{ fontSize: 16, color: "#4a4a5a", lineHeight: 1.8, margin: "0 0 28px" }}>
-              Este método nació de la frustración que veía en mis alumnos: demasiado contenido suelto en internet, sin estructura, sin progresión. Decidí crear algo diferente: un sistema por niveles que funciona como los cinturones de las artes marciales — cada nivel construye sobre el anterior.
-            </p>
-            <div style={{ borderTop: "1px solid #e8e6df", paddingTop: 28 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: "#9898a8", textTransform: "uppercase", letterSpacing: 1, marginBottom: 16 }}>Filosofía del método</div>
-              <blockquote style={{ margin: 0, paddingLeft: 20, borderLeft: "3px solid #f5c842" }}>
-                <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontStyle: "italic", color: "#1a1a2e", lineHeight: 1.5, margin: 0 }}>
-                  "No existen atajos en el aprendizaje musical. Pero sí existe un camino más inteligente."
-                </p>
-              </blockquote>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+let metroBpm = 60;
+function nextLessonStep(){
+  if(metroInterval){ clearInterval(metroInterval); metroInterval = null; metroRunning = false; }
+  if(lessonStep < currentLesson.steps.length - 1){
+    renderLesson(currentLesson, lessonStep+1);
+  }
 }
 
-/* ── METRICS DASHBOARD (demo) ────────────────────────────── */
-function Metrics() {
-  return (
-    <section style={{ padding: "80px 20px", background: "#1a1a2e", minHeight: "80vh" }}>
-      <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <span style={{ background: "#f5c84230", color: "#f5c842", border: "1px solid #f5c84260", borderRadius: 100, padding: "4px 16px", fontSize: 12, fontWeight: 600 }}>DEMO — Vista para el cliente</span>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(26px, 4vw, 44px)", fontWeight: 600, color: "#faf8f4", margin: "16px 0 12px" }}>
-            Métricas que podremos medir
-          </h2>
-          <p style={{ fontSize: 16, color: "#9898a8", maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>
-            Una vez conectada a Google Analytics 4, esta app reportará datos reales sobre el comportamiento de tus usuarios.
-          </p>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 20, marginBottom: 40 }}>
-          {[
-            { icon: "🧪", label: "Test de cinturón", value: "Usuarios que descubren su nivel", color: "#f5c842" },
-            { icon: "📖", label: "Libros más vistos", value: "Cuáles generan más interés", color: "#f07d2a" },
-            { icon: "📄", label: "Muestras más leídas", value: "Qué contenido engancha más", color: "#3a9e6a" },
-            { icon: "🎯", label: "Clics a Patreon", value: "Intención de compra real", color: "#f5c842" },
-            { icon: "🥋", label: "Cinturón más buscado", value: "Nivel de mayor demanda", color: "#2b6cb0" },
-          ].map((card, i) => (
-            <div key={i} style={{ background: "#252540", borderRadius: 16, padding: "24px 20px", border: "1px solid #35355a" }}>
-              <div style={{ fontSize: 28, marginBottom: 12 }}>{card.icon}</div>
-              <div style={{ fontSize: 13, color: card.color, fontWeight: 600, marginBottom: 6 }}>{card.label}</div>
-              <div style={{ fontSize: 14, color: "#9898a8", lineHeight: 1.5 }}>{card.value}</div>
-            </div>
-          ))}
-        </div>
-        {/* Funnel */}
-        <div style={{ background: "#252540", borderRadius: 20, padding: "32px 32px", border: "1px solid #35355a" }}>
-          <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 600, color: "#faf8f4", margin: "0 0 24px" }}>Embudo de conversión</h3>
-          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-            {[
-              { step: "Visita la app", pct: 100, color: "#f5c842" },
-              { step: "Inicia el test", pct: 72, color: "#f07d2a" },
-              { step: "Ve su cinturón recomendado", pct: 68, color: "#3a9e6a" },
-              { step: "Abre el libro recomendado", pct: 45, color: "#2b6cb0" },
-              { step: "Lee la muestra gratuita", pct: 38, color: "#7b4a2d" },
-              { step: "Completa la muestra", pct: 22, color: "#9898a8" },
-              { step: "Hace clic en Patreon ⭐", pct: 14, color: "#f5c842" },
-            ].map((item, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 16, padding: "10px 0", borderBottom: i < 6 ? "1px solid #35355a" : "none" }}>
-                <div style={{ fontSize: 13, color: "#9898a8", width: 16, textAlign: "right", flexShrink: 0 }}>{i + 1}</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 14, color: "#faf8f4", marginBottom: 6 }}>{item.step}</div>
-                  <div style={{ height: 6, background: "#1a1a2e", borderRadius: 3, overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: item.pct + "%", background: item.color, borderRadius: 3 }} />
-                  </div>
+function findChord(name){
+  for(const belt in CHORDS){
+    const c = CHORDS[belt].find(c=>c.name===name);
+    if(c) return c;
+  }
+  return null;
+}
+
+function toggleMetro(bpm){
+  if(metroRunning){
+    clearInterval(metroInterval); metroInterval = null; metroRunning = false;
+    const btn = document.getElementById('metro-btn');
+    if(btn){ btn.textContent = '▶ Iniciar'; btn.style.background = 'var(--accent)'; }
+    return;
+  }
+  metroRunning = true;
+  const btn = document.getElementById('metro-btn');
+  if(btn){ btn.textContent = '⏹ Parar'; btn.style.background = 'var(--red)'; }
+  metroBeat = 0;
+  const interval = 60000 / metroBpm;
+  metroInterval = setInterval(()=>{
+    const ctx = getAudio();
+    playClick(ctx.currentTime, metroBeat===0);
+    document.querySelectorAll('.metro-beat').forEach((el,i)=>{
+      el.classList.toggle('active', i===metroBeat);
+    });
+    metroBeat = (metroBeat+1)%4;
+  }, interval);
+}
+
+function changeBPM(delta){
+  metroBpm = Math.max(40, Math.min(200, metroBpm + delta));
+  const el = document.getElementById('metro-bpm');
+  if(el) el.textContent = metroBpm;
+  if(metroRunning){
+    clearInterval(metroInterval); metroInterval = null; metroRunning = false;
+    toggleMetro(metroBpm);
+  }
+}
+
+/* =========================================================
+   BELTS SCREEN
+   ========================================================= */
+function renderBelts(){
+  const content = document.getElementById('belts-content');
+  content.innerHTML = `
+    <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px;">Tu ruta completa</div>
+    <div class="sub-text" style="margin-bottom:24px;">Domina cada cinturón para desbloquear el siguiente.</div>
+    ${BELTS.map((belt,i)=>{
+      const pct = Math.round(belt.done/belt.lessons*100);
+      const isCurrent = belt.id === STATE.belt;
+      return `
+        <div class="card fade-in" style="margin-bottom:12px;border-color:${isCurrent?belt.color:'var(--border)'};opacity:${belt.locked?'0.5':'1'};">
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div style="width:48px;height:48px;border-radius:50%;background:${belt.color};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;color:${belt.textColor};font-size:13px;">${belt.locked?'🔒':pct+'%'}</div>
+            <div style="flex:1;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;">Cinturón ${belt.name}</div>
+                ${isCurrent?'<span style="background:var(--accent);color:#000;font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;">ACTUAL</span>':''}
+              </div>
+              <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">${belt.locked?'Completa el anterior para desbloquear':`${belt.done} de ${belt.lessons} lecciones`}</div>
+              ${!belt.locked?`
+                <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;">
+                  <div style="height:100%;background:${belt.color};border-radius:2px;width:${pct}%;transition:width 0.6s;"></div>
                 </div>
-                <div style={{ fontSize: 13, color: item.color, fontWeight: 600, minWidth: 36, textAlign: "right" }}>{item.pct}%</div>
-              </div>
-            ))}
+              `:''}
+            </div>
           </div>
-          <p style={{ fontSize: 13, color: "#6b6b7b", marginTop: 20, margin: 0, fontStyle: "italic" }}>* Datos simulados para demo. Los números reales vendrán de Google Analytics 4.</p>
         </div>
-      </div>
-    </section>
-  );
+      `;
+    }).join('')}
+  `;
 }
 
-/* ── FOOTER ──────────────────────────────────────────────── */
-function Footer({ navigate }) {
-  return (
-    <footer style={{ background: "#12121e", padding: "56px 20px 32px", borderTop: "1px solid #252540" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 40, marginBottom: 48 }}>
-          <div>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "#faf8f4", marginBottom: 12 }}>Cinturones de Guitarra</div>
-            <p style={{ fontSize: 14, color: "#6b6b7b", lineHeight: 1.7, margin: 0 }}>Un método progresivo para aprender guitarra paso a paso.</p>
-          </div>
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 600, color: "#5b5b7b", textTransform: "uppercase", letterSpacing: 1, marginBottom: 16 }}>El método</div>
-            {["home", "method", "test", "books"].map(s => (
-              <button key={s} onClick={() => navigate(s)}
-                style={{ display: "block", background: "none", border: "none", color: "#7b7b9b", fontSize: 14, cursor: "pointer", marginBottom: 10, padding: 0, textAlign: "left" }}>
-                {s === "home" ? "Inicio" : s === "method" ? "Mapa del método" : s === "test" ? "Test de cinturón" : "Libros"}
-              </button>
-            ))}
-          </div>
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 600, color: "#5b5b7b", textTransform: "uppercase", letterSpacing: 1, marginBottom: 16 }}>Acceder</div>
-            <button onClick={() => { trackEvent("patreon_click", { source_section: "footer" }); window.open(PATREON_URL, "_blank", "noopener"); }}
-              style={{ background: "#f5c842", color: "#1a1a2e", border: "none", borderRadius: 10, padding: "12px 24px", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
-              Ir a Patreon →
-            </button>
-            <p style={{ fontSize: 12, color: "#5b5b7b", marginTop: 12, lineHeight: 1.6 }}>🔒 Compra segura. No procesamos pagos.</p>
-          </div>
-        </div>
-        <div style={{ borderTop: "1px solid #252540", paddingTop: 24, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-          <span style={{ fontSize: 13, color: "#5b5b7b" }}>© {new Date().getFullYear()} Cinturones de Guitarra</span>
-          <button onClick={() => navigate("metrics")} style={{ background: "none", border: "none", color: "#35355a", fontSize: 12, cursor: "pointer" }}>
-            📊 Demo métricas
-          </button>
-        </div>
+/* =========================================================
+   PROFILE
+   ========================================================= */
+function renderProfile(){
+  const content = document.getElementById('profile-content');
+  const belt = BELTS.find(b=>b.id===STATE.belt)||BELTS[1];
+  content.innerHTML = `
+    <div style="text-align:center;padding:28px 0 24px;">
+      <div style="width:80px;height:80px;border-radius:50%;background:${belt.color};margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:32px;">🎸</div>
+      <div id="name-display" style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin-bottom:4px;" onclick="editName()">${STATE.name} ✎</div>
+      <div class="belt-pill" style="background:${belt.color}22;color:${belt.color};">
+        <div class="belt-dot" style="background:${belt.color};"></div>Cinturón ${belt.name}
       </div>
-    </footer>
-  );
-}
-
-/* ============================================================
-   APP ROUTER
-   ============================================================ */
-function App() {
-  const [view, setView] = useState({ section: "home", param: null });
-
-  function navigate(section, param = null) {
-    setView({ section, param });
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  const { section, param } = view;
-  return (
-    <div style={{ paddingTop: 64 }}>
-      <Nav currentSection={section} navigate={navigate} />
-      {section === "home"    && <Home navigate={navigate} />}
-      {section === "method"  && <Method navigate={navigate} />}
-      {section === "test"    && <Test navigate={navigate} />}
-      {section === "books"   && <Books navigate={navigate} />}
-      {section === "book"    && <BookDetail bookId={param} navigate={navigate} />}
-      {section === "sample"  && <SampleReader bookId={param} navigate={navigate} />}
-      {section === "author"  && <Author navigate={navigate} />}
-      {section === "metrics" && <Metrics />}
-      <Footer navigate={navigate} />
     </div>
-  );
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+      <div class="card" style="text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--accent);">${STATE.xp}</div><div style="font-size:12px;color:var(--muted);">XP Total</div></div>
+      <div class="card" style="text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--accent2);">🔥${STATE.streak}</div><div style="font-size:12px;color:var(--muted);">Racha</div></div>
+    </div>
+    <div class="card" style="margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Logros</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        ${STATE.xp>=100?'<span style="font-size:20px;" title="100 XP">🌟</span>':''}
+        ${STATE.streak>=3?'<span style="font-size:20px;" title="3 días">🔥</span>':''}
+        ${STATE.exercisesDone.length>=1?'<span style="font-size:20px;" title="Primer ejercicio">💪</span>':''}
+        ${STATE.lessonsDone.length>=1?'<span style="font-size:20px;" title="Primera lección">📖</span>':''}
+        <span style="font-size:14px;color:var(--muted);">¡Sigue practicando para desbloquear más!</span>
+      </div>
+    </div>
+    <button onclick="if(confirm('¿Resetear progreso?')){localStorage.clear();location.reload();}" style="width:100%;padding:14px;background:var(--surface2);color:var(--red);border:1px solid var(--border);border-radius:14px;font-size:14px;font-weight:600;margin-top:8px;">Resetear progreso</button>
+  `;
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+function editName(){
+  const newName = prompt('¿Cómo te llamas?', STATE.name);
+  if(newName && newName.trim()){
+    STATE.name = newName.trim();
+    save();
+    renderProfile();
+  }
+}
+
+/* =========================================================
+   INIT
+   ========================================================= */
+window.addEventListener('DOMContentLoaded', ()=>{
+  renderHome();
+  // greeting
+  const h = new Date().getHours();
+  const gr = h<12?'¡Buenos días! ☀️':h<18?'¡Buenas tardes! 🎸':'¡Buenas noches! 🌙';
+  document.getElementById('home-greeting').textContent = gr + ' ' + STATE.name;
+});
+
+// Prevent back gesture closing app
+window.addEventListener('popstate', e=>{ if(screenHistory.length) goBack(); });
 </script>
 </body>
 </html>
