@@ -3,303 +3,490 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>GuitarBelts</title>
+<meta name="theme-color" content="#0a0a0f"/>
+<title>Daniel Flores Music — Entrena guitarra todos los días</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+
+<!-- GA4: reemplaza G-XXXXXXXXXX con tu Measurement ID -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script> -->
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{
-  --bg:#0d0d14;
-  --surface:#161622;
-  --surface2:#1e1e2e;
-  --border:#2a2a3e;
-  --text:#f0f0f8;
-  --muted:#7070a0;
-  --accent:#f5c842;
-  --accent2:#f07d2a;
-  --green:#3ecf8e;
-  --blue:#5b8dee;
-  --red:#f06060;
+  --bg:#0a0a0f;
+  --bg2:#111118;
+  --surface:#16161f;
+  --surface2:#1e1e2a;
+  --border:#252535;
+  --border2:#303048;
+  --text:#f2f2f8;
+  --muted:#6060a0;
+  --muted2:#9090b8;
+  --accent:#e8ff47;       /* neon yellow-green — energía, acción */
+  --accent2:#ff5f1f;      /* naranja fuego — urgencia, reto */
+  --accent3:#00d4ff;      /* cyan — progreso, escalas */
+  --green:#00e87a;
+  --red:#ff4466;
+  --purple:#b066ff;
 
-  --belt-white:#e8e8f0;
-  --belt-yellow:#f5c842;
-  --belt-orange:#f07d2a;
-  --belt-green:#3ecf8e;
-  --belt-blue:#5b8dee;
-  --belt-brown:#a0673a;
-  --belt-black:#f0f0f8;
+  /* Cinturones */
+  --white:#e8e8f8;
+  --yellow:#f5c842;
+  --blue:#4488ff;
+  --black:#f2f2f8;
 }
-html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;}
-button{font-family:'Outfit',sans-serif;cursor:pointer;border:none;background:none;color:inherit;}
 
-/* APP SHELL */
-#app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:430px;margin:0 auto;position:relative;overflow:hidden;}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;}
+button,input,select{font-family:'Space Grotesk',sans-serif;}
+button{cursor:pointer;border:none;background:none;color:inherit;}
 
-/* SCREENS */
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1),opacity 0.35s ease;overflow:hidden;}
-.screen.hidden{transform:translateX(100%);opacity:0;pointer-events:none;}
-.screen.slide-left{transform:translateX(-100%);opacity:0;pointer-events:none;}
+/* ── APP SHELL ── */
+#app{
+  display:flex;flex-direction:column;height:100vh;height:100dvh;
+  max-width:430px;margin:0 auto;position:relative;overflow:hidden;
+  background:var(--bg);
+}
 
-/* TOP BAR */
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;flex-shrink:0;border-bottom:1px solid var(--border);}
-.topbar-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;}
-.back-btn{width:36px;height:36px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:18px;}
+/* Grain overlay */
+#app::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:999;opacity:0.6;
+}
 
-/* SCROLL AREA */
-.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:100px;}
+/* ── SCREENS ── */
+.screen{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  background:var(--bg);will-change:transform;
+  transition:transform 0.32s cubic-bezier(0.4,0,0.2,1),opacity 0.32s ease;
+  overflow:hidden;
+}
+.screen.hidden{transform:translateX(110%);opacity:0;pointer-events:none;}
+.screen.back{transform:translateX(-110%);opacity:0;pointer-events:none;}
+
+/* ── SCROLL ── */
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:88px;}
 .scroll::-webkit-scrollbar{display:none;}
 
-/* BOTTOM NAV */
-.bottom-nav{position:absolute;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:50;}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;font-size:10px;font-weight:500;color:var(--muted);transition:color 0.2s;}
-.nav-btn.active{color:var(--accent);}
-.nav-icon{font-size:22px;line-height:1;}
+/* ── TOP BAR ── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;flex-shrink:0;
+  border-bottom:1px solid var(--border);
+  background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);
+  z-index:10;
+}
+.topbar-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--accent);}
+.icon-btn{
+  width:38px;height:38px;border-radius:12px;
+  background:var(--surface2);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;font-size:17px;
+  transition:all 0.15s;
+}
+.icon-btn:active{transform:scale(0.92);}
+.back-btn{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--muted2);}
 
-/* CARDS */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px;}
-.card+.card{margin-top:12px;}
+/* ── BOTTOM NAV ── */
+.bnav{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(17,17,24,0.95);backdrop-filter:blur(16px);
+  border-top:1px solid var(--border);
+  display:flex;padding:8px 4px max(10px,env(safe-area-inset-bottom));
+  z-index:50;
+}
+.bnav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:6px 4px;font-size:10px;font-weight:600;color:var(--muted);
+  letter-spacing:0.3px;text-transform:uppercase;transition:color 0.2s;
+  position:relative;
+}
+.bnav-btn.active{color:var(--accent);}
+.bnav-btn.active::before{
+  content:'';position:absolute;top:-1px;left:25%;right:25%;
+  height:2px;background:var(--accent);border-radius:0 0 2px 2px;
+}
+.bnav-icon{font-size:20px;line-height:1;}
 
-/* BELT PILL */
-.belt-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:100px;font-size:12px;font-weight:600;}
-.belt-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+/* ── CARDS ── */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:18px;padding:20px;
+}
+.card-sm{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;}
 
-/* PROGRESS RING */
-.ring-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;}
-.ring-wrap svg{transform:rotate(-90deg);}
-.ring-label{position:absolute;font-family:'Syne',sans-serif;font-weight:800;font-size:22px;}
+/* ── BUTTONS ── */
+.btn-primary{
+  width:100%;padding:16px;border-radius:14px;
+  background:var(--accent);color:#0a0a0f;
+  font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;
+  letter-spacing:0.3px;transition:transform 0.15s,opacity 0.15s;
+}
+.btn-primary:active{transform:scale(0.97);}
+.btn-secondary{
+  width:100%;padding:14px;border-radius:14px;
+  background:transparent;color:var(--text);
+  border:1px solid var(--border2);
+  font-size:15px;font-weight:600;transition:all 0.15s;
+}
+.btn-secondary:active{background:var(--surface2);}
+.btn-patreon{
+  width:100%;padding:16px;border-radius:14px;
+  background:linear-gradient(135deg,#ff424d,#f96854);
+  color:#fff;font-size:15px;font-weight:700;
+  box-shadow:0 4px 24px rgba(249,104,84,0.35);
+  transition:transform 0.15s,box-shadow 0.15s;
+}
+.btn-patreon:active{transform:scale(0.97);box-shadow:0 2px 12px rgba(249,104,84,0.2);}
 
-/* CHORD DIAGRAM */
-.chord-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface2);}
-.fret-row{display:contents;}
-.fret-cell{height:36px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;position:relative;}
-.fret-cell:last-child{border-right:none;}
-.fret-cell.nut{background:var(--surface);border-bottom:3px solid var(--text);}
-.finger{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#000;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;position:absolute;}
-.string-label{font-size:10px;color:var(--muted);font-weight:600;}
-.open-mark{font-size:14px;color:var(--green);}
-.muted-mark{font-size:14px;color:var(--red);}
+/* ── PROGRESS BAR ── */
+.pbar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.pbar-fill{height:100%;border-radius:3px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1);}
 
-/* PLAY BTN */
-.play-btn{width:56px;height:56px;border-radius:50%;background:var(--accent);color:#000;font-size:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.15s,opacity 0.15s;}
-.play-btn:active{transform:scale(0.92);}
-.play-btn.playing{background:var(--green);}
+/* ── BELT BADGE ── */
+.belt{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:0.5px;}
 
-/* EXERCISE */
-.exercise-bar{background:var(--surface2);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:14px;margin-bottom:10px;}
-.ex-num{width:32px;height:32px;border-radius:10px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;}
-.ex-num.done{background:var(--green);color:#000;}
+/* ── MONO TEXT (tabs/scales) ── */
+.mono{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;}
 
-/* TABS */
-.tab-row{display:flex;gap:8px;padding:4px;background:var(--surface2);border-radius:14px;margin-bottom:20px;}
-.tab-btn{flex:1;padding:9px;border-radius:10px;font-size:13px;font-weight:600;color:var(--muted);transition:all 0.2s;}
-.tab-btn.active{background:var(--surface);color:var(--text);}
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{0%{transform:scale(0.7);opacity:0}60%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
+@keyframes slideRight{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(232,255,71,0)}50%{box-shadow:0 0 24px 4px rgba(232,255,71,0.25)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes countUp{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
 
-/* METRONOME */
-.metro-beat{width:14px;height:14px;border-radius:50%;background:var(--border);transition:background 0.05s;}
-.metro-beat.active{background:var(--accent);}
+.fu{animation:fadeUp 0.45s ease both;}
+.fu2{animation:fadeUp 0.45s 0.1s ease both;}
+.fu3{animation:fadeUp 0.45s 0.2s ease both;}
+.fu4{animation:fadeUp 0.45s 0.3s ease both;}
+.pop{animation:pop 0.35s ease both;}
 
-/* FRETBOARD */
-.fretboard{background:var(--surface2);border-radius:16px;padding:16px;overflow-x:auto;}
-.fretboard-inner{display:grid;min-width:320px;}
-.fb-string{display:flex;align-items:center;height:36px;position:relative;}
-.fb-line{flex:1;height:2px;background:var(--border);}
-.fb-fret{width:52px;height:100%;border-left:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;cursor:pointer;}
-.fb-fret.nut{border-left:4px solid var(--text);}
-.fb-note{width:26px;height:26px;border-radius:50%;background:var(--accent);color:#000;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;position:absolute;transition:all 0.2s;}
-.fb-note.root{background:var(--accent2);}
+/* ── STEP DOTS ── */
+.sdots{display:flex;gap:6px;justify-content:center;padding:12px 0;}
+.sdot{width:7px;height:7px;border-radius:50%;background:var(--border2);transition:all 0.3s;}
+.sdot.active{background:var(--accent);width:18px;border-radius:4px;}
+.sdot.done{background:var(--green);}
 
-/* LESSON STEP */
-.step-indicator{display:flex;gap:6px;justify-content:center;padding:16px 0 8px;}
-.step-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all 0.3s;}
-.step-dot.active{background:var(--accent);width:20px;border-radius:4px;}
-.step-dot.done{background:var(--green);}
+/* ── CHORD GRID ── */
+.cgrid{display:flex;flex-direction:column;border-radius:12px;overflow:hidden;border:1px solid var(--border2);}
+.crow{display:flex;border-bottom:1px solid var(--border);}
+.crow:last-child{border-bottom:none;}
+.ccell{
+  flex:1;height:38px;border-right:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;position:relative;
+}
+.ccell:last-child{border-right:none;}
+.cfinger{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--accent);color:#000;
+  font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  animation:pop 0.2s ease;
+}
+.cnut{border-bottom:3px solid var(--text)!important;}
 
-/* ANIMATIONS */
-@keyframes pop{0%{transform:scale(0.8);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.pop{animation:pop 0.3s ease both;}
-.fade-in{animation:fadeIn 0.4s ease both;}
+/* ── FRETBOARD SCALE ── */
+.fretboard{background:var(--surface2);border-radius:14px;padding:14px;overflow-x:auto;}
+.fb-inner{display:flex;flex-direction:column;gap:4px;min-width:300px;}
+.fb-string{display:flex;align-items:center;height:32px;}
+.fb-open{width:32px;text-align:center;font-size:10px;color:var(--muted2);font-weight:600;flex-shrink:0;}
+.fb-line{position:relative;flex:1;display:flex;}
+.fb-fret{
+  width:48px;height:32px;border-left:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background 0.15s;flex-shrink:0;
+}
+.fb-fret:first-child{border-left:3px solid var(--text);}
+.fb-note{
+  width:26px;height:26px;border-radius:50%;
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;
+}
+.fb-note.root{background:var(--accent2);color:#fff;}
+.fb-note.scale{background:var(--accent);color:#000;}
+.fb-fret-num{display:flex;justify-content:space-between;padding:4px 0 0;}
+.fb-fret-num span{width:48px;text-align:center;font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;}
 
-/* BIG ACCENT */
-.big-accent{font-family:'Syne',sans-serif;font-size:clamp(36px,10vw,52px);font-weight:800;line-height:1.05;}
-.sub-text{font-size:14px;color:var(--muted);line-height:1.6;}
+/* ── METRO ── */
+.mbeat{width:12px;height:12px;border-radius:50%;background:var(--border2);transition:all 0.05s;}
+.mbeat.on{background:var(--accent);box-shadow:0 0 10px rgba(232,255,71,0.5);}
+.mbeat.on1{background:var(--accent2);box-shadow:0 0 10px rgba(255,95,31,0.5);}
 
-/* SUCCESS FLASH */
-.success-overlay{position:absolute;inset:0;background:rgba(62,207,142,0.15);display:flex;align-items:center;justify-content:center;z-index:200;animation:fadeIn 0.2s ease;pointer-events:none;}
+/* ── LOCKED OVERLAY ── */
+.lock-overlay{
+  position:absolute;inset:0;background:rgba(10,10,15,0.88);
+  backdrop-filter:blur(4px);border-radius:18px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  z-index:10;
+}
 
-/* TOGGLE */
-.toggle{width:48px;height:26px;border-radius:13px;background:var(--border);position:relative;transition:background 0.2s;flex-shrink:0;}
-.toggle.on{background:var(--green);}
-.toggle-thumb{width:20px;height:20px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:left 0.2s;}
-.toggle.on .toggle-thumb{left:25px;}
+/* ── SUCCESS SCREEN ── */
+.success-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,232,122,0.08);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  z-index:200;animation:fadeUp 0.25s ease;
+  pointer-events:none;
+}
 
-/* STREAK */
-.streak-flame{font-size:28px;animation:pulse 2s ease infinite;}
+/* ── XP POP ── */
+.xp-pop{
+  position:fixed;font-family:'Bebas Neue',sans-serif;font-size:28px;
+  color:var(--accent);pointer-events:none;z-index:999;
+  animation:fadeUp 1.2s ease forwards;
+}
+
+/* ── PATREON CARD ── */
+.patreon-card{
+  background:linear-gradient(135deg,rgba(249,104,84,0.12),rgba(255,66,77,0.08));
+  border:1px solid rgba(249,104,84,0.3);border-radius:18px;padding:22px;
+}
+
+/* ── LOCKED CONTENT ── */
+.locked-row{opacity:0.4;filter:blur(1px);pointer-events:none;user-select:none;}
+
+/* ── DIAGNOSTIC OPTION ── */
+.diag-opt{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:14px;padding:16px 18px;text-align:left;
+  transition:all 0.2s;display:flex;align-items:center;gap:14px;
+  width:100%;
+}
+.diag-opt:active,.diag-opt.selected{border-color:var(--accent);background:rgba(232,255,71,0.06);}
+.diag-opt-icon{font-size:24px;flex-shrink:0;}
+.diag-opt-title{font-size:15px;font-weight:600;margin-bottom:2px;}
+.diag-opt-sub{font-size:12px;color:var(--muted2);}
+
+/* ── DAILY CARD ── */
+.daily-card{
+  background:linear-gradient(135deg,var(--surface2),var(--surface));
+  border:1px solid var(--border2);border-radius:20px;padding:24px;
+  position:relative;overflow:hidden;
+}
+.daily-card::before{
+  content:'';position:absolute;top:-40px;right:-40px;
+  width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,255,71,0.12),transparent 70%);
+}
+
+/* ── TAB ROW ── */
+.tabrow{display:flex;gap:6px;padding:4px;background:var(--surface2);border-radius:12px;}
+.tabitem{flex:1;padding:8px;border-radius:8px;font-size:12px;font-weight:600;color:var(--muted2);transition:all 0.2s;text-align:center;}
+.tabitem.active{background:var(--surface);color:var(--text);}
+
+/* ── LICK TAB ── */
+.lick-tab{background:var(--surface2);border-radius:12px;padding:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:2;overflow-x:auto;white-space:nowrap;color:var(--accent3);}
+.lick-string{display:flex;align-items:center;gap:0;}
+.lick-str-label{width:14px;color:var(--muted2);font-size:11px;flex-shrink:0;}
+.lick-line{flex:1;border-bottom:1px solid var(--border2);padding:2px 0;letter-spacing:1px;}
+
+/* ── TIMER RING ── */
+.timer-ring{position:relative;display:inline-flex;align-items:center;justify-content:center;}
+.timer-ring svg{transform:rotate(-90deg);}
+.timer-label{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;color:var(--text);}
 </style>
 </head>
 <body>
 <div id="app">
 
-<!-- ═══════════════════ HOME SCREEN ═══════════════════ -->
-<div class="screen" id="screen-home">
-  <div class="topbar">
-    <div>
-      <div style="font-size:11px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:1px;">GuitarBelts</div>
-      <div class="topbar-title" id="home-greeting">¡Hola! 👋</div>
-    </div>
-    <button class="back-btn" onclick="goTo('profile')" style="font-size:20px;">👤</button>
-  </div>
-  <div class="scroll" style="padding:20px 20px 0;">
+<!-- ══════════════════════════════════════════════
+  SCREEN: WELCOME
+══════════════════════════════════════════════ -->
+<div class="screen" id="s-welcome">
+  <div class="scroll" style="display:flex;flex-direction:column;padding-bottom:0;">
+    <!-- Hero -->
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 24px 32px;min-height:100dvh;position:relative;">
+      <!-- Background glow -->
+      <div style="position:absolute;top:15%;left:50%;transform:translateX(-50%);width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(232,255,71,0.07),transparent 70%);pointer-events:none;"></div>
+      <div style="position:absolute;bottom:20%;right:-20%;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(255,95,31,0.06),transparent 70%);pointer-events:none;"></div>
 
-    <!-- Belt progress card -->
-    <div class="card fade-in" style="background:linear-gradient(135deg,#1e1e2e,#252538);border-color:#3a3a5a;margin-bottom:12px;">
-      <div style="display:flex;align-items:center;gap:16px;">
-        <div class="ring-wrap">
-          <svg width="72" height="72" viewBox="0 0 72 72">
-            <circle cx="36" cy="36" r="30" fill="none" stroke="var(--border)" stroke-width="6"/>
-            <circle cx="36" cy="36" r="30" fill="none" stroke="var(--accent)" stroke-width="6"
-              stroke-dasharray="188.5" id="home-ring" stroke-dashoffset="150" stroke-linecap="round"/>
-          </svg>
-          <div class="ring-label" id="home-pct">20%</div>
+      <!-- Logo -->
+      <div class="fu" style="margin-bottom:48px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:4px;color:var(--muted2);margin-bottom:6px;">DANIEL FLORES MUSIC</div>
+        <div style="width:40px;height:2px;background:var(--accent);border-radius:1px;"></div>
+      </div>
+
+      <!-- Headline -->
+      <div class="fu2" style="margin-bottom:20px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,14vw,72px);line-height:0.95;letter-spacing:1px;margin-bottom:16px;">
+          DEJA DE<br>
+          <span style="color:var(--accent);">PRACTICAR</span><br>
+          AL AZAR.
         </div>
-        <div style="flex:1;">
-          <div id="home-belt-pill" class="belt-pill" style="background:#f5c84222;color:var(--accent);margin-bottom:8px;">
-            <div class="belt-dot" style="background:var(--accent);"></div>
-            <span>Cinturón Amarillo</span>
-          </div>
-          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:2px;" id="home-lesson-title">Cambios de Acorde</div>
-          <div class="sub-text">Lección 3 de 8</div>
+        <p style="font-size:15px;color:var(--muted2);line-height:1.7;max-width:340px;">
+          Entrena guitarra todos los días con retos cortos, rutas claras y ejercicios que conectan teoría con música real.
+        </p>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="fu3" style="display:flex;gap:0;margin-bottom:36px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+        <div style="flex:1;padding:14px;text-align:center;border-right:1px solid var(--border);">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--accent);">5min</div>
+          <div style="font-size:11px;color:var(--muted2);">por día</div>
+        </div>
+        <div style="flex:1;padding:14px;text-align:center;border-right:1px solid var(--border);">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--accent);">4</div>
+          <div style="font-size:11px;color:var(--muted2);">cinturones</div>
+        </div>
+        <div style="flex:1;padding:14px;text-align:center;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--accent);">∞</div>
+          <div style="font-size:11px;color:var(--muted2);">gratis</div>
         </div>
       </div>
-      <div style="margin-top:16px;">
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px;">
-          <span>Progreso del cinturón</span>
-          <span id="home-progress-label">3/8 lecciones</span>
-        </div>
-        <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;">
-          <div id="home-progress-bar" style="height:100%;background:var(--accent);border-radius:3px;width:37%;transition:width 0.6s;"></div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Continue button -->
-    <button onclick="goTo('lesson')" style="width:100%;padding:16px;background:var(--accent);color:#000;border-radius:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:20px;transition:transform 0.15s;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.97)'" ontouchend="this.style.transform='scale(1)'">
-      ▶  Continuar lección
-    </button>
+      <!-- CTAs -->
+      <div class="fu4" style="display:flex;flex-direction:column;gap:10px;">
+        <button class="btn-primary" onclick="track('start_diagnostic');goTo('s-diag')">Empezar mi diagnóstico →</button>
+        <button class="btn-secondary" onclick="track('view_demo');skipDiag()">Ver demo gratuita</button>
+      </div>
 
-    <!-- Stats row -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;">
-      <div class="card" style="padding:14px;text-align:center;">
-        <div class="streak-flame">🔥</div>
-        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;" id="stat-streak">5</div>
-        <div style="font-size:11px;color:var(--muted);">días seguidos</div>
-      </div>
-      <div class="card" style="padding:14px;text-align:center;">
-        <div style="font-size:24px;">⭐</div>
-        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;" id="stat-xp">320</div>
-        <div style="font-size:11px;color:var(--muted);">puntos XP</div>
-      </div>
-      <div class="card" style="padding:14px;text-align:center;">
-        <div style="font-size:24px;">🎯</div>
-        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;" id="stat-done">12</div>
-        <div style="font-size:11px;color:var(--muted);">ejercicios</div>
-      </div>
-    </div>
-
-    <!-- Quick practice -->
-    <div style="margin-bottom:20px;">
-      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:12px;">Práctica rápida</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <button class="card" onclick="goTo('chords')" style="padding:18px;text-align:left;transition:border-color 0.2s;" onmousedown="this.style.borderColor='var(--accent)'" onmouseup="this.style.borderColor='var(--border)'" ontouchstart="this.style.borderColor='var(--accent)'" ontouchend="this.style.borderColor='var(--border)'">
-          <div style="font-size:28px;margin-bottom:8px;">🎸</div>
-          <div style="font-size:14px;font-weight:600;">Acordes</div>
-          <div style="font-size:12px;color:var(--muted);">Toca y escucha</div>
-        </button>
-        <button class="card" onclick="goTo('exercises')" style="padding:18px;text-align:left;transition:border-color 0.2s;" onmousedown="this.style.borderColor='var(--accent2)'" onmouseup="this.style.borderColor='var(--border)'" ontouchstart="this.style.borderColor='var(--accent2)'" ontouchend="this.style.borderColor='var(--border)'">
-          <div style="font-size:28px;margin-bottom:8px;">💪</div>
-          <div style="font-size:14px;font-weight:600;">Ejercicios</div>
-          <div style="font-size:12px;color:var(--muted);">Técnica y ritmo</div>
-        </button>
-      </div>
-    </div>
-
-    <!-- Belt path mini -->
-    <div style="margin-bottom:20px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;">Tu ruta</div>
-        <button onclick="goTo('belts')" style="font-size:13px;color:var(--accent);">Ver todo →</button>
-      </div>
-      <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;" id="belt-mini-row"></div>
+      <div style="text-align:center;margin-top:20px;font-size:11px;color:var(--muted);fu">100% gratis · Sin registro · Sin tarjeta</div>
     </div>
   </div>
+</div>
 
-  <!-- Bottom Nav -->
-  <div class="bottom-nav">
-    <button class="nav-btn active" onclick="goTo('home')"><div class="nav-icon">🏠</div>Inicio</button>
-    <button class="nav-btn" onclick="goTo('belts')"><div class="nav-icon">🥋</div>Cinturones</button>
-    <button class="nav-btn" onclick="goTo('chords')"><div class="nav-icon">🎸</div>Acordes</button>
-    <button class="nav-btn" onclick="goTo('exercises')"><div class="nav-icon">💪</div>Ejercicios</button>
+<!-- ══════════════════════════════════════════════
+  SCREEN: DIAGNOSTIC
+══════════════════════════════════════════════ -->
+<div class="screen hidden" id="s-diag">
+  <div class="topbar">
+    <button class="back-btn" onclick="goBack()">← Volver</button>
+    <div style="font-size:13px;color:var(--muted2);" id="diag-step-label">Paso 1 de 3</div>
+    <div style="width:60px;"></div>
+  </div>
+  <div class="scroll" style="padding:24px 20px;">
+    <div id="diag-content"></div>
   </div>
 </div>
 
-<!-- ═══════════════════ LESSON SCREEN ═══════════════════ -->
-<div class="screen hidden" id="screen-lesson">
-  <div class="topbar">
-    <button class="back-btn" onclick="goBack()">←</button>
-    <div class="topbar-title" id="lesson-title">Cambios de Acorde</div>
-    <div style="font-size:13px;color:var(--muted);" id="lesson-step-label">1/4</div>
-  </div>
-  <div class="step-indicator" id="lesson-steps"></div>
-  <div class="scroll" style="padding:0 20px;" id="lesson-content"></div>
+<!-- ══════════════════════════════════════════════
+  SCREEN: DIAG RESULT
+══════════════════════════════════════════════ -->
+<div class="screen hidden" id="s-result">
+  <div class="scroll" style="padding:24px 20px;" id="result-content"></div>
 </div>
 
-<!-- ═══════════════════ CHORDS SCREEN ═══════════════════ -->
-<div class="screen hidden" id="screen-chords">
+<!-- ══════════════════════════════════════════════
+  SCREEN: HOME
+══════════════════════════════════════════════ -->
+<div class="screen hidden" id="s-home">
   <div class="topbar">
-    <button class="back-btn" onclick="goBack()">←</button>
-    <div class="topbar-title">Acordes</div>
-    <div style="font-size:12px;color:var(--muted);" id="chord-belt-label">Cinturón Amarillo</div>
+    <div class="topbar-logo">DFM</div>
+    <div style="display:flex;gap:8px;">
+      <button class="icon-btn" id="streak-badge" onclick="goTo('s-progress')">🔥<span id="home-streak" style="font-size:11px;font-weight:700;margin-left:2px;">0</span></button>
+      <button class="icon-btn" onclick="goTo('s-profile')">⚙️</button>
+    </div>
   </div>
-  <div class="scroll" style="padding:20px;">
-    <div class="tab-row" id="chord-tabs"></div>
-    <div id="chord-display"></div>
+  <div class="scroll" style="padding:20px;" id="home-content"></div>
+  <div class="bnav" id="main-bnav">
+    <button class="bnav-btn active" onclick="navTo('s-home','home')"><div class="bnav-icon">🏠</div>Inicio</button>
+    <button class="bnav-btn" onclick="navTo('s-library','lib')"><div class="bnav-icon">📚</div>Biblioteca</button>
+    <button class="bnav-btn" onclick="navTo('s-practice','prac')"><div class="bnav-icon">🎸</div>Práctica</button>
+    <button class="bnav-btn" onclick="navTo('s-progress','prog')"><div class="bnav-icon">📈</div>Progreso</button>
+    <button class="bnav-btn" onclick="navTo('s-patreon','pat')"><div class="bnav-icon">⭐</div>Pro</button>
   </div>
 </div>
 
-<!-- ═══════════════════ EXERCISES SCREEN ═══════════════════ -->
-<div class="screen hidden" id="screen-exercises">
+<!-- ══════════════════════════════════════════════
+  SCREEN: LESSON
+══════════════════════════════════════════════ -->
+<div class="screen hidden" id="s-lesson">
   <div class="topbar">
-    <button class="back-btn" onclick="goBack()">←</button>
-    <div class="topbar-title">Ejercicios</div>
+    <button class="back-btn icon-btn" onclick="closeLessonScreen()">←</button>
+    <div style="font-size:14px;font-weight:600;" id="lesson-topbar-title">Lección</div>
+    <div style="font-size:12px;color:var(--muted2);" id="lesson-step-lbl">1/4</div>
   </div>
-  <div class="scroll" style="padding:20px;" id="exercise-list"></div>
+  <div class="sdots" id="lesson-dots"></div>
+  <div class="scroll" style="padding:0 20px;" id="lesson-body"></div>
 </div>
 
-<!-- ═══════════════════ EXERCISE DETAIL ═══════════════════ -->
-<div class="screen hidden" id="screen-exercise-detail">
+<!-- ══════════════════════════════════════════════
+  SCREEN: LIBRARY
+══════════════════════════════════════════════ -->
+<div class="screen hidden" id="s-library">
   <div class="topbar">
-    <button class="back-btn" onclick="goBack()">←</button>
-    <div class="topbar-title" id="ex-detail-title">Ejercicio</div>
-    <div></div>
+    <div class="topbar-logo">Biblioteca</div>
+    <div style="font-size:11px;color:var(--muted2);">Contenido gratuito</div>
   </div>
-  <div class="scroll" style="padding:20px;" id="ex-detail-content"></div>
+  <div class="scroll" style="padding:20px;" id="library-content"></div>
+  <div class="bnav" id="lib-bnav">
+    <button class="bnav-btn" onclick="navTo('s-home','home')"><div class="bnav-icon">🏠</div>Inicio</button>
+    <button class="bnav-btn active" onclick="navTo('s-library','lib')"><div class="bnav-icon">📚</div>Biblioteca</button>
+    <button class="bnav-btn" onclick="navTo('s-practice','prac')"><div class="bnav-icon">🎸</div>Práctica</button>
+    <button class="bnav-btn" onclick="navTo('s-progress','prog')"><div class="bnav-icon">📈</div>Progreso</button>
+    <button class="bnav-btn" onclick="navTo('s-patreon','pat')"><div class="bnav-icon">⭐</div>Pro</button>
+  </div>
 </div>
 
-<!-- ═══════════════════ BELTS SCREEN ═══════════════════ -->
-<div class="screen hidden" id="screen-belts">
+<!-- ══════════════════════════════════════════════
+  SCREEN: PRACTICE (acordes/escalas interactivos)
+══════════════════════════════════════════════ -->
+<div class="screen hidden" id="s-practice">
   <div class="topbar">
-    <button class="back-btn" onclick="goBack()">←</button>
-    <div class="topbar-title">Tu Ruta</div>
+    <div class="topbar-logo">Práctica</div>
+    <div style="font-size:11px;color:var(--muted2);">Interactivo</div>
   </div>
-  <div class="scroll" style="padding:20px;" id="belts-content"></div>
+  <div class="scroll" style="padding:20px;" id="practice-content"></div>
+  <div class="bnav" id="prac-bnav">
+    <button class="bnav-btn" onclick="navTo('s-home','home')"><div class="bnav-icon">🏠</div>Inicio</button>
+    <button class="bnav-btn" onclick="navTo('s-library','lib')"><div class="bnav-icon">📚</div>Biblioteca</button>
+    <button class="bnav-btn active" onclick="navTo('s-practice','prac')"><div class="bnav-icon">🎸</div>Práctica</button>
+    <button class="bnav-btn" onclick="navTo('s-progress','prog')"><div class="bnav-icon">📈</div>Progreso</button>
+    <button class="bnav-btn" onclick="navTo('s-patreon','pat')"><div class="bnav-icon">⭐</div>Pro</button>
+  </div>
 </div>
 
-<!-- ═══════════════════ PROFILE SCREEN ═══════════════════ -->
-<div class="screen hidden" id="screen-profile">
+<!-- ══════════════════════════════════════════════
+  SCREEN: PROGRESS
+══════════════════════════════════════════════ -->
+<div class="screen hidden" id="s-progress">
   <div class="topbar">
-    <button class="back-btn" onclick="goBack()">←</button>
-    <div class="topbar-title">Mi Perfil</div>
+    <button class="back-btn icon-btn" onclick="goBack()">←</button>
+    <div class="topbar-logo">Mi Progreso</div>
+    <div style="width:38px;"></div>
+  </div>
+  <div class="scroll" style="padding:20px;" id="progress-content"></div>
+  <div class="bnav" id="prog-bnav">
+    <button class="bnav-btn" onclick="navTo('s-home','home')"><div class="bnav-icon">🏠</div>Inicio</button>
+    <button class="bnav-btn" onclick="navTo('s-library','lib')"><div class="bnav-icon">📚</div>Biblioteca</button>
+    <button class="bnav-btn" onclick="navTo('s-practice','prac')"><div class="bnav-icon">🎸</div>Práctica</button>
+    <button class="bnav-btn active" onclick="navTo('s-progress','prog')"><div class="bnav-icon">📈</div>Progreso</button>
+    <button class="bnav-btn" onclick="navTo('s-patreon','pat')"><div class="bnav-icon">⭐</div>Pro</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+  SCREEN: PATREON
+══════════════════════════════════════════════ -->
+<div class="screen hidden" id="s-patreon">
+  <div class="topbar">
+    <div class="topbar-logo" style="color:#f96854;">PATREON</div>
+    <div style="font-size:11px;color:var(--muted2);">Comunidad DFM</div>
+  </div>
+  <div class="scroll" style="padding:20px;" id="patreon-content"></div>
+  <div class="bnav" id="pat-bnav">
+    <button class="bnav-btn" onclick="navTo('s-home','home')"><div class="bnav-icon">🏠</div>Inicio</button>
+    <button class="bnav-btn" onclick="navTo('s-library','lib')"><div class="bnav-icon">📚</div>Biblioteca</button>
+    <button class="bnav-btn" onclick="navTo('s-practice','prac')"><div class="bnav-icon">🎸</div>Práctica</button>
+    <button class="bnav-btn" onclick="navTo('s-progress','prog')"><div class="bnav-icon">📈</div>Progreso</button>
+    <button class="bnav-btn active" onclick="navTo('s-patreon','pat')"><div class="bnav-icon">⭐</div>Pro</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+  SCREEN: PROFILE / SETTINGS
+══════════════════════════════════════════════ -->
+<div class="screen hidden" id="s-profile">
+  <div class="topbar">
+    <button class="back-btn icon-btn" onclick="goBack()">←</button>
+    <div class="topbar-logo">Configuración</div>
+    <div style="width:38px;"></div>
   </div>
   <div class="scroll" style="padding:20px;" id="profile-content"></div>
 </div>
@@ -307,674 +494,1140 @@ button{font-family:'Outfit',sans-serif;cursor:pointer;border:none;background:non
 </div><!-- #app -->
 
 <script>
-/* =========================================================
+'use strict';
+/* ═══════════════════════════════════════════════
+   ANALYTICS — trackEvent
+   Reemplaza G-XXXXXXXXXX con tu Measurement ID
+═══════════════════════════════════════════════ */
+function track(event, props={}){
+  if(window.gtag) window.gtag('event',event,props);
+  else console.log('[GA4]',event,props);
+}
+
+/* ═══════════════════════════════════════════════
+   CONFIG
+═══════════════════════════════════════════════ */
+// ▸ Cambia por tu URL real de Patreon
+const PATREON_URL = 'https://www.patreon.com/danielfloresmusic';
+
+/* ═══════════════════════════════════════════════
    STATE
-   ========================================================= */
-const STATE = JSON.parse(localStorage.getItem('gb_state') || 'null') || {
-  name: 'Guitarrista',
-  belt: 'yellow',
-  lessonIndex: 2,
-  xp: 320,
-  streak: 5,
-  exercisesDone: [],
-  lessonsDone: [],
+═══════════════════════════════════════════════ */
+const S = JSON.parse(localStorage.getItem('dfm_v2')||'null') || {
+  level: null,         // 'beginner'|'intermediate'|'advanced'
+  goals: [],           // ['chords','scales','improv',...]
+  xp: 0,
+  streak: 0,
+  lastPractice: null,
+  belt: 'white',
+  lessonsCompleted: [],
+  challengesDone: [],
+  dailyDone: false,
+  dailyDate: null,
 };
-function save(){ localStorage.setItem('gb_state', JSON.stringify(STATE)); }
+function save(){ localStorage.setItem('dfm_v2',JSON.stringify(S)); }
 
-/* =========================================================
-   BELT DATA
-   ========================================================= */
-const BELTS = [
-  { id:'white',  name:'Blanco',  color:'#e8e8f0', textColor:'#0d0d14', lessons:6,  done:6,  locked:false },
-  { id:'yellow', name:'Amarillo',color:'#f5c842', textColor:'#0d0d14', lessons:8,  done:3,  locked:false },
-  { id:'orange', name:'Naranja', color:'#f07d2a', textColor:'#fff',    lessons:10, done:0,  locked:true  },
-  { id:'green',  name:'Verde',   color:'#3ecf8e', textColor:'#0d0d14', lessons:10, done:0,  locked:true  },
-  { id:'blue',   name:'Azul',    color:'#5b8dee', textColor:'#fff',    lessons:12, done:0,  locked:true  },
-  { id:'brown',  name:'Marrón',  color:'#a0673a', textColor:'#fff',    lessons:12, done:0,  locked:true  },
-  { id:'black',  name:'Negro',   color:'#f0f0f8', textColor:'#0d0d14', lessons:15, done:0,  locked:true  },
-];
-
-/* =========================================================
-   CHORD DATA (tocables con Web Audio)
-   ========================================================= */
-const CHORDS = {
-  white: [
-    { name:'Em', fingers:[
-      {string:1,fret:0,open:true},{string:2,fret:0,open:true},
-      {string:3,fret:0,open:true},{string:4,fret:2,finger:2},
-      {string:5,fret:2,finger:3},{string:6,fret:0,open:true}
-    ], frequencies:[82,110,165,247,330,392] },
-    { name:'Am', fingers:[
-      {string:1,fret:0,open:true},{string:2,fret:1,finger:1},
-      {string:3,fret:2,finger:3},{string:4,fret:2,finger:2},
-      {string:5,fret:0,open:true},{string:6,muted:true}
-    ], frequencies:[0,110,165,220,330,440] },
-    { name:'E', fingers:[
-      {string:1,fret:0,open:true},{string:2,fret:0,open:true},
-      {string:3,fret:1,finger:1},{string:4,fret:2,finger:3},
-      {string:5,fret:2,finger:2},{string:6,fret:0,open:true}
-    ], frequencies:[82,124,165,249,330,415] },
-  ],
-  yellow: [
-    { name:'D', fingers:[
-      {string:1,fret:2,finger:1},{string:2,fret:3,finger:3},
-      {string:3,fret:2,finger:2},{string:4,fret:0,open:true},
-      {string:5,muted:true},{string:6,muted:true}
-    ], frequencies:[0,0,147,220,294,370] },
-    { name:'G', fingers:[
-      {string:1,fret:3,finger:4},{string:2,fret:0,open:true},
-      {string:3,fret:0,open:true},{string:4,fret:0,open:true},
-      {string:5,fret:2,finger:2},{string:6,fret:3,finger:1}
-    ], frequencies:[98,147,196,247,330,392] },
-    { name:'C', fingers:[
-      {string:1,fret:0,open:true},{string:2,fret:1,finger:1},
-      {string:3,fret:0,open:true},{string:4,fret:2,finger:2},
-      {string:5,fret:3,finger:3},{string:6,muted:true}
-    ], frequencies:[0,131,165,196,262,330] },
-    { name:'A', fingers:[
-      {string:1,fret:0,open:true},{string:2,fret:2,finger:3},
-      {string:3,fret:2,finger:2},{string:4,fret:2,finger:1},
-      {string:5,fret:0,open:true},{string:6,muted:true}
-    ], frequencies:[0,110,165,220,277,330] },
-  ],
-};
-
-/* =========================================================
-   LESSON DATA
-   ========================================================= */
-const LESSONS = [
-  {
-    id:'l1', belt:'yellow', title:'Cambios de Acorde',
-    steps:[
-      { type:'text', title:'¿Qué aprenderás?', body:'En esta lección practicarás los cambios entre Am y E, dos de los acordes más usados en música popular. El objetivo no es velocidad — es que el cambio no interrumpa el ritmo.', icon:'🎯' },
-      { type:'chord-pair', title:'Am → E', chordA:'Am', chordB:'E', tip:'Toca Am 4 tiempos, luego cambia a E sin pausar. El dedo índice sirve de guía.' },
-      { type:'metronome', title:'Practica con metrónomo', bpm:60, bars:8, tip:'Empieza a 60 BPM. Cuando lo domines, súbelo a 70.' },
-      { type:'complete', title:'¡Lección completada!', xp:50 }
-    ]
+function addXP(amount, el){
+  S.xp += amount; save();
+  // XP popup
+  if(el){
+    const r = el.getBoundingClientRect();
+    const p = document.createElement('div');
+    p.className = 'xp-pop';
+    p.textContent = '+'+amount+' XP';
+    p.style.cssText = `left:${r.left+r.width/2}px;top:${r.top}px;`;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),1200);
   }
+  updateBelt();
+}
+
+function updateBelt(){
+  if(S.xp>=500) S.belt='black';
+  else if(S.xp>=200) S.belt='blue';
+  else if(S.xp>=60) S.belt='yellow';
+  else S.belt='white';
+  save();
+}
+
+function checkStreak(){
+  const today = new Date().toDateString();
+  if(S.dailyDate !== today){
+    S.dailyDone = false;
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate()-1);
+    if(S.lastPractice === yesterday.toDateString()){
+      S.streak++;
+    } else if(S.lastPractice !== today){
+      S.streak = 0;
+    }
+  }
+  save();
+}
+checkStreak();
+
+/* ═══════════════════════════════════════════════
+   CONTENT DATA
+═══════════════════════════════════════════════ */
+const BELTS = [
+  {id:'white',name:'Blanco',color:'#e8e8f8',tc:'#0a0a0f',xpRequired:0,label:'Fundamentos'},
+  {id:'yellow',name:'Amarillo',color:'#f5c842',tc:'#0a0a0f',xpRequired:60,label:'Técnica'},
+  {id:'blue',name:'Azul',color:'#4488ff',tc:'#fff',xpRequired:200,label:'Improvisación'},
+  {id:'black',name:'Negro',color:'#f2f2f8',tc:'#0a0a0f',xpRequired:500,label:'Maestría'},
 ];
 
-/* =========================================================
-   EXERCISES DATA
-   ========================================================= */
-const EXERCISES = [
-  { id:'ex1', title:'Cambio Am→E', desc:'30 cambios en 60 segundos', belt:'yellow', reps:30, time:60, done:false },
-  { id:'ex2', title:'Ritmo básico 4/4', desc:'Strumming pattern: ↓ ↓↑ ↓↑', belt:'yellow', reps:4, time:120, done:false },
-  { id:'ex3', title:'Escala pentatónica', desc:'Posición 1, sube y baja 3x', belt:'yellow', reps:3, time:90, done:false },
-  { id:'ex4', title:'Tablatura sencilla', desc:'Lee y toca la melodía de muestra', belt:'yellow', reps:1, time:180, done:false },
-  { id:'ex5', title:'Acorde Am postura', desc:'10 repeticiones perfectas', belt:'white', reps:10, time:60, done:true },
-  { id:'ex6', title:'Acorde Em limpio', desc:'Todas las cuerdas suenan', belt:'white', reps:10, time:60, done:true },
+const CHORDS_DATA = {
+  Am: {fingers:[{s:2,f:1,d:1},{s:3,f:2,d:3},{s:4,f:2,d:2}],muted:[6],open:[1,5],freq:[0,110,165,220,330,440]},
+  Em: {fingers:[{s:4,f:2,d:2},{s:5,f:2,d:3}],muted:[],open:[1,2,3,6],freq:[82,124,165,247,330,392]},
+  G:  {fingers:[{s:5,f:2,d:2},{s:6,f:3,d:1},{s:1,f:3,d:4}],muted:[],open:[2,3,4],freq:[98,147,196,247,330,392]},
+  D:  {fingers:[{s:1,f:2,d:1},{s:2,f:3,d:3},{s:3,f:2,d:2}],muted:[5,6],open:[4],freq:[0,0,147,220,294,370]},
+  C:  {fingers:[{s:2,f:1,d:1},{s:4,f:2,d:2},{s:5,f:3,d:3}],muted:[6],open:[1,3],freq:[0,131,165,196,262,330]},
+  A:  {fingers:[{s:2,f:2,d:1},{s:3,f:2,d:2},{s:4,f:2,d:3}],muted:[6],open:[1,5],freq:[0,110,165,220,277,330]},
+};
+
+// Pentatónica menor en A — posición 1
+const PENTA_A = [
+  [null,null,null,'A','C'],   // e (1)
+  [null,null,'E','G',null],   // B (2)
+  [null,null,'A','C',null],   // G (3)
+  ['A',null,'D','E',null],    // D (4)
+  ['E','G',null,'A',null],    // A (5)
+  ['A',null,'C','D',null],    // E (6)
+];
+const PENTA_ROOT = 'A';
+
+const LESSONS_DATA = [
+  {
+    id:'l_am', belt:'white', title:'El Acorde Am', icon:'🎸', xp:20,
+    steps:[
+      {type:'intro',title:'Am — La menor',body:'El acorde de La menor es uno de los más expresivos del rock y la balada. Tres dedos, mucho feeling.',icon:'🎸'},
+      {type:'chord',title:'Posición Am',chord:'Am',tip:'El índice en la 2ª cuerda, traste 1. Medio y anular en cuerdas 3 y 4, traste 2.'},
+      {type:'exercise',title:'Práctica: 20 golpes limpios',desc:'Toca el acorde Am 20 veces. Cada golpe debe sonar limpio — sin cuerdas apagadas.',reps:20,xp:10},
+      {type:'complete',title:'¡Am completado!',xp:20},
+    ]
+  },
+  {
+    id:'l_em', belt:'white', title:'El Acorde Em', icon:'🤘', xp:20,
+    steps:[
+      {type:'intro',title:'Em — Mi menor',body:'Em es el acorde más fácil de la guitarra. Solo dos dedos. Suena poderoso con distorsión.',icon:'🤘'},
+      {type:'chord',title:'Posición Em',chord:'Em',tip:'Solo necesitas el dedo medio en la 5ª cuerda y el anular en la 4ª. Todas las demás al aire.'},
+      {type:'exercise',title:'Am → Em sin parar',desc:'Cambia entre Am y Em 10 veces sin detenerte. El cambio debe fluir.',reps:10,xp:15},
+      {type:'complete',title:'¡Em dominado!',xp:20},
+    ]
+  },
+  {
+    id:'l_penta', belt:'yellow', title:'Pentatónica Menor', icon:'🔥', xp:35,
+    steps:[
+      {type:'intro',title:'La escala que lo cambia todo',body:'La pentatónica menor en A es el lenguaje del blues, rock y metal. 5 notas. Infinitas posibilidades.',icon:'🔥'},
+      {type:'scale',title:'Posición 1 — Pentatónica Am',root:'A',tip:'Empieza en la 6ª cuerda, traste 5. Sube y baja sin saltarte notas.'},
+      {type:'exercise',title:'Sube y baja 5 veces',desc:'Recorre la escala completa 5 veces. Usa metrónomo a 60 BPM.',reps:5,xp:20},
+      {type:'complete',title:'¡Primera escala dominada!',xp:35},
+    ]
+  },
+  {
+    id:'l_lick1', belt:'yellow', title:'Tu Primer Lick', icon:'⚡', xp:40,
+    steps:[
+      {type:'intro',title:'Roba este lick',body:'Un lick es una frase musical. Este viene del blues — lo usan desde B.B. King hasta Slash.',icon:'⚡'},
+      {type:'lick',title:'Lick #1 — Blues Básico',tab:{
+        e:'|--5--8-----|',
+        B:'|--------8--|',
+        G:'|-----------|}',
+        D:'|-----------|}',
+        A:'|-----------|}',
+        E:'|-----------|}',
+      },tip:'Traste 5 y 8 en la 1ª cuerda. Hazlo lento primero.'},
+      {type:'exercise',title:'Repite 10 veces',desc:'Toca el lick 10 veces seguidas, lento y limpio. Velocidad viene después.',reps:10,xp:20},
+      {type:'complete',title:'¡Primer lick robado!',xp:40},
+    ]
+  },
+  {
+    id:'l_improv', belt:'blue', title:'Improvisa 60 segundos', icon:'🎵', xp:50, locked:true,
+    steps:[
+      {type:'intro',title:'Improvisa con lo que sabes',body:'Ya tienes la pentatónica. Ahora úsala: toca cualquier nota de la escala sobre un backing track de blues.',icon:'🎵'},
+      {type:'improv',title:'60 segundos de improvisación',desc:'Usa solo las notas de Am pentatónica. No pienses demasiado. Solo toca.',time:60},
+      {type:'complete',title:'¡Improvisaste!',xp:50},
+    ]
+  },
 ];
 
-/* =========================================================
+const DAILY_CHALLENGES = [
+  {id:'d1',title:'Cambia 30 veces: Am → Em',desc:'Sin parar, sin pausas. 30 cambios limpios.',icon:'🔄',xp:25,reps:30,time:60},
+  {id:'d2',title:'Pentatónica x5 con metrónomo',desc:'60 BPM. Sube y baja 5 veces completas.',icon:'🎯',xp:30,reps:5,time:120},
+  {id:'d3',title:'Roba el lick del día',desc:'3 notas, 3 minutos de práctica. Hazlo tuyo.',icon:'⚡',xp:35,reps:10,time:90},
+  {id:'d4',title:'Improvisa 60 segundos',desc:'Solo la pentatónica menor. Toca, no pienses.',icon:'🎵',xp:40,time:60},
+];
+
+/* ═══════════════════════════════════════════════
    ROUTER
-   ========================================================= */
-let currentScreen = 'home';
-let screenHistory = [];
+═══════════════════════════════════════════════ */
+let current = 's-welcome';
+let history = [];
 
-function goTo(screen, param){
-  if(screen === currentScreen) return;
-  screenHistory.push(currentScreen);
-  const curr = document.getElementById('screen-'+currentScreen);
-  const next = document.getElementById('screen-'+screen);
-  if(!next) return;
-  curr.classList.add('slide-left');
-  next.classList.remove('hidden');
-  next.classList.remove('slide-left');
-  currentScreen = screen;
-  // render
-  if(screen==='chords') renderChords();
-  if(screen==='exercises') renderExercises();
-  if(screen==='belts') renderBelts();
-  if(screen==='profile') renderProfile();
-  if(screen==='lesson') renderLesson(LESSONS[0], 0);
-  if(screen==='exercise-detail' && param) renderExerciseDetail(param);
-  // update nav
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  const active = document.querySelector(`.nav-btn[onclick="goTo('${screen}')"]`);
-  if(active) active.classList.add('active');
+function goTo(id){
+  if(id===current) return;
+  history.push(current);
+  const from = document.getElementById(current);
+  const to   = document.getElementById(id);
+  from.classList.add('back');
+  to.classList.remove('hidden','back');
+  current = id;
+  onEnter(id);
 }
-
 function goBack(){
-  if(!screenHistory.length) return;
-  const prev = screenHistory.pop();
-  const curr = document.getElementById('screen-'+currentScreen);
-  const prevEl = document.getElementById('screen-'+prev);
-  curr.classList.add('hidden');
-  curr.classList.remove('slide-left');
-  prevEl.classList.remove('slide-left');
-  prevEl.classList.remove('hidden');
-  currentScreen = prev;
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  const active = document.querySelector(`.nav-btn[onclick="goTo('${prev}')"]`);
-  if(active) active.classList.add('active');
+  if(!history.length) return;
+  const prev = history.pop();
+  const from = document.getElementById(current);
+  const to   = document.getElementById(prev);
+  from.classList.add('hidden');
+  from.classList.remove('back');
+  to.classList.remove('hidden','back');
+  current = prev;
 }
-
-/* =========================================================
-   AUDIO ENGINE
-   ========================================================= */
-let audioCtx = null;
-function getAudio(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
-
-function playNote(freq, time, duration=0.6){
-  if(!freq || freq<50) return;
-  const ctx = getAudio();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain); gain.connect(ctx.destination);
-  osc.frequency.value = freq;
-  osc.type = 'triangle';
-  gain.gain.setValueAtTime(0,time);
-  gain.gain.linearRampToValueAtTime(0.3,time+0.01);
-  gain.gain.exponentialRampToValueAtTime(0.001,time+duration);
-  osc.start(time); osc.stop(time+duration);
-}
-
-function playChord(freqs){
-  const ctx = getAudio();
-  const now = ctx.currentTime;
-  freqs.forEach((f,i)=>{ if(f>0) playNote(f, now + i*0.04, 1.2); });
-}
-
-function playClick(time, accent=false){
-  const ctx = getAudio();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain); gain.connect(ctx.destination);
-  osc.frequency.value = accent ? 1200 : 800;
-  osc.type = 'square';
-  gain.gain.setValueAtTime(0.4,time);
-  gain.gain.exponentialRampToValueAtTime(0.001,time+0.05);
-  osc.start(time); osc.stop(time+0.06);
-}
-
-/* =========================================================
-   RENDER HOME
-   ========================================================= */
-function renderHome(){
-  const belt = BELTS.find(b=>b.id===STATE.belt)||BELTS[1];
-  const pct = Math.round(belt.done/belt.lessons*100);
-  const offset = 188.5 - (188.5 * pct/100);
-  document.getElementById('home-ring').style.strokeDashoffset = offset;
-  document.getElementById('home-pct').textContent = pct+'%';
-  document.getElementById('home-belt-pill').innerHTML = `<div class="belt-dot" style="background:${belt.color};"></div><span>Cinturón ${belt.name}</span>`;
-  document.getElementById('home-belt-pill').style.cssText += `;background:${belt.color}22;color:${belt.color};`;
-  document.getElementById('home-progress-bar').style.width = (belt.done/belt.lessons*100)+'%';
-  document.getElementById('home-progress-label').textContent = `${belt.done}/${belt.lessons} lecciones`;
-  document.getElementById('stat-streak').textContent = STATE.streak;
-  document.getElementById('stat-xp').textContent = STATE.xp;
-  document.getElementById('stat-done').textContent = STATE.exercisesDone.length + EXERCISES.filter(e=>e.done).length;
-  // mini belt row
-  const row = document.getElementById('belt-mini-row');
-  row.innerHTML = BELTS.map(b=>`
-    <div onclick="goTo('belts')" style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;">
-      <div style="width:40px;height:40px;border-radius:50%;background:${b.color};opacity:${b.locked?'0.3':'1'};border:${STATE.belt===b.id?'3px solid white':'2px solid transparent'};transition:all 0.2s;${b.locked?'filter:grayscale(0.5)':''}"></div>
-      <div style="font-size:10px;color:${STATE.belt===b.id?'var(--accent)':'var(--muted)'};">${b.name}</div>
-    </div>
-  `).join('');
-}
-
-/* =========================================================
-   RENDER CHORDS
-   ========================================================= */
-let currentChordBelt = STATE.belt;
-function renderChords(){
-  const beltsWithChords = Object.keys(CHORDS);
-  // tabs
-  const tabs = document.getElementById('chord-tabs');
-  tabs.innerHTML = beltsWithChords.map(bid=>{
-    const b = BELTS.find(x=>x.id===bid);
-    return `<button class="tab-btn${bid===currentChordBelt?' active':''}" onclick="switchChordBelt('${bid}')">${b.name}</button>`;
-  }).join('');
-  renderChordDisplay();
-}
-
-function switchChordBelt(bid){
-  currentChordBelt = bid;
-  document.querySelectorAll('#chord-tabs .tab-btn').forEach((b,i)=>{
-    b.classList.toggle('active', Object.keys(CHORDS)[i]===bid);
+function navTo(id, tab){
+  // For bottom nav — no history push, just switch
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.screen:not(.hidden)').forEach(s=>{
+    if(s.id!==id){ s.classList.add('hidden'); s.classList.remove('back'); }
   });
-  renderChordDisplay();
+  const to = document.getElementById(id);
+  to.classList.remove('hidden','back');
+  current = id;
+  onEnter(id);
+  // Activate correct nav button on all navs
+  document.querySelectorAll(`.bnav-btn[onclick*="${id}"]`).forEach(b=>b.classList.add('active'));
 }
 
-function renderChordDisplay(){
-  const chords = CHORDS[currentChordBelt]||[];
-  const belt = BELTS.find(b=>b.id===currentChordBelt);
-  const display = document.getElementById('chord-display');
-  display.innerHTML = chords.map((c,ci)=>`
-    <div class="card fade-in" style="margin-bottom:14px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-        <div>
-          <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;">${c.name}</div>
-          <div style="font-size:12px;color:var(--muted);">Acorde de ${c.name}</div>
-        </div>
-        <button class="play-btn" id="play-${ci}" onclick="handlePlayChord(${ci})">▶</button>
+function onEnter(id){
+  if(id==='s-home') renderHome();
+  if(id==='s-library') renderLibrary();
+  if(id==='s-practice') renderPractice();
+  if(id==='s-progress') renderProgress();
+  if(id==='s-patreon') renderPatreon();
+  if(id==='s-profile') renderProfile();
+}
+
+/* ═══════════════════════════════════════════════
+   AUDIO ENGINE
+═══════════════════════════════════════════════ */
+let ac = null;
+function AC(){ if(!ac) ac=new(window.AudioContext||window.webkitAudioContext)(); return ac; }
+function playNote(freq,t,dur=0.8,wave='triangle'){
+  if(!freq||freq<40) return;
+  const c=AC(), o=c.createOscillator(), g=c.createGain();
+  o.connect(g); g.connect(c.destination);
+  o.type=wave; o.frequency.value=freq;
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(0.28,t+0.01);
+  g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+  o.start(t); o.stop(t+dur);
+}
+function strum(freqs){
+  const c=AC(), now=c.currentTime;
+  freqs.forEach((f,i)=>{ if(f>0) playNote(f,now+i*0.035,1.1); });
+}
+function playClick(t,accent){
+  const c=AC(), o=c.createOscillator(), g=c.createGain();
+  o.connect(g); g.connect(c.destination);
+  o.type='square'; o.frequency.value=accent?1200:900;
+  g.gain.setValueAtTime(0.35,t);
+  g.gain.exponentialRampToValueAtTime(0.001,t+0.04);
+  o.start(t); o.stop(t+0.05);
+}
+
+/* ═══════════════════════════════════════════════
+   DIAGNOSTIC
+═══════════════════════════════════════════════ */
+let diagStep = 0;
+const diagSteps = ['level','goals','done'];
+
+function initDiag(){
+  track('start_diagnostic');
+  diagStep = 0;
+  renderDiag();
+}
+
+function renderDiag(){
+  document.getElementById('diag-step-label').textContent = `Paso ${diagStep+1} de 3`;
+  const c = document.getElementById('diag-content');
+
+  if(diagStep===0){
+    c.innerHTML = `
+      <div class="fu" style="margin-bottom:32px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:34px;margin-bottom:8px;">¿Cuánto llevas tocando?</div>
+        <div style="font-size:14px;color:var(--muted2);">Esto nos ayuda a recomendarte la ruta correcta.</div>
       </div>
-      ${renderChordDiagram(c)}
-      <div style="display:flex;gap:8px;margin-top:14px;font-size:12px;color:var(--muted);align-items:center;">
-        <span style="color:var(--green);">○ = al aire</span>
-        <span style="color:var(--red);">✕ = no tocar</span>
-        <span style="background:var(--accent);color:#000;padding:2px 8px;border-radius:100px;">número = dedo</span>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        ${[
+          {id:'beginner',icon:'🌱',t:'Soy principiante',s:'Menos de 6 meses o acabo de empezar'},
+          {id:'intermediate',icon:'🎸',t:'Nivel intermedio',s:'6 meses a 2 años, conozco algunos acordes'},
+          {id:'advanced',icon:'🔥',t:'Ya tengo experiencia',s:'Más de 2 años, quiero estructurar lo que sé'},
+        ].map(o=>`
+          <button class="diag-opt" onclick="selectLevel('${o.id}',this)">
+            <div class="diag-opt-icon">${o.icon}</div>
+            <div><div class="diag-opt-title">${o.t}</div><div class="diag-opt-sub">${o.s}</div></div>
+          </button>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  else if(diagStep===1){
+    c.innerHTML = `
+      <div class="fu" style="margin-bottom:32px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:34px;margin-bottom:8px;">¿Qué quieres mejorar?</div>
+        <div style="font-size:14px;color:var(--muted2);">Elige todo lo que aplique.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;" id="goal-grid">
+        ${[
+          {id:'chords',icon:'🎵',t:'Acordes'},
+          {id:'scales',icon:'🎼',t:'Escalas'},
+          {id:'improv',icon:'⚡',t:'Improvisación'},
+          {id:'arpeggios',icon:'🌊',t:'Arpegios'},
+          {id:'theory',icon:'📖',t:'Teoría'},
+          {id:'licks',icon:'🔥',t:'Licks'},
+        ].map(g=>`
+          <button class="diag-opt" style="flex-direction:column;align-items:flex-start;" id="goal-${g.id}" onclick="toggleGoal('${g.id}',this)">
+            <div style="font-size:24px;margin-bottom:6px;">${g.icon}</div>
+            <div class="diag-opt-title">${g.t}</div>
+          </button>
+        `).join('')}
+      </div>
+      <button class="btn-primary" onclick="nextDiag()">Continuar →</button>
+    `;
+  }
+
+  else if(diagStep===2){
+    track('finish_diagnostic',{level:S.level,goals:S.goals.join(',')});
+    renderResult();
+  }
+}
+
+let tempGoals = [];
+function selectLevel(id,el){
+  S.level = id;
+  document.querySelectorAll('.diag-opt').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  track('select_level',{level:id});
+  setTimeout(()=>{ diagStep=1; renderDiag(); }, 300);
+}
+function toggleGoal(id,el){
+  el.classList.toggle('selected');
+  if(el.classList.contains('selected')) tempGoals.push(id);
+  else tempGoals = tempGoals.filter(g=>g!==id);
+}
+function nextDiag(){
+  S.goals = tempGoals.length ? tempGoals : ['chords','scales'];
+  diagStep=2; renderDiag();
+}
+function skipDiag(){
+  S.level='intermediate'; S.goals=['chords','scales','improv'];
+  save(); goTo('s-home');
+}
+
+/* ═══════════════════════════════════════════════
+   RESULT SCREEN
+═══════════════════════════════════════════════ */
+function renderResult(){
+  const belt = BELTS[0];
+  const levelMap = {beginner:'principiante',intermediate:'intermedio',advanced:'avanzado'};
+  const lvl = levelMap[S.level]||'intermedio';
+  goTo('s-result');
+  document.getElementById('result-content').innerHTML = `
+    <div style="padding-top:48px;text-align:center;margin-bottom:32px;">
+      <div class="pop" style="width:100px;height:100px;border-radius:50%;background:${belt.color};margin:0 auto 20px;display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:${belt.tc};letter-spacing:2px;">CINTURÓN</span>
+      </div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:2px;margin-bottom:4px;">${belt.name.toUpperCase()}</div>
+      <div style="font-size:15px;color:var(--muted2);margin-bottom:32px;">Nivel ${lvl} · Comenzando desde cero</div>
+    </div>
+    <div class="card fu" style="margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Tu ruta inicial</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        ${['Acorde Am y Em','Pentatónica menor en A','Tu primer lick de blues','Improvisación básica'].map((r,i)=>`
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:24px;height:24px;border-radius:8px;background:${i===0?'var(--accent)':'var(--border2)'};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:${i===0?'#000':'var(--muted2)'};">${i+1}</div>
+            <div style="font-size:14px;color:${i===0?'var(--text)':'var(--muted2)'};">${r}</div>
+          </div>
+        `).join('')}
       </div>
     </div>
-  `).join('');
+    <div class="card fu2" style="margin-bottom:24px;background:rgba(232,255,71,0.05);border-color:rgba(232,255,71,0.2);">
+      <div style="font-size:14px;line-height:1.7;color:var(--muted2);">
+        <span style="color:var(--accent);font-weight:600;">5 minutos al día.</span> Eso es todo lo que necesitas. Cada lección es corta, práctica y medible. Sin teoría vacía.
+      </div>
+    </div>
+    <button class="btn-primary fu3" onclick="save();goTo('s-home');" style="margin-bottom:10px;">Empezar mi entrenamiento →</button>
+    <button class="btn-secondary fu4" onclick="goTo('s-patreon')">Ver qué incluye Patreon</button>
+  `;
 }
 
-function renderChordDiagram(chord){
-  // 6 strings, 4 frets
+/* ═══════════════════════════════════════════════
+   HOME
+═══════════════════════════════════════════════ */
+function renderHome(){
+  track('page_view',{page:'home'});
+  document.getElementById('home-streak').textContent = S.streak;
+  const belt = BELTS.find(b=>b.id===S.belt)||BELTS[0];
+  const nextLesson = LESSONS_DATA.find(l=>!S.lessonsCompleted.includes(l.id) && !l.locked);
+  const daily = DAILY_CHALLENGES[new Date().getDate()%DAILY_CHALLENGES.length];
+  const xpToNext = (BELTS.find((b,i)=>BELTS[i-1]?.id===S.belt)||BELTS[BELTS.length-1]).xpRequired;
+  const beltPct = xpToNext ? Math.min(100,Math.round(S.xp/xpToNext*100)) : 100;
+
+  document.getElementById('home-content').innerHTML = `
+    <!-- Belt card -->
+    <div class="fu" style="margin-bottom:14px;">
+      <div style="background:linear-gradient(135deg,${belt.color}18,${belt.color}08);border:1px solid ${belt.color}30;border-radius:20px;padding:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Tu cinturón</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:${belt.color};">${belt.name.toUpperCase()}</div>
+            <div style="font-size:12px;color:var(--muted2);">${belt.label}</div>
+          </div>
+          <div style="width:56px;height:56px;border-radius:50%;background:${belt.color};display:flex;align-items:center;justify-content:center;">
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:${belt.tc};">${S.xp}</span>
+          </div>
+        </div>
+        <div style="margin-bottom:6px;display:flex;justify-content:space-between;font-size:11px;color:var(--muted2);">
+          <span>${S.xp} XP</span>
+          <span>${xpToNext} XP para ${BELTS[BELTS.indexOf(belt)+1]?.name||'🏆'}  </span>
+        </div>
+        <div class="pbar"><div class="pbar-fill" style="width:${beltPct}%;background:${belt.color};"></div></div>
+      </div>
+    </div>
+
+    <!-- Daily challenge -->
+    <div class="fu2 daily-card" style="margin-bottom:14px;" onclick="openChallenge('${daily.id}')">
+      <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">⚡ Reto del día ${S.dailyDone?'✓':''}</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;margin-bottom:4px;">${daily.title}</div>
+      <div style="font-size:13px;color:var(--muted2);margin-bottom:16px;">${daily.desc}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font-size:12px;color:var(--muted2);">+${daily.xp} XP</span>
+          ${daily.time?`<span style="font-size:12px;color:var(--muted2);">${daily.time}s</span>`:''}
+        </div>
+        <button style="background:var(--accent);color:#000;border-radius:10px;padding:10px 20px;font-size:13px;font-weight:700;">${S.dailyDone?'Repetir':'Empezar'}</button>
+      </div>
+    </div>
+
+    <!-- Next lesson -->
+    ${nextLesson?`
+    <div class="fu3" style="margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:600;color:var(--muted2);margin-bottom:10px;">Siguiente lección</div>
+      <button onclick="openLesson('${nextLesson.id}')" style="width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;text-align:left;transition:border-color 0.2s;" onmousedown="this.style.borderColor='var(--accent)'" onmouseup="this.style.borderColor='var(--border2)'" ontouchstart="this.style.borderColor='var(--accent)'" ontouchend="this.style.borderColor='var(--border2)'">
+        <div style="font-size:32px;">${nextLesson.icon}</div>
+        <div style="flex:1;">
+          <div style="font-size:15px;font-weight:600;margin-bottom:2px;">${nextLesson.title}</div>
+          <div style="font-size:12px;color:var(--muted2);">+${nextLesson.xp} XP · ${nextLesson.steps.length} pasos</div>
+        </div>
+        <div style="color:var(--accent);font-size:20px;">›</div>
+      </button>
+    </div>
+    `:'<div class="card fu3" style="text-align:center;margin-bottom:14px;padding:28px;"><div style="font-size:40px;margin-bottom:10px;">🏆</div><div style="font-weight:700;margin-bottom:6px;">¡Completaste todo!</div><div style="font-size:13px;color:var(--muted2);">Desbloquea más en Patreon.</div></div>'}
+
+    <!-- Patreon CTA -->
+    <div class="fu4 patreon-card" style="margin-bottom:20px;" onclick="track('click_patreon_cta',{source:'home'})">
+      <div style="font-size:11px;font-weight:700;color:#f96854;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">🌟 Comunidad Patreon</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:4px;">¿Quieres desbloquear la ruta completa?</div>
+      <div style="font-size:13px;color:var(--muted2);margin-bottom:16px;">PDFs completos, videos, clases y comunidad privada.</div>
+      <button class="btn-patreon" onclick="openPatreon('home')">Unirme a Patreon →</button>
+    </div>
+  `;
+}
+
+/* ═══════════════════════════════════════════════
+   LESSON ENGINE
+═══════════════════════════════════════════════ */
+let currentLesson = null;
+let lessonStep = 0;
+let metroInt = null;
+let metroRunning = false;
+let metroBpm = 60;
+let metroBeat = 0;
+let exTimerInt = null;
+let exTimeLeft = 0;
+
+function openLesson(id){
+  currentLesson = LESSONS_DATA.find(l=>l.id===id);
+  if(!currentLesson) return;
+  lessonStep = 0;
+  track('start_lesson',{lesson_id:id,lesson_title:currentLesson.title});
+  goTo('s-lesson');
+  renderLessonStep();
+}
+
+function closeLessonScreen(){
+  stopAll();
+  goBack();
+}
+
+function stopAll(){
+  if(metroInt){ clearInterval(metroInt); metroInt=null; metroRunning=false; }
+  if(exTimerInt){ clearInterval(exTimerInt); exTimerInt=null; }
+}
+
+function renderLessonStep(){
+  const steps = currentLesson.steps;
+  const step = steps[lessonStep];
+  document.getElementById('lesson-topbar-title').textContent = currentLesson.title;
+  document.getElementById('lesson-step-lbl').textContent = `${lessonStep+1}/${steps.length}`;
+  // dots
+  document.getElementById('lesson-dots').innerHTML = steps.map((_,i)=>
+    `<div class="sdot${i===lessonStep?' active':i<lessonStep?' done':''}"></div>`
+  ).join('');
+
+  const body = document.getElementById('lesson-body');
+
+  if(step.type==='intro'){
+    body.innerHTML = `
+      <div style="padding-top:24px;text-align:center;margin-bottom:24px;">
+        <div style="font-size:64px;margin-bottom:16px;">${step.icon}</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;margin-bottom:10px;">${step.title}</div>
+        <p style="font-size:15px;color:var(--muted2);line-height:1.75;max-width:320px;margin:0 auto;">${step.body}</p>
+      </div>
+      <div style="padding:0 0 20px;"><button class="btn-primary" onclick="nextLessonStep()">Empezar →</button></div>
+    `;
+  }
+
+  else if(step.type==='chord'){
+    const cd = CHORDS_DATA[step.chord];
+    body.innerHTML = `
+      <div style="padding-top:16px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;margin-bottom:4px;">${step.title}</div>
+        <div style="font-size:13px;color:var(--muted2);margin-bottom:20px;">${step.tip}</div>
+        <div class="card" style="margin-bottom:14px;">
+          ${renderChordDiagram(step.chord, cd)}
+          <button onclick="strum([${cd.freq}]);this.textContent='♪ Sonando...';setTimeout(()=>this.textContent='▶ Escuchar acorde',1000);" style="width:100%;margin-top:16px;padding:12px;background:var(--surface2);border:1px solid var(--border2);border-radius:12px;font-size:14px;font-weight:600;transition:all 0.2s;">▶ Escuchar acorde</button>
+        </div>
+        <div style="background:rgba(232,255,71,0.06);border:1px solid rgba(232,255,71,0.2);border-radius:12px;padding:14px;margin-bottom:20px;">
+          <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:4px;">💡 TIP</div>
+          <div style="font-size:13px;color:var(--muted2);line-height:1.6;">${step.tip}</div>
+        </div>
+        <button class="btn-primary" onclick="nextLessonStep()">Ya lo tengo →</button>
+      </div>
+    `;
+  }
+
+  else if(step.type==='scale'){
+    body.innerHTML = `
+      <div style="padding-top:16px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;margin-bottom:4px;">${step.title}</div>
+        <div style="font-size:13px;color:var(--muted2);margin-bottom:16px;">${step.tip}</div>
+        ${renderFretboard()}
+        <div style="background:rgba(232,255,71,0.06);border:1px solid rgba(232,255,71,0.2);border-radius:12px;padding:14px;margin:14px 0 20px;">
+          <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:4px;">💡 TIP</div>
+          <div style="font-size:13px;color:var(--muted2);">${step.tip}</div>
+        </div>
+        <button class="btn-primary" onclick="nextLessonStep()">La conozco →</button>
+      </div>
+    `;
+  }
+
+  else if(step.type==='lick'){
+    body.innerHTML = `
+      <div style="padding-top:16px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;margin-bottom:4px;">${step.title}</div>
+        <div style="font-size:13px;color:var(--muted2);margin-bottom:16px;">${step.tip}</div>
+        <div class="lick-tab" style="margin-bottom:14px;">
+          ${Object.entries(step.tab).map(([str,line])=>`
+            <div class="lick-string">
+              <span class="lick-str-label">${str}</span>
+              <span class="lick-line">${line}</span>
+            </div>
+          `).join('')}
+        </div>
+        <div style="background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.2);border-radius:12px;padding:14px;margin-bottom:20px;">
+          <div style="font-size:12px;font-weight:700;color:var(--accent3);margin-bottom:4px;">🎯 LENTO PRIMERO</div>
+          <div style="font-size:13px;color:var(--muted2);">${step.tip}</div>
+        </div>
+        <button class="btn-primary" onclick="nextLessonStep()">Lo tengo →</button>
+      </div>
+    `;
+  }
+
+  else if(step.type==='exercise'){
+    body.innerHTML = `
+      <div style="padding-top:16px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;margin-bottom:4px;">${step.title}</div>
+        <div style="font-size:13px;color:var(--muted2);margin-bottom:20px;">${step.desc}</div>
+        <!-- Timer -->
+        <div style="text-align:center;margin-bottom:24px;">
+          <div class="timer-ring">
+            <svg width="120" height="120"><circle cx="60" cy="60" r="52" fill="none" stroke="var(--border2)" stroke-width="6"/><circle id="timer-circle" cx="60" cy="60" r="52" fill="none" stroke="var(--accent)" stroke-width="6" stroke-dasharray="326.7" stroke-dashoffset="326.7" stroke-linecap="round"/></svg>
+            <div class="timer-label" id="ex-timer-disp">${formatTime(step.time||60)}</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-bottom:20px;">
+          <button id="ex-start-btn" onclick="startExTimer(${step.time||60})" style="flex:1;padding:14px;background:var(--accent);color:#000;border-radius:14px;font-size:15px;font-weight:700;">▶ Iniciar</button>
+          <button onclick="markLessonExDone(${step.xp||0})" id="ex-done-btn" style="flex:1;padding:14px;background:var(--surface2);border:1px solid var(--border2);border-radius:14px;font-size:15px;font-weight:600;">✓ Listo</button>
+        </div>
+      </div>
+    `;
+    exTimeLeft = step.time||60;
+  }
+
+  else if(step.type==='improv'){
+    body.innerHTML = `
+      <div style="padding-top:16px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;margin-bottom:4px;">${step.title}</div>
+        <div style="font-size:13px;color:var(--muted2);margin-bottom:16px;">${step.desc}</div>
+        ${renderFretboard()}
+        <div style="text-align:center;margin:20px 0;">
+          <div class="timer-ring">
+            <svg width="140" height="140"><circle cx="70" cy="70" r="60" fill="none" stroke="var(--border2)" stroke-width="7"/><circle id="improv-circle" cx="70" cy="70" r="60" fill="none" stroke="var(--purple)" stroke-width="7" stroke-dasharray="376.8" stroke-dashoffset="376.8" stroke-linecap="round"/></svg>
+            <div class="timer-label" style="font-size:42px;" id="improv-timer">1:00</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-bottom:20px;">
+          <button id="improv-btn" onclick="startImprovTimer(60)" style="flex:1;padding:14px;background:var(--purple);color:#fff;border-radius:14px;font-size:15px;font-weight:700;">▶ Improvisar</button>
+          <button onclick="nextLessonStep()" style="flex:1;padding:14px;background:var(--surface2);border:1px solid var(--border2);border-radius:14px;font-size:14px;font-weight:600;">Continuar →</button>
+        </div>
+      </div>
+    `;
+  }
+
+  else if(step.type==='complete'){
+    stopAll();
+    if(!S.lessonsCompleted.includes(currentLesson.id)){
+      S.lessonsCompleted.push(currentLesson.id);
+      addXP(step.xp||20);
+      S.lastPractice = new Date().toDateString();
+      save();
+    }
+    track('complete_lesson',{lesson_id:currentLesson.id,lesson_title:currentLesson.title,xp_earned:step.xp});
+    body.innerHTML = `
+      <div style="padding-top:48px;text-align:center;">
+        <div class="pop" style="font-size:80px;margin-bottom:20px;">🎉</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:40px;margin-bottom:8px;">${step.title}</div>
+        <div style="font-size:15px;color:var(--muted2);margin-bottom:32px;">+${step.xp} XP · Total: ${S.xp} XP</div>
+        <div style="display:flex;gap:12px;justify-content:center;margin-bottom:40px;">
+          <div class="card-sm" style="padding:16px 24px;text-align:center;">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--accent);">+${step.xp}</div>
+            <div style="font-size:11px;color:var(--muted2);">XP ganados</div>
+          </div>
+          <div class="card-sm" style="padding:16px 24px;text-align:center;">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--green);">🔥${S.streak||1}</div>
+            <div style="font-size:11px;color:var(--muted2);">días seguidos</div>
+          </div>
+        </div>
+        <button class="btn-primary" style="margin-bottom:10px;" onclick="stopAll();goBack();renderHome();">Volver al inicio</button>
+        <button class="btn-secondary" onclick="navTo('s-patreon','pat')">Ver Patreon →</button>
+      </div>
+    `;
+  }
+}
+
+function nextLessonStep(){
+  stopAll();
+  if(lessonStep < currentLesson.steps.length-1){
+    lessonStep++;
+    renderLessonStep();
+  }
+}
+
+function markLessonExDone(xp){
+  addXP(xp, document.getElementById('ex-done-btn'));
+  stopAll();
+  nextLessonStep();
+}
+
+function startExTimer(total){
+  const btn = document.getElementById('ex-start-btn');
+  const disp = document.getElementById('ex-timer-disp');
+  const circle = document.getElementById('timer-circle');
+  const circum = 326.7;
+  if(exTimerInt){ clearInterval(exTimerInt); exTimerInt=null; btn.textContent='▶ Iniciar'; return; }
+  exTimeLeft = total;
+  btn.textContent='⏸ Pausar';
+  btn.style.background='var(--muted)';
+  exTimerInt = setInterval(()=>{
+    exTimeLeft--;
+    if(disp) disp.textContent = formatTime(exTimeLeft);
+    if(circle) circle.style.strokeDashoffset = circum * (1 - (total-exTimeLeft)/total);
+    if(exTimeLeft<=0){
+      clearInterval(exTimerInt); exTimerInt=null;
+      if(btn){ btn.textContent='✓ Completado'; btn.style.background='var(--green)'; btn.style.color='#000'; }
+      addXP(15, btn);
+    }
+  },1000);
+}
+
+let improvInt = null;
+function startImprovTimer(total){
+  const btn = document.getElementById('improv-btn');
+  const disp = document.getElementById('improv-timer');
+  const circle = document.getElementById('improv-circle');
+  const circum = 376.8;
+  if(improvInt){ clearInterval(improvInt); improvInt=null; btn.textContent='▶ Improvisar'; return; }
+  let t = total;
+  btn.textContent='⏸ Pausar';
+  improvInt = setInterval(()=>{
+    t--;
+    if(disp) disp.textContent = formatTime(t);
+    if(circle) circle.style.strokeDashoffset = circum*(1-(total-t)/total);
+    if(t<=0){
+      clearInterval(improvInt); improvInt=null;
+      btn.textContent='✓ ¡Lo hiciste!'; btn.style.background='var(--green)'; btn.style.color='#000';
+      addXP(20,btn);
+    }
+  },1000);
+}
+
+/* ═══════════════════════════════════════════════
+   CHALLENGE
+═══════════════════════════════════════════════ */
+function openChallenge(id){
+  const ch = DAILY_CHALLENGES.find(c=>c.id===id);
+  if(!ch) return;
+  track('start_challenge',{challenge_id:id,challenge_title:ch.title});
+  openLesson({
+    id:'ch_'+id, belt:'yellow', title:ch.title, icon:ch.icon, xp:ch.xp,
+    steps:[
+      {type:'intro',title:ch.title,body:ch.desc,icon:ch.icon},
+      {type:'exercise',title:'¡A practicar!',desc:ch.desc,reps:ch.reps,time:ch.time,xp:ch.xp},
+      {type:'complete',title:'¡Reto completado!',xp:ch.xp},
+    ]
+  });
+  S.dailyDone = true; S.dailyDate = new Date().toDateString(); save();
+}
+
+function openLesson(lessonOrId){
+  if(typeof lessonOrId === 'string'){
+    currentLesson = LESSONS_DATA.find(l=>l.id===lessonOrId);
+  } else {
+    currentLesson = lessonOrId;
+  }
+  if(!currentLesson) return;
+  lessonStep = 0;
+  track('start_lesson',{lesson_id:currentLesson.id,lesson_title:currentLesson.title});
+  goTo('s-lesson');
+  renderLessonStep();
+}
+
+/* ═══════════════════════════════════════════════
+   CHORD DIAGRAM RENDERER
+═══════════════════════════════════════════════ */
+function renderChordDiagram(name, cd){
   const strings = ['e','B','G','D','A','E'];
   const fingerMap = {};
-  chord.fingers.forEach(f=>{ fingerMap[f.string] = f; });
-
-  // Top labels
-  let top = '<div style="display:flex;gap:0;margin-bottom:4px;padding-left:0;">';
+  cd.fingers.forEach(f=>{ fingerMap[f.s]=f; });
+  let html = `<div style="margin-bottom:10px;display:flex;justify-content:center;"><span style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;">${name}</span></div>`;
+  // Open/muted indicators
+  html += `<div style="display:flex;margin-bottom:4px;">`;
   for(let s=1;s<=6;s++){
-    const f = fingerMap[s];
-    top += `<div style="flex:1;text-align:center;font-size:16px;">`;
-    if(f && f.muted) top += `<span class="muted-mark">✕</span>`;
-    else if(f && f.open) top += `<span class="open-mark">○</span>`;
-    else top += `<span style="font-size:11px;color:var(--muted);">${strings[s-1]}</span>`;
-    top += '</div>';
+    if(cd.muted.includes(s)) html += `<div style="flex:1;text-align:center;color:var(--red);font-size:14px;">✕</div>`;
+    else if(cd.open.includes(s)) html += `<div style="flex:1;text-align:center;color:var(--green);font-size:14px;">○</div>`;
+    else html += `<div style="flex:1;"></div>`;
   }
-  top += '</div>';
-
-  // Fret grid
-  let grid = '<div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface2);">';
+  html += `</div>`;
+  html += `<div class="cgrid">`;
   for(let fret=1;fret<=4;fret++){
-    grid += `<div style="display:flex;border-bottom:${fret<4?'1px solid var(--border)':'none'};">`;
+    html += `<div class="crow${fret===1?' cnut':''}">`;
     for(let s=1;s<=6;s++){
       const f = fingerMap[s];
-      const hasNote = f && f.fret===fret && !f.open && !f.muted;
-      grid += `<div style="flex:1;height:40px;display:flex;align-items:center;justify-content:center;border-right:${s<6?'1px solid var(--border)':'none'};position:relative;${fret===1?'border-top:3px solid var(--border)':''}">`;
-      if(hasNote) grid += `<div class="finger pop">${f.finger}</div>`;
-      grid += '</div>';
+      const has = f && f.f===fret;
+      html += `<div class="ccell">${has?`<div class="cfinger">${f.d}</div>`:''}</div>`;
     }
-    grid += '</div>';
+    html += `</div>`;
   }
-  grid += '</div>';
-  return top + grid;
+  html += `</div>`;
+  // Fret numbers
+  html += `<div style="display:flex;margin-top:4px;">`;
+  for(let s=1;s<=6;s++) html += `<div style="flex:1;text-align:center;font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;">${strings[s-1]}</div>`;
+  html += `</div>`;
+  return html;
 }
 
-function handlePlayChord(ci){
-  const chords = CHORDS[currentChordBelt]||[];
-  const chord = chords[ci];
-  if(!chord) return;
-  playChord(chord.frequencies);
-  const btn = document.getElementById('play-'+ci);
-  if(btn){ btn.classList.add('playing'); setTimeout(()=>btn.classList.remove('playing'),800); }
-  STATE.xp += 2; save();
-}
-
-/* =========================================================
-   EXERCISES
-   ========================================================= */
-function renderExercises(){
-  const list = document.getElementById('exercise-list');
-  const pending = EXERCISES.filter(e=>!e.done && !STATE.exercisesDone.includes(e.id));
-  const done = EXERCISES.filter(e=>e.done || STATE.exercisesDone.includes(e.id));
-  list.innerHTML = `
-    <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:6px;">Ejercicios de hoy</div>
-    <div class="sub-text" style="margin-bottom:20px;">${pending.length} pendientes · ${done.length} completados</div>
-    ${pending.map(ex=>exerciseCard(ex, false)).join('')}
-    ${done.length?`
-      <div style="font-size:13px;font-weight:600;color:var(--muted);margin:20px 0 12px;text-transform:uppercase;letter-spacing:1px;">Completados ✓</div>
-      ${done.map(ex=>exerciseCard(ex, true)).join('')}
-    `:''}
-  `;
-}
-
-function exerciseCard(ex, isDone){
-  const belt = BELTS.find(b=>b.id===ex.belt);
-  return `
-    <div class="exercise-bar" onclick="${isDone?'':'goToExDetail(\''+ex.id+'\')'}">
-      <div class="ex-num${isDone?' done':''}">
-        ${isDone?'✓':ex.reps}
-      </div>
-      <div style="flex:1;">
-        <div style="font-size:15px;font-weight:600;${isDone?'color:var(--muted);text-decoration:line-through;':''}">${ex.title}</div>
-        <div style="font-size:13px;color:var(--muted);">${ex.desc}</div>
-      </div>
-      <div style="font-size:13px;color:${belt?belt.color:'var(--muted)'};">◉ ${belt?belt.name:''}</div>
-      ${!isDone?'<div style="font-size:18px;color:var(--muted);">›</div>':''}
-    </div>
-  `;
-}
-
-function goToExDetail(id){
-  const ex = EXERCISES.find(e=>e.id===id);
-  if(!ex) return;
-  screenHistory.push(currentScreen);
-  const curr = document.getElementById('screen-'+currentScreen);
-  const next = document.getElementById('screen-exercise-detail');
-  curr.classList.add('slide-left');
-  next.classList.remove('hidden');
-  currentScreen = 'exercise-detail';
-  renderExerciseDetail(ex);
-}
-
-let exTimer = null;
-let exElapsed = 0;
-let exRunning = false;
-
-function renderExerciseDetail(ex){
-  if(typeof ex === 'string') ex = EXERCISES.find(e=>e.id===ex);
-  document.getElementById('ex-detail-title').textContent = ex.title;
-  const belt = BELTS.find(b=>b.id===ex.belt);
-  const isDone = ex.done || STATE.exercisesDone.includes(ex.id);
-
-  document.getElementById('ex-detail-content').innerHTML = `
-    <div class="card" style="text-align:center;margin-bottom:16px;padding:32px 20px;">
-      <div style="font-size:52px;margin-bottom:16px;">💪</div>
-      <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;margin-bottom:8px;">${ex.title}</div>
-      <div style="color:var(--muted);font-size:15px;margin-bottom:20px;">${ex.desc}</div>
-      <div style="display:flex;justify-content:center;gap:24px;margin-bottom:28px;">
-        <div><div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;">${ex.reps}x</div><div style="font-size:12px;color:var(--muted);">Repeticiones</div></div>
-        <div style="width:1px;background:var(--border);"></div>
-        <div><div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;">${ex.time}s</div><div style="font-size:12px;color:var(--muted);">Tiempo</div></div>
-      </div>
-      <!-- Timer -->
-      <div style="font-family:'Syne',sans-serif;font-size:56px;font-weight:800;margin-bottom:20px;" id="ex-timer-display">${formatTime(ex.time)}</div>
-      <div style="display:flex;gap:12px;justify-content:center;">
-        <button onclick="toggleExTimer(${ex.time})" id="ex-start-btn" style="background:var(--accent);color:#000;border-radius:14px;padding:14px 32px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;">${isDone?'Repetir':'Iniciar'}</button>
-        ${!isDone?`<button onclick="markExDone('${ex.id}')" id="ex-done-btn" style="background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:14px;padding:14px 20px;font-size:15px;font-weight:600;">✓ Listo</button>`:''}
-      </div>
-    </div>
-    <div class="card">
-      <div style="font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Cómo hacerlo</div>
-      <p style="font-size:15px;line-height:1.7;color:#c0c0d8;">Practica ${ex.desc.toLowerCase()} durante ${ex.time} segundos. Enfócate en la calidad, no en la velocidad. Si algo duele, para.</p>
-    </div>
-  `;
-  exElapsed = 0; exRunning = false;
-  if(exTimer){ clearInterval(exTimer); exTimer = null; }
-}
-
-function formatTime(s){ return Math.floor(s/60)+':'+(s%60<10?'0':'')+s%60; }
-
-let exTimeLeft = 0;
-function toggleExTimer(total){
-  const btn = document.getElementById('ex-start-btn');
-  const disp = document.getElementById('ex-timer-display');
-  if(!exRunning){
-    exRunning = true;
-    exTimeLeft = exTimeLeft || total;
-    btn.textContent = 'Pausar';
-    btn.style.background = 'var(--muted)';
-    exTimer = setInterval(()=>{
-      exTimeLeft--;
-      if(disp) disp.textContent = formatTime(exTimeLeft);
-      if(exTimeLeft <= 0){
-        clearInterval(exTimer); exTimer = null; exRunning = false;
-        if(btn){ btn.textContent = 'Completado ✓'; btn.style.background = 'var(--green)'; btn.style.color = '#000'; }
+/* ═══════════════════════════════════════════════
+   FRETBOARD (pentatónica)
+═══════════════════════════════════════════════ */
+function renderFretboard(){
+  const strings = ['e','B','G','D','A','E'];
+  const frets = [0,1,2,3,4,5];
+  let html = `<div class="fretboard"><div class="fb-inner">`;
+  PENTA_A.forEach((strNotes,si)=>{
+    html += `<div class="fb-string"><div class="fb-open">${strings[si]}</div><div class="fb-line">`;
+    frets.forEach((f,fi)=>{
+      const note = strNotes[fi];
+      html += `<div class="fb-fret${fi===0?' fb-fret':''}" style="${fi===0?'border-left:3px solid var(--text);':''}">`;
+      if(note){
+        const isRoot = note===PENTA_ROOT;
+        html += `<div class="fb-note${isRoot?' root':' scale'}">${note}</div>`;
       }
-    }, 1000);
-  } else {
-    exRunning = false;
-    clearInterval(exTimer); exTimer = null;
-    if(btn){ btn.textContent = 'Continuar'; btn.style.background = 'var(--accent)'; btn.style.color = '#000'; }
-  }
-}
-
-function markExDone(id){
-  if(!STATE.exercisesDone.includes(id)){
-    STATE.exercisesDone.push(id);
-    STATE.xp += 30;
-    STATE.streak = Math.max(STATE.streak, 1);
-    save();
-  }
-  // Flash
-  const overlay = document.createElement('div');
-  overlay.className = 'success-overlay';
-  overlay.innerHTML = '<div style="font-size:80px;animation:pop 0.4s ease;">⭐</div>';
-  document.getElementById('screen-exercise-detail').appendChild(overlay);
-  setTimeout(()=>{ overlay.remove(); goBack(); renderExercises(); renderHome(); }, 1200);
-}
-
-/* =========================================================
-   LESSON
-   ========================================================= */
-let lessonStep = 0;
-let currentLesson = null;
-let metroInterval = null;
-let metroBeat = 0;
-let metroRunning = false;
-
-function renderLesson(lesson, step){
-  currentLesson = lesson;
-  lessonStep = step;
-  const steps = lesson.steps;
-  // Steps indicator
-  const ind = document.getElementById('lesson-steps');
-  ind.innerHTML = steps.map((_,i)=>`<div class="step-dot${i===step?' active':i<step?' done':''}"></div>`).join('');
-  document.getElementById('lesson-step-label').textContent = `${step+1}/${steps.length}`;
-  document.getElementById('lesson-title').textContent = lesson.title;
-
-  const s = steps[step];
-  const content = document.getElementById('lesson-content');
-
-  if(s.type === 'text'){
-    content.innerHTML = `
-      <div class="fade-in" style="padding-top:20px;">
-        <div style="font-size:48px;text-align:center;margin-bottom:20px;">${s.icon}</div>
-        <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin-bottom:16px;">${s.title}</div>
-        <div class="card" style="margin-bottom:20px;"><p style="font-size:16px;line-height:1.8;color:#c0c0d8;">${s.body}</p></div>
-        <button onclick="nextLessonStep()" style="width:100%;padding:16px;background:var(--accent);color:#000;border-radius:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;">Continuar →</button>
-      </div>
-    `;
-  }
-
-  else if(s.type === 'chord-pair'){
-    const cA = findChord(s.chordA);
-    const cB = findChord(s.chordB);
-    content.innerHTML = `
-      <div class="fade-in" style="padding-top:20px;">
-        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px;">${s.title}</div>
-        <div class="sub-text" style="margin-bottom:20px;">${s.tip}</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
-          <div class="card">
-            <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:12px;">${s.chordA}</div>
-            ${cA?renderChordDiagram(cA):''}
-            <button onclick="playChord([${cA?cA.frequencies:[]}])" style="width:100%;margin-top:10px;padding:10px;background:var(--surface2);border-radius:10px;font-size:13px;font-weight:600;">▶ Escuchar</button>
-          </div>
-          <div class="card">
-            <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:12px;">${s.chordB}</div>
-            ${cB?renderChordDiagram(cB):''}
-            <button onclick="playChord([${cB?cB.frequencies:[]}])" style="width:100%;margin-top:10px;padding:10px;background:var(--surface2);border-radius:10px;font-size:13px;font-weight:600;">▶ Escuchar</button>
-          </div>
-        </div>
-        <div class="card" style="margin-bottom:20px;background:#f5c84210;border-color:#f5c84240;">
-          <div style="font-size:13px;font-weight:600;color:var(--accent);margin-bottom:6px;">💡 Tip</div>
-          <div style="font-size:14px;line-height:1.6;color:#c0c0d8;">${s.tip}</div>
-        </div>
-        <button onclick="nextLessonStep()" style="width:100%;padding:16px;background:var(--accent);color:#000;border-radius:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;">Ya practiqué →</button>
-      </div>
-    `;
-  }
-
-  else if(s.type === 'metronome'){
-    content.innerHTML = `
-      <div class="fade-in" style="padding-top:20px;">
-        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px;">${s.title}</div>
-        <div class="sub-text" style="margin-bottom:24px;">${s.tip}</div>
-        <div class="card" style="text-align:center;padding:32px 20px;margin-bottom:16px;">
-          <div style="font-family:'Syne',sans-serif;font-size:64px;font-weight:800;margin-bottom:4px;" id="metro-bpm">${s.bpm}</div>
-          <div style="font-size:14px;color:var(--muted);margin-bottom:24px;">BPM</div>
-          <div style="display:flex;gap:10px;justify-content:center;margin-bottom:28px;" id="metro-beats">
-            ${[0,1,2,3].map(i=>`<div class="metro-beat" id="mb-${i}"></div>`).join('')}
-          </div>
-          <div style="display:flex;gap:12px;justify-content:center;margin-bottom:20px;">
-            <button onclick="changeBPM(-5)" style="width:44px;height:44px;border-radius:12px;background:var(--surface2);font-size:20px;font-weight:700;">−</button>
-            <button onclick="toggleMetro(${s.bpm})" id="metro-btn" style="padding:12px 32px;background:var(--accent);color:#000;border-radius:14px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;">▶ Iniciar</button>
-            <button onclick="changeBPM(5)" style="width:44px;height:44px;border-radius:12px;background:var(--surface2);font-size:20px;font-weight:700;">+</button>
-          </div>
-          <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;"><div id="metro-bar" style="height:100%;background:var(--accent);width:0%;transition:width 0.1s;"></div></div>
-        </div>
-        <button onclick="nextLessonStep()" style="width:100%;padding:16px;background:var(--accent);color:#000;border-radius:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;">Continuar →</button>
-      </div>
-    `;
-    metroBpm = s.bpm; metroBeat = 0; metroRunning = false;
-  }
-
-  else if(s.type === 'complete'){
-    if(metroInterval){ clearInterval(metroInterval); metroInterval = null; metroRunning = false; }
-    STATE.xp += s.xp;
-    if(!STATE.lessonsDone.includes(currentLesson.id)){
-      STATE.lessonsDone.push(currentLesson.id);
-      const belt = BELTS.find(b=>b.id===STATE.belt);
-      if(belt) belt.done = Math.min(belt.done+1, belt.lessons);
-    }
-    save();
-    content.innerHTML = `
-      <div class="fade-in" style="padding-top:40px;text-align:center;">
-        <div style="font-size:80px;margin-bottom:20px;animation:pop 0.5s ease;">🎉</div>
-        <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:12px;">${s.title}</div>
-        <div style="color:var(--muted);margin-bottom:32px;">Ganaste +${s.xp} XP</div>
-        <div style="display:flex;gap:16px;justify-content:center;margin-bottom:32px;">
-          <div class="card" style="padding:20px 28px;"><div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--accent);">+${s.xp}</div><div style="font-size:12px;color:var(--muted);">XP ganados</div></div>
-          <div class="card" style="padding:20px 28px;"><div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--green);">🔥${STATE.streak}</div><div style="font-size:12px;color:var(--muted);">días seguidos</div></div>
-        </div>
-        <button onclick="goTo('home');renderHome();" style="width:100%;padding:16px;background:var(--accent);color:#000;border-radius:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:12px;">Ir al inicio</button>
-        <button onclick="goTo('exercises')" style="width:100%;padding:16px;background:var(--surface2);color:var(--text);border-radius:16px;font-size:16px;font-weight:600;border:1px solid var(--border);">Hacer ejercicios</button>
-      </div>
-    `;
-  }
-}
-
-let metroBpm = 60;
-function nextLessonStep(){
-  if(metroInterval){ clearInterval(metroInterval); metroInterval = null; metroRunning = false; }
-  if(lessonStep < currentLesson.steps.length - 1){
-    renderLesson(currentLesson, lessonStep+1);
-  }
-}
-
-function findChord(name){
-  for(const belt in CHORDS){
-    const c = CHORDS[belt].find(c=>c.name===name);
-    if(c) return c;
-  }
-  return null;
-}
-
-function toggleMetro(bpm){
-  if(metroRunning){
-    clearInterval(metroInterval); metroInterval = null; metroRunning = false;
-    const btn = document.getElementById('metro-btn');
-    if(btn){ btn.textContent = '▶ Iniciar'; btn.style.background = 'var(--accent)'; }
-    return;
-  }
-  metroRunning = true;
-  const btn = document.getElementById('metro-btn');
-  if(btn){ btn.textContent = '⏹ Parar'; btn.style.background = 'var(--red)'; }
-  metroBeat = 0;
-  const interval = 60000 / metroBpm;
-  metroInterval = setInterval(()=>{
-    const ctx = getAudio();
-    playClick(ctx.currentTime, metroBeat===0);
-    document.querySelectorAll('.metro-beat').forEach((el,i)=>{
-      el.classList.toggle('active', i===metroBeat);
+      html += `</div>`;
     });
-    metroBeat = (metroBeat+1)%4;
-  }, interval);
+    html += `</div></div>`;
+  });
+  html += `<div class="fb-fret-num">`;
+  frets.forEach(f=>html+=`<span style="flex-shrink:0;width:${f===0?'32px':'48px'};text-align:center;">${f===0?'':f}</span>`);
+  html+=`</div>`;
+  html += `</div></div>`;
+  return html;
 }
 
-function changeBPM(delta){
-  metroBpm = Math.max(40, Math.min(200, metroBpm + delta));
-  const el = document.getElementById('metro-bpm');
-  if(el) el.textContent = metroBpm;
-  if(metroRunning){
-    clearInterval(metroInterval); metroInterval = null; metroRunning = false;
-    toggleMetro(metroBpm);
-  }
-}
-
-/* =========================================================
-   BELTS SCREEN
-   ========================================================= */
-function renderBelts(){
-  const content = document.getElementById('belts-content');
-  content.innerHTML = `
-    <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px;">Tu ruta completa</div>
-    <div class="sub-text" style="margin-bottom:24px;">Domina cada cinturón para desbloquear el siguiente.</div>
-    ${BELTS.map((belt,i)=>{
-      const pct = Math.round(belt.done/belt.lessons*100);
-      const isCurrent = belt.id === STATE.belt;
+/* ═══════════════════════════════════════════════
+   LIBRARY
+═══════════════════════════════════════════════ */
+function renderLibrary(){
+  track('page_view',{page:'library'});
+  const sections = [
+    {label:'Acordes',icon:'🎵',items:['Am — La menor','Em — Mi menor','G — Sol mayor'],belt:'white'},
+    {label:'Escalas',icon:'🎼',items:['Pentatónica Am','Mayor de C','Blues Scale'],belt:'yellow'},
+    {label:'Arpegios',icon:'🌊',items:['Arpegio Am','Arpegio E','Arpegio G'],belt:'yellow'},
+    {label:'Licks',icon:'⚡',items:['Lick blues básico','Lick pentatónico','Lick de rock'],belt:'white'},
+    {label:'Improvisación',icon:'🎵',items:['Mini ruta de improv'],belt:'blue',locked:true},
+  ];
+  document.getElementById('library-content').innerHTML = `
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:34px;margin-bottom:6px;letter-spacing:1px;">Biblioteca</div>
+    <div style="font-size:14px;color:var(--muted2);margin-bottom:24px;">Recursos gratuitos de Daniel Flores Music</div>
+    ${sections.map((sec,si)=>{
+      const belt = BELTS.find(b=>b.id===sec.belt)||BELTS[0];
       return `
-        <div class="card fade-in" style="margin-bottom:12px;border-color:${isCurrent?belt.color:'var(--border)'};opacity:${belt.locked?'0.5':'1'};">
-          <div style="display:flex;align-items:center;gap:16px;">
-            <div style="width:48px;height:48px;border-radius:50%;background:${belt.color};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;color:${belt.textColor};font-size:13px;">${belt.locked?'🔒':pct+'%'}</div>
-            <div style="flex:1;">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-                <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;">Cinturón ${belt.name}</div>
-                ${isCurrent?'<span style="background:var(--accent);color:#000;font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;">ACTUAL</span>':''}
-              </div>
-              <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">${belt.locked?'Completa el anterior para desbloquear':`${belt.done} de ${belt.lessons} lecciones`}</div>
-              ${!belt.locked?`
-                <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;">
-                  <div style="height:100%;background:${belt.color};border-radius:2px;width:${pct}%;transition:width 0.6s;"></div>
-                </div>
-              `:''}
-            </div>
+        <div style="margin-bottom:20px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <span style="font-size:18px;">${sec.icon}</span>
+            <span style="font-size:15px;font-weight:700;">${sec.label}</span>
+            <div class="belt" style="background:${belt.color}22;color:${belt.color};">${belt.name}</div>
           </div>
+          ${sec.items.map((item,i)=>{
+            const lesson = LESSONS_DATA.find(l=>l.title.includes(item.split('—')[0].trim()));
+            const isDone = lesson && S.lessonsCompleted.includes(lesson.id);
+            const isLocked = sec.locked;
+            return `
+              <div style="position:relative;margin-bottom:8px;">
+                <button onclick="${isLocked?`openPatreon('library')`:`openLesson('${lesson?.id||'l_am'}')`}" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px;text-align:left;transition:border-color 0.2s;${isLocked?'opacity:0.6;':''}" ${!isLocked?'onmousedown="this.style.borderColor=\'var(--accent)\'" onmouseup="this.style.borderColor=\'var(--border)\'" ontouchstart="this.style.borderColor=\'var(--accent)\'" ontouchend="this.style.borderColor=\'var(--border)\'"':''}>
+                  <div style="width:32px;height:32px;border-radius:10px;background:${isDone?'var(--green)':isLocked?'var(--border2)':'var(--surface2)'};display:flex;align-items:center;justify-content:center;font-size:14px;">${isDone?'✓':isLocked?'🔒':'▶'}</div>
+                  <div>
+                    <div style="font-size:14px;font-weight:600;">${item}</div>
+                    ${isLocked?'<div style="font-size:11px;color:var(--muted2);">Disponible en Patreon</div>':''}
+                  </div>
+                </button>
+              </div>
+            `;
+          }).join('')}
         </div>
       `;
     }).join('')}
+    <!-- Book preview -->
+    <div class="card" style="margin-bottom:12px;border-color:rgba(232,255,71,0.2);">
+      <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">📖 Vista previa — Manual de Supervivencia</div>
+      <div style="font-size:14px;font-weight:600;margin-bottom:8px;">Fragmento gratuito</div>
+      <div style="background:var(--surface2);border-radius:10px;padding:14px;margin-bottom:12px;font-size:13px;color:var(--muted2);line-height:1.7;border-left:3px solid var(--accent);">
+        "La mayoría de los guitarristas se estancan porque practican sin objetivo. Este manual te da la estructura que necesitas para avanzar con dirección..."
+        <br><br>
+        <em>— Daniel Flores, Manual de Supervivencia Para Guitarristas</em>
+      </div>
+      <button class="btn-secondary" style="font-size:13px;padding:10px;" onclick="track('view_book_preview',{book:'manual'});openPatreon('library')">Ver libro completo en Patreon →</button>
+    </div>
   `;
 }
 
-/* =========================================================
-   PROFILE
-   ========================================================= */
-function renderProfile(){
-  const content = document.getElementById('profile-content');
-  const belt = BELTS.find(b=>b.id===STATE.belt)||BELTS[1];
-  content.innerHTML = `
-    <div style="text-align:center;padding:28px 0 24px;">
-      <div style="width:80px;height:80px;border-radius:50%;background:${belt.color};margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:32px;">🎸</div>
-      <div id="name-display" style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin-bottom:4px;" onclick="editName()">${STATE.name} ✎</div>
-      <div class="belt-pill" style="background:${belt.color}22;color:${belt.color};">
-        <div class="belt-dot" style="background:${belt.color};"></div>Cinturón ${belt.name}
-      </div>
+/* ═══════════════════════════════════════════════
+   PRACTICE (acordes interactivos + metrónomo)
+═══════════════════════════════════════════════ */
+let practiceTab = 'chords';
+function renderPractice(){
+  track('page_view',{page:'practice'});
+  document.getElementById('practice-content').innerHTML = `
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:34px;margin-bottom:16px;letter-spacing:1px;">Práctica</div>
+    <div class="tabrow" style="margin-bottom:20px;">
+      <div class="tabitem${practiceTab==='chords'?' active':''}" onclick="switchPracticeTab('chords')">Acordes</div>
+      <div class="tabitem${practiceTab==='scale'?' active':''}" onclick="switchPracticeTab('scale')">Escala</div>
+      <div class="tabitem${practiceTab==='metro'?' active':''}" onclick="switchPracticeTab('metro')">Metrónomo</div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
-      <div class="card" style="text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--accent);">${STATE.xp}</div><div style="font-size:12px;color:var(--muted);">XP Total</div></div>
-      <div class="card" style="text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--accent2);">🔥${STATE.streak}</div><div style="font-size:12px;color:var(--muted);">Racha</div></div>
-    </div>
-    <div class="card" style="margin-bottom:12px;">
-      <div style="font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Logros</div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;">
-        ${STATE.xp>=100?'<span style="font-size:20px;" title="100 XP">🌟</span>':''}
-        ${STATE.streak>=3?'<span style="font-size:20px;" title="3 días">🔥</span>':''}
-        ${STATE.exercisesDone.length>=1?'<span style="font-size:20px;" title="Primer ejercicio">💪</span>':''}
-        ${STATE.lessonsDone.length>=1?'<span style="font-size:20px;" title="Primera lección">📖</span>':''}
-        <span style="font-size:14px;color:var(--muted);">¡Sigue practicando para desbloquear más!</span>
-      </div>
-    </div>
-    <button onclick="if(confirm('¿Resetear progreso?')){localStorage.clear();location.reload();}" style="width:100%;padding:14px;background:var(--surface2);color:var(--red);border:1px solid var(--border);border-radius:14px;font-size:14px;font-weight:600;margin-top:8px;">Resetear progreso</button>
+    <div id="practice-tab-content"></div>
   `;
+  renderPracticeTab();
 }
 
-function editName(){
-  const newName = prompt('¿Cómo te llamas?', STATE.name);
-  if(newName && newName.trim()){
-    STATE.name = newName.trim();
-    save();
-    renderProfile();
+function switchPracticeTab(tab){
+  practiceTab = tab;
+  stopAll();
+  document.querySelectorAll('.tabitem').forEach((t,i)=>t.classList.toggle('active',['chords','scale','metro'][i]===tab));
+  renderPracticeTab();
+}
+
+function renderPracticeTab(){
+  const el = document.getElementById('practice-tab-content');
+  if(practiceTab==='chords'){
+    const chordNames = Object.keys(CHORDS_DATA);
+    let selChord = 'Am';
+    el.innerHTML = `
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;" id="chord-sel">
+        ${chordNames.map(n=>`<button onclick="selectPracticeChord('${n}')" id="cs-${n}" style="padding:8px 16px;border-radius:100px;background:${n==='Am'?'var(--accent)':'var(--surface2)'};color:${n==='Am'?'#000':'var(--text)'};border:1px solid ${n==='Am'?'var(--accent)':'var(--border2)'};font-size:14px;font-weight:600;transition:all 0.2s;">${n}</button>`).join('')}
+      </div>
+      <div class="card" id="chord-diag-area">
+        ${renderChordDiagram('Am', CHORDS_DATA['Am'])}
+        <button onclick="strum([${CHORDS_DATA['Am'].freq}])" style="width:100%;margin-top:14px;padding:13px;background:var(--accent);color:#000;border-radius:12px;font-size:15px;font-weight:700;">▶ Tocar acorde</button>
+      </div>
+    `;
+  }
+  else if(practiceTab==='scale'){
+    el.innerHTML = `
+      <div style="font-size:15px;font-weight:600;margin-bottom:6px;">Pentatónica menor — Am</div>
+      <div style="font-size:13px;color:var(--muted2);margin-bottom:16px;">🟠 Raíz (A) · 🟡 Notas de la escala</div>
+      ${renderFretboard()}
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:14px;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Patrón de dedos:</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent3);line-height:2;">
+          6a cuerda: traste 5 (raíz) → 8<br>
+          5a cuerda: traste 5 → 7<br>
+          4a cuerda: traste 5 → 7<br>
+          3a cuerda: traste 5 → 7<br>
+          2a cuerda: traste 5 → 8<br>
+          1a cuerda: traste 5 (raíz) → 8
+        </div>
+      </div>
+    `;
+  }
+  else if(practiceTab==='metro'){
+    el.innerHTML = `
+      <div class="card" style="text-align:center;padding:32px 20px;margin-bottom:14px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:72px;letter-spacing:2px;margin-bottom:4px;" id="metro-bpm-disp">${metroBpm}</div>
+        <div style="font-size:13px;color:var(--muted2);margin-bottom:24px;">BPM</div>
+        <div style="display:flex;gap:10px;justify-content:center;margin-bottom:28px;" id="metro-beats-row">
+          ${[0,1,2,3].map(i=>`<div class="mbeat" id="mb-${i}"></div>`).join('')}
+        </div>
+        <input type="range" min="40" max="220" value="${metroBpm}" oninput="changeBPM(parseInt(this.value))"
+          style="width:100%;margin-bottom:20px;accent-color:var(--accent);">
+        <div style="display:flex;gap:10px;justify-content:center;">
+          <button onclick="changeBPM(metroBpm-5)" style="width:48px;height:48px;border-radius:14px;background:var(--surface2);border:1px solid var(--border2);font-size:20px;font-weight:700;">−</button>
+          <button id="metro-btn" onclick="toggleMetro()" style="padding:12px 36px;background:var(--accent);color:#000;border-radius:14px;font-size:16px;font-weight:700;">▶ Iniciar</button>
+          <button onclick="changeBPM(metroBpm+5)" style="width:48px;height:48px;border-radius:14px;background:var(--surface2);border:1px solid var(--border2);font-size:20px;font-weight:700;">+</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        ${[60,80,100,120,140,160].map(b=>`<button onclick="changeBPM(${b});if(!metroRunning)toggleMetro();" style="padding:10px;background:var(--surface);border:1px solid var(--border2);border-radius:10px;font-size:13px;font-weight:600;">${b}</button>`).join('')}
+      </div>
+    `;
   }
 }
 
-/* =========================================================
-   INIT
-   ========================================================= */
-window.addEventListener('DOMContentLoaded', ()=>{
-  renderHome();
-  // greeting
-  const h = new Date().getHours();
-  const gr = h<12?'¡Buenos días! ☀️':h<18?'¡Buenas tardes! 🎸':'¡Buenas noches! 🌙';
-  document.getElementById('home-greeting').textContent = gr + ' ' + STATE.name;
-});
+function selectPracticeChord(name){
+  document.querySelectorAll('#chord-sel button').forEach(b=>{
+    const n = b.id.replace('cs-','');
+    b.style.background = n===name?'var(--accent)':'var(--surface2)';
+    b.style.color = n===name?'#000':'var(--text)';
+    b.style.borderColor = n===name?'var(--accent)':'var(--border2)';
+  });
+  const cd = CHORDS_DATA[name];
+  document.getElementById('chord-diag-area').innerHTML = `
+    ${renderChordDiagram(name, cd)}
+    <button onclick="strum([${cd.freq}])" style="width:100%;margin-top:14px;padding:13px;background:var(--accent);color:#000;border-radius:12px;font-size:15px;font-weight:700;">▶ Tocar acorde</button>
+  `;
+  strum(cd.freq);
+}
 
-// Prevent back gesture closing app
-window.addEventListener('popstate', e=>{ if(screenHistory.length) goBack(); });
+function toggleMetro(){
+  const btn = document.getElementById('metro-btn');
+  if(metroRunning){
+    clearInterval(metroInt); metroInt=null; metroRunning=false;
+    if(btn){ btn.textContent='▶ Iniciar'; btn.style.background='var(--accent)'; btn.style.color='#000'; }
+    return;
+  }
+  metroRunning=true; metroBeat=0;
+  if(btn){ btn.textContent='⏹ Parar'; btn.style.background='var(--red)'; btn.style.color='#fff'; }
+  const go = ()=>{
+    playClick(AC().currentTime, metroBeat===0);
+    document.querySelectorAll('.mbeat').forEach((b,i)=>b.classList.toggle('on1',i===0&&metroBeat===0)||b.classList.toggle('on',i===metroBeat&&i!==0));
+    metroBeat=(metroBeat+1)%4;
+  };
+  go();
+  metroInt = setInterval(go, 60000/metroBpm);
+}
+
+function changeBPM(val){
+  metroBpm = Math.max(40,Math.min(220,val));
+  const el = document.getElementById('metro-bpm-disp');
+  if(el) el.textContent = metroBpm;
+  if(metroRunning){ clearInterval(metroInt); metroInt=null; metroRunning=false; toggleMetro(); }
+}
+
+/* ═══════════════════════════════════════════════
+   PROGRESS
+═══════════════════════════════════════════════ */
+function renderProgress(){
+  track('page_view',{page:'progress'});
+  const total = LESSONS_DATA.length;
+  const done = S.lessonsCompleted.length;
+  const pct = Math.round(done/total*100);
+  document.getElementById('progress-content').innerHTML = `
+    <!-- XP + Belt -->
+    <div style="text-align:center;padding:28px 0 32px;">
+      ${BELTS.map((b,i)=>{
+        const isCurrent = b.id===S.belt;
+        return `<div style="display:inline-block;margin:4px;">
+          <div style="width:${isCurrent?52:38}px;height:${isCurrent?52:38}px;border-radius:50%;background:${b.color};opacity:${isCurrent?1:S.xp>=b.xpRequired?0.7:0.2};border:${isCurrent?'3px solid white':'2px solid transparent'};display:inline-flex;align-items:center;justify-content:center;font-size:${isCurrent?13:9}px;font-weight:700;color:${b.tc};">${isCurrent?S.xp+'xp':b.name[0]}</div>
+        </div>`;
+      }).join('→')}
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:48px;margin:16px 0 4px;">${S.xp} <span style="font-size:24px;color:var(--muted2);">XP</span></div>
+      <div style="font-size:14px;color:var(--muted2);">Cinturón ${BELTS.find(b=>b.id===S.belt)?.name}</div>
+    </div>
+
+    <!-- Stats grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+      <div class="card-sm" style="text-align:center;">
+        <div style="font-size:32px;margin-bottom:4px;">🔥</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:34px;">${S.streak}</div>
+        <div style="font-size:12px;color:var(--muted2);">días seguidos</div>
+      </div>
+      <div class="card-sm" style="text-align:center;">
+        <div style="font-size:32px;margin-bottom:4px;">📖</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:34px;">${done}/${total}</div>
+        <div style="font-size:12px;color:var(--muted2);">lecciones</div>
+      </div>
+    </div>
+
+    <!-- Lessons list -->
+    <div style="font-size:15px;font-weight:700;margin-bottom:12px;">Lecciones</div>
+    ${LESSONS_DATA.map(l=>{
+      const isDone = S.lessonsCompleted.includes(l.id);
+      const belt = BELTS.find(b=>b.id===l.belt)||BELTS[0];
+      return `
+        <div style="display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface);border:1px solid ${isDone?'var(--green)30':'var(--border)'};border-radius:14px;margin-bottom:8px;">
+          <div style="font-size:24px;">${l.icon}</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:600;${isDone?'color:var(--muted2);text-decoration:line-through;':''}">${l.title}</div>
+            <div style="font-size:11px;color:${belt.color};">${belt.name} · +${l.xp} XP</div>
+          </div>
+          <div style="font-size:18px;">${isDone?'✅':l.locked?'🔒':'⬜'}</div>
+        </div>
+      `;
+    }).join('')}
+
+    <!-- Badges -->
+    <div style="font-size:15px;font-weight:700;margin:20px 0 12px;">Insignias</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;">
+      ${[
+        {icon:'🌱',label:'Primer paso',cond:S.xp>=20},
+        {icon:'🔥',label:'3 días',cond:S.streak>=3},
+        {icon:'🎸',label:'2 lecciones',cond:done>=2},
+        {icon:'⭐',label:'100 XP',cond:S.xp>=100},
+        {icon:'🏆',label:'Cinturón Amarillo',cond:S.belt!=='white'},
+        {icon:'🎵',label:'Primera escala',cond:S.lessonsCompleted.includes('l_penta')},
+      ].map(b=>`
+        <div style="background:${b.cond?'var(--surface2)':'var(--border)'};border:1px solid ${b.cond?'var(--border2)':'var(--border)'};border-radius:14px;padding:12px;text-align:center;width:calc(33% - 8px);opacity:${b.cond?1:0.3};">
+          <div style="font-size:28px;margin-bottom:4px;">${b.icon}</div>
+          <div style="font-size:10px;font-weight:600;color:var(--muted2);">${b.label}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+/* ═══════════════════════════════════════════════
+   PATREON
+═══════════════════════════════════════════════ */
+function renderPatreon(){
+  track('view_patreon_benefits');
+  document.getElementById('patreon-content').innerHTML = `
+    <div style="text-align:center;padding:28px 0 24px;">
+      <div style="font-size:52px;margin-bottom:12px;">🌟</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:40px;margin-bottom:8px;color:#f96854;">PATREON</div>
+      <div style="font-size:14px;color:var(--muted2);max-width:280px;margin:0 auto;">No es solo contenido. Es una comunidad de guitarristas con dirección.</div>
+    </div>
+
+    <!-- Benefits -->
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+      ${[
+        {icon:'📄',label:'PDFs completos',desc:'Manual de Supervivencia, Taller de Armonía y más'},
+        {icon:'🎥',label:'Videos exclusivos',desc:'Clases que no están en YouTube'},
+        {icon:'🎸',label:'Licks y técnica',desc:'Contenido avanzado por nivel'},
+        {icon:'💬',label:'Comunidad privada',desc:'Grupo de guitarristas activos'},
+        {icon:'❓',label:'Q&A con Daniel',desc:'Pregunta directamente al profesor'},
+        {icon:'🚀',label:'Nuevos materiales',desc:'Contenido nuevo cada mes'},
+      ].map(b=>`
+        <div class="card-sm" style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:28px;flex-shrink:0;">${b.icon}</div>
+          <div>
+            <div style="font-size:15px;font-weight:600;">${b.label}</div>
+            <div style="font-size:13px;color:var(--muted2);">${b.desc}</div>
+          </div>
+          <div style="margin-left:auto;color:var(--green);font-size:14px;">✓</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- CTA -->
+    <div class="patreon-card" style="margin-bottom:12px;">
+      <div style="font-size:16px;font-weight:700;margin-bottom:6px;">¿Quieres desbloquear todo?</div>
+      <div style="font-size:13px;color:var(--muted2);margin-bottom:16px;">Accede a la ruta completa, los libros, videos y la comunidad de Daniel Flores Music.</div>
+      <button class="btn-patreon" onclick="openPatreon('patreon_screen')">Unirme a Patreon →</button>
+    </div>
+    <button class="btn-secondary" style="font-size:13px;" onclick="navTo('s-home','home')">Seguir entrenando gratis</button>
+
+    <!-- Trust -->
+    <div style="text-align:center;margin-top:24px;font-size:12px;color:var(--muted);line-height:1.8;">
+      🔒 Compra segura a través de Patreon<br>
+      Esta app no procesa pagos ni almacena datos de pago.
+    </div>
+  `;
+}
+
+function openPatreon(source){
+  track('click_patreon_cta',{source});
+  window.open(PATREON_URL,'_blank','noopener');
+}
+
+/* ═══════════════════════════════════════════════
+   PROFILE
+═══════════════════════════════════════════════ */
+function renderProfile(){
+  document.getElementById('profile-content').innerHTML = `
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:34px;margin-bottom:6px;">Configuración</div>
+    <div style="font-size:14px;color:var(--muted2);margin-bottom:24px;">Tu cuenta y preferencias</div>
+
+    <div class="card" style="margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Tu perfil</div>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+        <div style="width:52px;height:52px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:24px;">🎸</div>
+        <div>
+          <div id="profile-name-display" style="font-size:17px;font-weight:700;" onclick="editProfileName()">${S.name||'Guitarrista'} <span style="font-size:12px;color:var(--muted2);">✎</span></div>
+          <div style="font-size:13px;color:var(--muted2);">Cinturón ${BELTS.find(b=>b.id===S.belt)?.name} · ${S.xp} XP</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;">
+        <div style="background:var(--surface2);border-radius:10px;padding:10px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;">${S.streak}</div><div style="font-size:10px;color:var(--muted2);">racha</div></div>
+        <div style="background:var(--surface2);border-radius:10px;padding:10px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;">${S.xp}</div><div style="font-size:10px;color:var(--muted2);">XP</div></div>
+        <div style="background:var(--surface2);border-radius:10px;padding:10px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;">${S.lessonsCompleted.length}</div><div style="font-size:10px;color:var(--muted2);">lecciones</div></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Nivel</div>
+      ${['beginner','intermediate','advanced'].map(l=>`
+        <button onclick="S.level='${l}';save();renderProfile();" style="width:100%;display:flex;align-items:center;gap:12px;padding:12px;background:${S.level===l?'rgba(232,255,71,0.08)':'transparent'};border:1px solid ${S.level===l?'var(--accent)':'transparent'};border-radius:12px;margin-bottom:6px;">
+          <div style="font-size:13px;font-weight:600;flex:1;text-align:left;">${l==='beginner'?'🌱 Principiante':l==='intermediate'?'🎸 Intermedio':'🔥 Avanzado'}</div>
+          ${S.level===l?'<div style="color:var(--accent);font-size:14px;">✓</div>':''}
+        </button>
+      `).join('')}
+    </div>
+
+    <button onclick="if(confirm('¿Resetear todo el progreso?')){localStorage.removeItem('dfm_v2');location.reload();}" style="width:100%;padding:14px;background:transparent;border:1px solid var(--red)40;border-radius:14px;color:var(--red);font-size:14px;font-weight:600;margin-top:8px;">🗑 Resetear progreso</button>
+    <div style="text-align:center;margin-top:20px;font-size:12px;color:var(--muted);">Daniel Flores Music · App gratuita</div>
+  `;
+}
+
+function editProfileName(){
+  const n = prompt('¿Cómo te llamas?', S.name||'Guitarrista');
+  if(n&&n.trim()){ S.name=n.trim(); save(); renderProfile(); }
+}
+
+/* ═══════════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════════ */
+function formatTime(s){
+  return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+}
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded',()=>{
+  track('app_open',{returning:!!localStorage.getItem('dfm_v2')});
+  // Si ya tiene nivel, ir directo al home
+  if(S.level){ goTo('s-home'); }
+  else { initDiag; } // wait for user tap
+});
 </script>
 </body>
 </html>
