@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<meta name="theme-color" content="#D7AE98"/>
+<meta name="theme-color" content="#F3F2EF"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="Supervivencia"/>
@@ -22,12 +22,12 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{
-  --bg:#D7AE98;
-  --s1:#FFF8F1;
-  --s2:#F1DED2;
-  --s3:#E7CCBB;
-  --border:#D7B7A5;
-  --border2:#CFAE9A;
+  --bg:#F3F2EF;
+  --s1:#FFFFFF;
+  --s2:#F7F6F3;
+  --s3:#ECE9E3;
+  --border:#DEDAD2;
+  --border2:#CFC8BC;
   --text:#171717;
   --muted:#8A8172;
   --muted2:#6F6A60;
@@ -62,7 +62,7 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
 /* ── TOPBAR ── */
 .topbar{
   flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
-  padding:13px 20px;background:rgba(215,174,152,0.92);backdrop-filter:blur(20px);
+  padding:13px 20px;background:rgba(243,242,239,0.94);backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border);z-index:10;
 }
 .logo{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:3px;color:var(--gold);}
@@ -73,7 +73,7 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
 /* ── BOTTOM NAV ── */
 .bnav{
   position:absolute;bottom:0;left:0;right:0;
-  background:rgba(215,174,152,0.96);backdrop-filter:blur(24px);
+  background:rgba(243,242,239,0.97);backdrop-filter:blur(24px);
   border-top:1px solid var(--border);
   display:flex;padding:6px 0 max(8px,env(safe-area-inset-bottom));z-index:50;
 }
@@ -296,17 +296,17 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
 .app-greeting{font-size:13px;color:var(--muted2);font-weight:700;letter-spacing:.2px;}
 .app-name{font-size:20px;font-weight:850;color:var(--text);line-height:1.1;margin-top:2px;}
 .app-avatar{width:38px;height:38px;border-radius:14px;background:var(--s2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:850;color:var(--gold);}
-.app-icon-img{width:40px;height:40px;border-radius:12px;object-fit:cover;display:block;box-shadow:0 8px 18px rgba(56,40,18,.14);background:#D7AE98;}
-.app-icon-img-lg{width:58px;height:58px;border-radius:17px;object-fit:cover;display:block;box-shadow:0 10px 28px rgba(56,40,18,.16);background:#D7AE98;}
+.app-icon-img{width:40px;height:40px;border-radius:12px;object-fit:cover;display:block;box-shadow:0 8px 18px rgba(56,40,18,.14);background:#F3F2EF;}
+.app-icon-img-lg{width:58px;height:58px;border-radius:17px;object-fit:cover;display:block;box-shadow:0 10px 28px rgba(56,40,18,.16);background:#F3F2EF;}
 .app-status-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
 .app-stat{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:10px 11px;min-height:62px;}
 .app-stat-value{font-size:17px;font-weight:900;line-height:1.1;}
 .app-stat-label{font-size:10px;color:var(--muted2);font-weight:700;letter-spacing:.4px;text-transform:uppercase;margin-top:5px;}
-.app-main-card{background:linear-gradient(160deg,#FFFFFF 0%,#FAF4E8 58%,#F1E6D4 100%);border:1px solid rgba(240,192,64,.24);border-radius:24px;padding:18px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 14px 38px rgba(56,40,18,.10);}
+.app-main-card{background:linear-gradient(160deg,#FFFFFF 0%,#FBFAF8 58%,#F1EFEA 100%);border:1px solid rgba(217,154,43,.18);border-radius:24px;padding:18px;margin-bottom:12px;position:relative;overflow:hidden;box-shadow:0 14px 38px rgba(56,40,18,.10);}
 .app-main-card::after{content:'';position:absolute;right:-38px;top:-44px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(240,192,64,.16),transparent 70%);pointer-events:none;}
 .app-card-kicker{font-size:10px;font-weight:900;color:var(--gold);letter-spacing:1.6px;text-transform:uppercase;margin-bottom:12px;}
 .app-practice-row{display:flex;align-items:center;gap:14px;margin-bottom:16px;position:relative;z-index:1;}
-.app-practice-icon{width:58px;height:58px;border-radius:20px;background:rgba(240,192,64,.11);border:1px solid rgba(240,192,64,.24);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+.app-practice-icon{width:58px;height:58px;border-radius:20px;background:rgba(240,192,64,.11);border:1px solid rgba(217,154,43,.18);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
 .app-practice-title{font-size:22px;font-weight:900;letter-spacing:-.4px;line-height:1.08;margin-bottom:5px;}
 .app-practice-desc{font-size:12px;color:var(--muted2);line-height:1.45;}
 .app-action-btn{width:100%;padding:15px 16px;border-radius:16px;background:var(--gold);color:#000;font-size:15px;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;z-index:1;box-shadow:0 8px 22px rgba(240,192,64,.16);}
@@ -345,7 +345,7 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
         <div class="brand-app" style="font-size:18px;line-height:.95;">SUPERVIVENCIA<br><span style='font-size:16px;'>PARA GUITARRISTAS</span></div>
         <div class="brand-sub" style="font-size:9px;">by Daniel Flores Music</div>
       </div>
-      <img class="app-icon-img" src="icons/icon-192.png?v=9" alt="Supervivencia para Guitarristas by Daniel Flores Music"/>
+      <img class="app-icon-img" src="icons/icon-192.png?v=10" alt="Supervivencia para Guitarristas by Daniel Flores Music"/>
     </div>
 
     <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 24px 24px;">
@@ -411,7 +411,7 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
 <div class="screen hidden" id="s-home">
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:9px;">
-    <img class="app-icon-img" src="icons/icon-192.png?v=9" alt="Supervivencia para Guitarristas by Daniel Flores Music"/>
+    <img class="app-icon-img" src="icons/icon-192.png?v=10" alt="Supervivencia para Guitarristas by Daniel Flores Music"/>
     <div>
       <div class="brand-app" style="font-size:15px;line-height:.95;">SUPERVIVENCIA<br><span style='font-size:13px;'>PARA GUITARRISTAS</span></div>
       <div class="brand-sub" style="font-size:7px;">by Daniel Flores Music</div>
@@ -1477,7 +1477,7 @@ function renderAbout(){
   document.getElementById('about-body').innerHTML=`
     <div style="text-align:center;padding:28px 0 22px;">
       <div style="width:88px;height:88px;border-radius:24px;background:var(--s2);border:1px solid var(--border2);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-        <img src="icons/icon-192.png?v=9" alt="DFM" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <img src="icons/icon-192.png?v=10" alt="DFM" style="width:100%;height:100%;object-fit:cover;display:block;">
       </div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:1px;color:var(--gold);">DANIEL FLORES MUSIC</div>
       <div style="font-size:13px;color:var(--muted2);margin-top:2px;font-weight:700;">Guitarrista · Educador · Autor</div>
