@@ -1,4 +1,4 @@
-const CACHE='mspg-v14';
+const CACHE='mspg-v15';
 const ASSETS=[
   './','./index.html','./manifest.json','./assets/signature.png',
   './icons/icon-192.png','./icons/icon-512.png','./icons/apple-touch-icon.png','./icons/favicon-32.png'
