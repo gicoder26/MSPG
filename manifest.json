@@ -1,12 +1,12 @@
 {
-  "name": "Supervivencia para Guitarristas",
+  "name": "Supervivencia para Guitarristas by Daniel Flores Music",
   "short_name": "Supervivencia",
-  "description": "Ruta diaria de práctica para guitarristas by Daniel Flores Music.",
+  "description": "App de práctica diaria para guitarristas con retos, acordes, licks y ruta de aprendizaje de Daniel Flores Music.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#F7F3EA",
-  "theme_color": "#F7F3EA",
+  "background_color": "#D7AE98",
+  "theme_color": "#D7AE98",
   "orientation": "portrait",
   "icons": [
     {

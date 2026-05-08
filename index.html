@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<meta name="theme-color" content="#F7F3EA"/>
+<meta name="theme-color" content="#D7AE98"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="Supervivencia"/>
 <meta name="description" content="Supervivencia para Guitarristas by Daniel Flores Music: retos cortos, ruta diaria y práctica interactiva para dejar de tocar al azar."/>
-<title>Supervivencia para Guitarristas</title>
+<title>Supervivencia para Guitarristas by Daniel Flores Music</title>
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png"/>
@@ -22,12 +22,12 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{
-  --bg:#F7F3EA;
-  --s1:#FFFFFF;
-  --s2:#EFE7D8;
-  --s3:#E8DDC8;
-  --border:#E4D8C5;
-  --border2:#D6C8B3;
+  --bg:#D7AE98;
+  --s1:#FFF8F1;
+  --s2:#F1DED2;
+  --s3:#E7CCBB;
+  --border:#D7B7A5;
+  --border2:#CFAE9A;
   --text:#171717;
   --muted:#8A8172;
   --muted2:#6F6A60;
@@ -56,13 +56,13 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
 .screen.prev{transform:translateX(-108%);opacity:0;pointer-events:none;}
 
 /* ── SCROLL ── */
-.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:88px;}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:112px;overscroll-behavior:contain;}
 .scroll::-webkit-scrollbar{display:none;}
 
 /* ── TOPBAR ── */
 .topbar{
   flex-shrink:0;display:flex;align-items:center;justify-content:space-between;
-  padding:13px 20px;background:rgba(247,243,234,0.92);backdrop-filter:blur(20px);
+  padding:13px 20px;background:rgba(215,174,152,0.92);backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border);z-index:10;
 }
 .logo{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:3px;color:var(--gold);}
@@ -73,7 +73,7 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
 /* ── BOTTOM NAV ── */
 .bnav{
   position:absolute;bottom:0;left:0;right:0;
-  background:rgba(247,243,234,0.96);backdrop-filter:blur(24px);
+  background:rgba(215,174,152,0.96);backdrop-filter:blur(24px);
   border-top:1px solid var(--border);
   display:flex;padding:6px 0 max(8px,env(safe-area-inset-bottom));z-index:50;
 }
@@ -249,6 +249,26 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
   border:1px solid rgba(249,104,84,.22);border-radius:18px;padding:20px;
 }
 
+
+/* ── PRACTICE VISUALS ── */
+.practice-visual{background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:14px;margin:12px 0 14px;overflow:hidden;}
+.practice-visual.dark{background:#2f3030;border-color:#333;color:#fff;}
+.mini-chord{background:#2f3030;border-radius:16px;padding:13px;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);}
+.mini-chord-title{font-size:11px;font-weight:900;color:#E4BD60;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.mini-diag{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(5,24px);position:relative;border-top:4px solid rgba(255,248,241,.9);margin:0 auto;max-width:260px;}
+.mini-diag .v{position:absolute;top:0;bottom:0;width:2px;background:rgba(255,248,241,.82);transform:translateX(-1px);}
+.mini-diag .h{position:absolute;left:0;right:0;height:2px;background:rgba(255,248,241,.72);transform:translateY(-1px);}
+.mini-diag .dot{position:absolute;width:24px;height:24px;border-radius:50%;background:#D99A2B;box-shadow:0 2px 8px rgba(0,0,0,.24);transform:translate(-50%,-50%);}
+.mini-scale{background:#2f3030;border-radius:16px;padding:14px;color:#fff;}
+.mini-scale-grid{display:grid;grid-template-columns:28px repeat(4,1fr);gap:0;max-width:300px;margin:8px auto 0;}
+.mini-scale-cell{height:24px;border-left:1px solid rgba(255,248,241,.28);border-bottom:1px solid rgba(255,248,241,.18);display:flex;align-items:center;justify-content:center;}
+.mini-scale-label{font-size:9px;color:rgba(255,248,241,.65);display:flex;align-items:center;justify-content:center;}
+.mini-note{width:18px;height:18px;border-radius:50%;background:#D99A2B;color:#111;font-size:8px;font-weight:900;display:flex;align-items:center;justify-content:center;}
+.mini-note.root{background:#D9480F;color:white;}
+.audio-nudge{position:fixed;left:16px;right:16px;bottom:78px;background:#171717;color:#fff;border-radius:16px;padding:12px 14px;display:none;align-items:center;gap:10px;z-index:999;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.25);}
+.audio-nudge.show{display:flex;}
+.audio-nudge button{margin-left:auto;background:var(--gold);color:#111;border-radius:12px;padding:9px 12px;font-weight:900;font-size:12px;}
+
 /* ── REGISTER ── */
 .reg-step{display:flex;flex-direction:column;gap:16px;}
 /* ── BRAND / DIAGNOSTIC ── */
@@ -271,13 +291,13 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
 
 
 /* ── HOME V5: feels like an app, not a landing ── */
-.app-home-shell{padding:14px 16px 0;}
+.app-home-shell{padding:14px 16px 112px;}
 .app-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .app-greeting{font-size:13px;color:var(--muted2);font-weight:700;letter-spacing:.2px;}
 .app-name{font-size:20px;font-weight:850;color:var(--text);line-height:1.1;margin-top:2px;}
 .app-avatar{width:38px;height:38px;border-radius:14px;background:var(--s2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:850;color:var(--gold);}
-.app-icon-img{width:38px;height:38px;border-radius:13px;object-fit:cover;box-shadow:0 8px 18px rgba(56,40,18,.12);}
-.app-icon-img-lg{width:54px;height:54px;border-radius:18px;object-fit:cover;box-shadow:0 10px 28px rgba(56,40,18,.14);}
+.app-icon-img{width:40px;height:40px;border-radius:12px;object-fit:cover;display:block;box-shadow:0 8px 18px rgba(56,40,18,.14);background:#D7AE98;}
+.app-icon-img-lg{width:58px;height:58px;border-radius:17px;object-fit:cover;display:block;box-shadow:0 10px 28px rgba(56,40,18,.16);background:#D7AE98;}
 .app-status-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
 .app-stat{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:10px 11px;min-height:62px;}
 .app-stat-value{font-size:17px;font-weight:900;line-height:1.1;}
@@ -322,10 +342,10 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
 
     <div style="padding:22px 24px 0;display:flex;justify-content:space-between;align-items:center;">
       <div>
-        <div class="brand-app" style="font-size:20px;">SUPERVIVENCIA</div>
-        <div class="brand-sub">by Daniel Flores Music</div>
+        <div class="brand-app" style="font-size:18px;line-height:.95;">SUPERVIVENCIA<br><span style='font-size:16px;'>PARA GUITARRISTAS</span></div>
+        <div class="brand-sub" style="font-size:9px;">by Daniel Flores Music</div>
       </div>
-      <img class="app-icon-img" src="icons/icon-192.png" alt="Supervivencia"/>
+      <img class="app-icon-img" src="icons/icon-192.png?v=9" alt="Supervivencia para Guitarristas by Daniel Flores Music"/>
     </div>
 
     <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 24px 24px;">
@@ -367,7 +387,7 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
 
       <div style="text-align:center;margin-top:18px;font-size:11px;color:var(--muted);line-height:1.8;">
         Supervivencia para Guitarristas<br>
-        La práctica diaria del método Daniel Flores
+        La práctica diaria del método de Daniel Flores
       </div>
     </div>
   </div>
@@ -391,10 +411,10 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
 <div class="screen hidden" id="s-home">
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:9px;">
-    <img class="app-icon-img" src="icons/icon-192.png" alt="Supervivencia"/>
+    <img class="app-icon-img" src="icons/icon-192.png?v=9" alt="Supervivencia para Guitarristas by Daniel Flores Music"/>
     <div>
-      <div class="brand-app" style="font-size:18px;">SUPERVIVENCIA</div>
-      <div class="brand-sub" style="font-size:8px;">by DFM</div>
+      <div class="brand-app" style="font-size:15px;line-height:.95;">SUPERVIVENCIA<br><span style='font-size:13px;'>PARA GUITARRISTAS</span></div>
+      <div class="brand-sub" style="font-size:7px;">by Daniel Flores Music</div>
     </div>
   </div>
   <div style="display:flex;gap:8px;align-items:center;">
@@ -403,12 +423,12 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
       <span style="font-size:13px;font-weight:700;" id="h-streak">0</span>
       <span style="font-size:11px;color:var(--muted2);">días</span>
     </div>
-    <button class="ico" onclick="goTo('s-about')">👤</button>
+    <button class="ico" onclick="goTo('s-about')" style="font-size:12px;font-weight:900;color:var(--gold);">DF</button>
   </div>
 </div>
-<div class="scroll" style="padding:18px 18px 0;" id="home-body"></div>
+<div class="scroll" style="padding:18px 18px 112px;" id="home-body"></div>
 <div class="bnav">
-  <button class="nb on" onclick="navTo('home')"><div class="ni">🏠</div>Hoy</button>
+  <button class="nb on" onclick="navTo('home')"><div class="ni">🏠</div>Inicio</button>
   <button class="nb" onclick="navTo('learn')"><div class="ni">📖</div>Ruta</button>
   <button class="nb" onclick="navTo('practice')"><div class="ni">🎸</div>Practicar</button>
   <button class="nb" onclick="navTo('community')"><div class="ni">🌟</div>Comunidad</button>
@@ -419,11 +439,11 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
 <div class="screen hidden" id="s-learn">
 <div class="topbar">
   <div class="brand-app" style="font-size:18px;">RUTA</div>
-  <div style="font-size:11px;color:var(--muted2);">Contenido gratuito</div>
+  <div style="font-size:11px;color:var(--muted2);">Preview del método</div>
 </div>
 <div class="scroll" style="padding:20px;" id="learn-body"></div>
 <div class="bnav">
-  <button class="nb" onclick="navTo('home')"><div class="ni">🏠</div>Hoy</button>
+  <button class="nb" onclick="navTo('home')"><div class="ni">🏠</div>Inicio</button>
   <button class="nb on" onclick="navTo('learn')"><div class="ni">📖</div>Ruta</button>
   <button class="nb" onclick="navTo('practice')"><div class="ni">🎸</div>Practicar</button>
   <button class="nb" onclick="navTo('community')"><div class="ni">🌟</div>Comunidad</button>
@@ -434,11 +454,11 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
 <div class="screen hidden" id="s-practice">
 <div class="topbar">
   <div class="brand-app" style="font-size:18px;">PRÁCTICA</div>
-  <div style="font-size:11px;color:var(--muted2);">Herramientas</div>
+  <div style="width:36px;"></div>
 </div>
 <div class="scroll" style="padding:20px;" id="practice-body"></div>
 <div class="bnav">
-  <button class="nb" onclick="navTo('home')"><div class="ni">🏠</div>Hoy</button>
+  <button class="nb" onclick="navTo('home')"><div class="ni">🏠</div>Inicio</button>
   <button class="nb" onclick="navTo('learn')"><div class="ni">📖</div>Ruta</button>
   <button class="nb on" onclick="navTo('practice')"><div class="ni">🎸</div>Practicar</button>
   <button class="nb" onclick="navTo('community')"><div class="ni">🌟</div>Comunidad</button>
@@ -453,7 +473,7 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
 </div>
 <div class="scroll" style="padding:20px;" id="community-body"></div>
 <div class="bnav">
-  <button class="nb" onclick="navTo('home')"><div class="ni">🏠</div>Hoy</button>
+  <button class="nb" onclick="navTo('home')"><div class="ni">🏠</div>Inicio</button>
   <button class="nb" onclick="navTo('learn')"><div class="ni">📖</div>Ruta</button>
   <button class="nb" onclick="navTo('practice')"><div class="ni">🎸</div>Practicar</button>
   <button class="nb on" onclick="navTo('community')"><div class="ni">🌟</div>Comunidad</button>
@@ -492,6 +512,7 @@ input{font-family:'Plus Jakarta Sans',sans-serif;outline:none;}
 </div>
 
 </div><!-- #app -->
+<div id="audio-nudge" class="audio-nudge">🔊 Toca para activar el audio <button onclick="primeAudio()">Activar</button></div>
 
 <script>
 /* ═══════ GA4 ═══════ */
@@ -503,12 +524,12 @@ function track(ev,p={}){
 /* ═══════ CONFIG ═══════ */
 // ▸ Reemplaza con el URL real de Patreon de Daniel
 const PATREON = 'https://www.patreon.com/danielfloresmusic';
-// Opcional: pega aquí el Web App URL de Google Apps Script para enviar diagnósticos a Google Sheets.
+// Opcional: pega aquí el Web App URL de Google Apps Script para enviar rutas a Google Sheets.
 const SHEETS_ENDPOINT = ''; // ejemplo: 'https://script.google.com/macros/s/XXXX/exec';
 
 /* ═══════ STATE ═══════ */
 const ST = JSON.parse(localStorage.getItem('dfm4')||'null') || {
-  name:'Guitarrista', email:'', phone:'', level:'',
+  name:'Tu nombre', email:'', phone:'', level:'',
   pain:'', goal:'', time:'', focus:'', routeTitle:'Ruta inicial',
   xp:0, streak:0, lastDay:null,
   belt:'white', done:[], dailyDone:false, dailyDate:null,
@@ -612,7 +633,7 @@ function renderDiagnostic(){
         `).join('')}
       </div>
     </div>
-    <button class="btn btn-ghost" onclick="skipReg()" style="margin-top:10px;font-size:13px;">Entrar sin diagnóstico</button>
+    <button class="btn btn-ghost" onclick="skipReg()" style="margin-top:10px;font-size:13px;">Entrar sin armar ruta</button>
   `;
 }
 
@@ -635,7 +656,7 @@ function renderDiagResult(){
         <div class="diag-kicker">Tu ruta está lista</div>
         <div style="font-size:54px;margin-bottom:12px;">🎸</div>
         <div class="diag-title">${ST.routeTitle}</div>
-        <div class="diag-sub">Empieza con una práctica corta. La app guardará tu avance en este dispositivo y enviará el diagnóstico para que Daniel entienda mejor qué necesita su comunidad.</div>
+        <div class="diag-sub">Empieza con una práctica corta. La app guardará tu avance en este dispositivo y guardará esta ruta para entender mejor qué necesita su comunidad.</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;">
           <span class="mini-pill">${timeLabel}</span>
           <span class="mini-pill">Cinturón Blanco</span>
@@ -683,11 +704,55 @@ function skipReg(){
 
 /* ═══════ AUDIO ENGINE ═══════ */
 let AC = null;
-function getAC(){ if(!AC) AC=new(window.AudioContext||window.webkitAudioContext)(); return AC; }
+let audioUnlocked = false;
+function getAC(){
+  if(!AC){
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if(!Ctx) return null;
+    AC = new Ctx();
+  }
+  return AC;
+}
+async function primeAudio(){
+  const ac = getAC();
+  if(!ac) return false;
+  try{
+    if(ac.state === 'suspended') await ac.resume();
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.connect(g); g.connect(ac.destination);
+    o.frequency.value = 440;
+    g.gain.setValueAtTime(0.0001, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.01, ac.currentTime + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + 0.05);
+    o.start(ac.currentTime);
+    o.stop(ac.currentTime + 0.06);
+    audioUnlocked = true;
+    hideAudioNudge();
+    track('audio_unlocked');
+    return true;
+  }catch(e){
+    console.warn('Audio unlock pendiente', e);
+    showAudioNudge();
+    return false;
+  }
+}
+function unlockAudio(){ primeAudio(); }
+function showAudioNudge(){
+  const n=document.getElementById('audio-nudge');
+  if(n && !audioUnlocked) n.classList.add('show');
+}
+function hideAudioNudge(){
+  const n=document.getElementById('audio-nudge');
+  if(n) n.classList.remove('show');
+}
+['pointerdown','touchstart','click'].forEach(evt=>{
+  document.addEventListener(evt, unlockAudio, {once:false, passive:false});
+});
 
 function synthNote(freq,t,dur=1.2,vol=0.22){
   if(!freq||freq<40) return;
-  const ac=getAC();
+  const ac=getAC(); if(!ac) return;
   [[1,1],[2,.45],[3,.22],[4,.1],[6,.05]].forEach(([p,a],i)=>{
     const o=ac.createOscillator(), g=ac.createGain();
     o.connect(g); g.connect(ac.destination);
@@ -702,26 +767,34 @@ function synthNote(freq,t,dur=1.2,vol=0.22){
   });
 }
 
-// String open frequencies: E2 A2 D3 G3 B3 e4
 const OPEN=[82.41,110,146.83,196,246.94,329.63];
 function fretFreq(si,fret){ return OPEN[si]*Math.pow(2,fret/12); }
 
-function strumChord(map,delay=.034){
-  const ac=getAC(), now=ac.currentTime+.05;
+async function strumChord(map,delay=.034){
+  const ok=await primeAudio(); if(!ok) return;
+  const ac=getAC(); if(!ac) return; const now=ac.currentTime+.05;
   map.forEach((fret,i)=>{ if(fret!==null) synthNote(fretFreq(i,fret),now+i*delay,1.4,.2); });
 }
 
-function playMelody(notes,tempo=.32){
-  const ac=getAC(); let t=ac.currentTime+.1;
+async function playMelody(notes,tempo=.32){
+  const ok=await primeAudio(); if(!ok) return;
+  const ac=getAC(); if(!ac) return; let t=ac.currentTime+.1;
   notes.forEach(n=>{ synthNote(fretFreq(n.s,n.f),t,(n.d||1)*tempo*.88,.28); t+=(n.d||1)*tempo; });
 }
 
 function playClick(t,accent){
-  const ac=getAC(),o=ac.createOscillator(),g=ac.createGain();
+  const ac=getAC(); if(!ac) return; const o=ac.createOscillator(),g=ac.createGain();
   o.connect(g); g.connect(ac.destination);
   o.type='square'; o.frequency.value=accent?1100:800;
   g.gain.setValueAtTime(.32,t); g.gain.exponentialRampToValueAtTime(.001,t+.04);
   o.start(t); o.stop(t+.05);
+}
+
+async function playChordNow(name, btn){
+  const chord = CHORDS[name];
+  if(!chord) return;
+  await strumChord(chord.map);
+  if(btn){btn.classList.add('on');setTimeout(()=>btn.classList.remove('on'),900);}
 }
 
 /* ═══════ CONTENT ═══════ */
@@ -794,10 +867,10 @@ const LESSONS=[
 LESSONS.find(l=>l.id==='l_lick1').steps[1].lick = LICKS[0];
 
 const DAILY=[
-  {id:'d0',title:'30 cambios Am → Em',      desc:'Sin pausas. Sin mirar los dedos.',icon:'🔄',time:60,xp:20},
-  {id:'d1',title:'Pentatónica × 5 a 60 BPM',desc:'Subir y bajar limpio. Una nota por tiempo.',icon:'🎯',time:120,xp:25},
-  {id:'d2',title:'Lick blues × 10 veces',   desc:'Lento y con feeling. Escúchate.',icon:'⚡',time:90,xp:25},
-  {id:'d3',title:'Improvisa 60 segundos',   desc:'Solo Am pentatónica. No pienses, toca.',icon:'🎵',time:60,xp:30},
+  {id:'d0',title:'Cambio Am → Em',desc:'30 cambios, limpios y sin mirar los dedos.',icon:'🔄',time:60,xp:20,visual:'chord-change',chords:['Am','Em']},
+  {id:'d1',title:'Pentatónica Am',desc:'Sube y baja a 60 BPM. Una nota por tiempo.',icon:'🎯',time:120,xp:25,visual:'scale'},
+  {id:'d2',title:'Lick blues clásico',desc:'10 repeticiones, lento y con intención.',icon:'⚡',time:90,xp:25,visual:'lick',lick:0},
+  {id:'d3',title:'Improvisación guiada',desc:'60 segundos usando solo Am pentatónica.',icon:'🎵',time:60,xp:30,visual:'scale'},
 ];
 
 // Frases de Daniel — cortas, amigables, en su voz real. Sin drama ni presión.
@@ -861,8 +934,7 @@ function renderHome(){
   document.getElementById('h-streak').textContent=ST.streak;
   const route = ST.routeTitle || 'Ruta de supervivencia inicial';
   const timeTxt = ST.time ? (ST.time==='variable'?'Flexible':`${ST.time} min`) : '5 min';
-  const firstName = (ST.name || 'Guitarrista').split(' ')[0];
-  const initial = (firstName || 'G').slice(0,1).toUpperCase();
+  const firstName = (ST.name || 'Tu nombre').split(' ')[0];
   const routeProgress = Math.min(100, Math.round((ST.done.length / Math.max(LESSONS.length,1)) * 100));
 
   document.getElementById('home-body').innerHTML=`
@@ -870,10 +942,9 @@ function renderHome(){
 
       <div class="app-top-row fu">
         <div>
-          <div class="app-greeting">Hoy</div>
+          <div class="app-greeting">Inicio</div>
           <div class="app-name">${firstName}</div>
         </div>
-        <button class="app-avatar" onclick="goTo('s-about')">${initial}</button>
       </div>
 
       <div class="app-status-grid fu">
@@ -900,6 +971,10 @@ function renderHome(){
             <div class="app-practice-desc">${daily.desc}</div>
           </div>
         </div>
+        ${buildPracticeVisual(daily)}
+        <div style="font-size:11px;color:var(--muted2);line-height:1.55;margin:0 0 12px;position:relative;z-index:1;">
+          Este ejercicio es una muestra gratuita inspirada en las primeras páginas del <strong style="color:var(--text);">Manual de Supervivencia para Guitarristas</strong>. Si quieres seguir la ruta completa, la encuentras en Patreon.
+        </div>
         <button onclick="openChallenge('${daily.id}')" class="app-action-btn ${ST.dailyDone?'done':''}">
           ${ST.dailyDone?'Repetir práctica':'Empezar ahora'} <span style="opacity:.65;">· ${daily.time}s</span>
         </button>
@@ -919,6 +994,7 @@ function renderHome(){
           </div>
           <div style="font-size:12px;font-weight:900;color:var(--gold);">${routeProgress}%</div>
         </div>
+        <div style="font-size:11px;color:var(--muted2);line-height:1.55;margin-bottom:10px;">En <strong style="color:var(--text);">Ruta</strong> exploras las microlecciones gratuitas del método. En <strong style="color:var(--text);">Practicar</strong> escuchas acordes, escalas, licks y usas el metrónomo.</div>
         <button onclick="${nextLesson?`openLesson('${nextLesson.id}')`:`navTo('community')`}" class="app-feed-btn" style="padding:12px;background:var(--s2);border-color:var(--border2);">
           <div class="app-feed-ico">${nextLesson?nextLesson.icon:'🌟'}</div>
           <div style="flex:1;">
@@ -932,22 +1008,22 @@ function renderHome(){
 
       <div class="app-section-title fu4">
         <span>Herramientas</span>
-        <button onclick="randomExercise()">Aleatorio</button>
+        <button onclick="randomExercise()">Manual</button>
       </div>
 
       <div class="app-tool-dock fu4">
         <button class="app-tool" onclick="navTo('practice');setTimeout(()=>switchTab('chords'),50)"><div>🎸</div><div>Acordes</div></button>
-        <button class="app-tool" onclick="navTo('practice');setTimeout(()=>switchTab('scale'),50)"><div>🎼</div><div>Mástil</div></button>
+        <button class="app-tool" onclick="navTo('practice');setTimeout(()=>switchTab('scale'),50)"><div>🎼</div><div>Escala</div></button>
         <button class="app-tool" onclick="navTo('practice');setTimeout(()=>switchTab('licks'),50)"><div>⚡</div><div>Licks</div></button>
         <button class="app-tool" onclick="navTo('practice');setTimeout(()=>switchTab('metro'),50)"><div>🥁</div><div>Metro</div></button>
       </div>
 
       <div class="app-mini-feed fu5">
         <button class="app-feed-btn" onclick="randomExercise()">
-          <div class="app-feed-ico">🎲</div>
+          <div class="app-feed-ico">📘</div>
           <div style="flex:1;">
-            <div class="app-feed-title">Dame un ejercicio</div>
-            <div class="app-feed-sub">Para practicar ahora sin pensarlo tanto</div>
+            <div class="app-feed-title">Ejercicio aleatorio del libro</div>
+            <div class="app-feed-sub">Te damos una muestra gratuita del Manual. Si quieres más, sigue la ruta completa en Patreon.</div>
           </div>
           <div style="color:var(--gold);font-size:18px;">›</div>
         </button>
@@ -966,16 +1042,60 @@ function renderHome(){
   `;
 }
 
+
+function buildPracticeVisual(item){
+  if(!item || !item.visual) return '';
+  if(item.visual==='chord') return `<div class="practice-visual">${buildMiniChord(item.chord||'Am')}</div>`;
+  if(item.visual==='chord-change'){
+    const a=(item.chords&&item.chords[0])||'Am', b=(item.chords&&item.chords[1])||'Em';
+    return `<div class="practice-visual"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">${buildMiniChord(a)}${buildMiniChord(b)}</div></div>`;
+  }
+  if(item.visual==='scale') return `<div class="practice-visual">${buildMiniScale()}</div>`;
+  if(item.visual==='lick') return `<div class="practice-visual">${buildMiniLick(item.lick||0)}</div>`;
+  return '';
+}
+function buildMiniChord(name){
+  const ch=CHORDS[name]||CHORDS.Am;
+  const dots=[];
+  ch.map.forEach((f,i)=>{
+    if(f && f>0){
+      dots.push(`<span class="dot" style="left:${i*20}%;top:${(f-.5)*25}%;"></span>`);
+    }
+  });
+  const v=[0,1,2,3,4,5].map(i=>`<span class="v" style="left:${i*20}%;"></span>`).join('');
+  const h=[1,2,3,4].map(i=>`<span class="h" style="top:${i*25}%;"></span>`).join('');
+  return `<div class="mini-chord"><div class="mini-chord-title">${name}</div><div class="mini-diag">${v}${h}${dots.join('')}</div></div>`;
+}
+function buildMiniScale(){
+  const rows=[
+    ['E','5R','', '', '8'],
+    ['A','5','', '7',''],
+    ['D','5','', '7',''],
+    ['G','5','', '7',''],
+    ['B','5','', '', '8'],
+    ['e','5R','', '', '8'],
+  ];
+  return `<div class="mini-scale"><div class="mini-chord-title">Pentatónica Am · posición 1</div><div class="mini-scale-grid">${
+    rows.map(r=>`<div class="mini-scale-label">${r[0]}</div>${r.slice(1).map(n=>`<div class="mini-scale-cell">${n?`<span class="mini-note ${n.includes('R')?'root':''}">${n.replace('R','')}</span>`:''}</div>`).join('')}`).join('')
+  }</div></div>`;
+}
+function buildMiniLick(idx){
+  const lick=LICKS[idx]||LICKS[0];
+  return `<div class="mini-scale"><div class="mini-chord-title">${lick.name}</div><div class="ltab" style="background:transparent;padding:4px 0 0;margin:0;">${
+    Object.entries(lick.tab).slice(0,3).map(([s,l])=>`<div class="lrow"><span class="lsl">${s}</span><span>${l}</span></div>`).join('')
+  }</div></div>`;
+}
+
 /* Ejercicio aleatorio — banco de todos los ejercicios disponibles */
 const RANDOM_POOL = [
-  {title:'Am durante 2 minutos', desc:'Toca Am limpio, sin pausar. 20 golpes seguidos.', icon:'🎸', time:120, xp:10},
-  {title:'Em → Am, 20 veces', desc:'Cambio fluido, sin mirar los dedos.', icon:'🔄', time:60, xp:15},
-  {title:'Pentatónica Am — sube y baja', desc:'60 BPM, lento y limpio. 5 veces completas.', icon:'🎼', time:120, xp:15},
-  {title:'Lick blues × 5', desc:'Traste 8–5 en la primera cuerda. Con feeling.', icon:'⚡', time:60, xp:15},
-  {title:'Improvisa 30 segundos', desc:'Solo Am pentatónica. Sin pensar mucho.', icon:'🎵', time:30, xp:20},
-  {title:'G durante 1 minuto', desc:'Forma el acorde G y tócalo limpio 15 veces.', icon:'🎸', time:60, xp:10},
-  {title:'Am → D → G', desc:'Progresión de 3 acordes. 10 repeticiones.', icon:'🔄', time:90, xp:20},
-  {title:'Metrónomo a 80 BPM', desc:'Toca cualquier acorde a tiempo durante 1 minuto.', icon:'🥁', time:60, xp:10},
+  {title:'Am — 20 golpes limpios', desc:'Vista previa del Manual: forma el acorde Am y haz 20 golpes claros, sin cuerdas apagadas.', icon:'🎸', time:60, xp:10, visual:'chord', chord:'Am'},
+  {title:'Em → Am, 20 veces', desc:'Vista previa del Manual: practica este cambio básico buscando fluidez y limpieza.', icon:'🔄', time:60, xp:15, visual:'chord-change', chords:['Em','Am']},
+  {title:'Pentatónica Am — sube y baja', desc:'Vista previa del Manual: toca la posición 1 de la pentatónica en Am a 60 BPM.', icon:'🎼', time:120, xp:15, visual:'scale'},
+  {title:'Lick blues × 5', desc:'Vista previa del Manual / Patreon: toca este lick corto cinco veces, lento y con intención.', icon:'⚡', time:60, xp:15, visual:'lick', lick:0},
+  {title:'Improvisa 30 segundos', desc:'Usa la pentatónica de Am y crea una frase simple. No pienses demasiado: toca.', icon:'🎵', time:30, xp:20, visual:'scale'},
+  {title:'G — 15 golpes', desc:'Vista previa del Manual: forma el acorde G y tócalo limpio 15 veces.', icon:'🎸', time:60, xp:10, visual:'chord', chord:'G'},
+  {title:'Am → D', desc:'Progresión corta para entrenar cambios básicos con control y tiempo.', icon:'🔄', time:90, xp:20, visual:'chord-change', chords:['Am','D']},
+  {title:'Metrónomo a 80 BPM', desc:'Toca cualquier acorde a tiempo durante 1 minuto y siente el pulso.', icon:'🥁', time:60, xp:10, visual:'chord', chord:'Am'},
 ];
 
 function randomExercise(){
@@ -985,8 +1105,8 @@ function randomExercise(){
     id:'rand_'+Date.now(), cat:'random', belt:'white',
     title:ex.title, icon:ex.icon, xp:ex.xp,
     steps:[
-      {type:'text',  title:ex.title, icon:ex.icon, body:ex.desc},
-      {type:'exercise', title:'¡A practicar!', desc:ex.desc, time:ex.time, xp:ex.xp},
+      {type:'text',  title:ex.title, icon:ex.icon, body:ex.desc + ' Esta es una muestra gratuita del Manual de Supervivencia para Guitarristas. Si quieres seguir con más material, continúa en Patreon.'},
+      {type:'exercise', title:'¡A practicar!', desc:ex.desc, time:ex.time, xp:ex.xp, visual:ex.visual, chord:ex.chord, chords:ex.chords, lick:ex.lick},
       {type:'complete', title:'¡Bien hecho!', xp:ex.xp},
     ]
   });
@@ -999,12 +1119,20 @@ function renderLearn(){
     {id:'chords', label:'Acordes',    icon:'🎵',desc:'Am, Em, G, D, C — los más usados'},
     {id:'scales', label:'Escalas',    icon:'🎼',desc:'Pentatónica menor: el lenguaje del rock'},
     {id:'licks',  label:'Licks',      icon:'⚡',desc:'Frases listas para improvisar'},
-    {id:'improv', label:'Improvisación',icon:'🎵',desc:'Usa lo que sabes, crea música'},
+    {id:'improv', label:'Improvisación',icon:'🎵',desc:'Usa lo que sabes y crea música'},
   ];
   const el=document.getElementById('learn-body');
   el.innerHTML=`
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:30px;margin-bottom:4px;">TU RUTA DE SUPERVIVENCIA</div>
-    <div style="font-size:14px;color:var(--muted2);margin-bottom:22px;">Microlecciones gratuitas para practicar, no solo leer.</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:30px;margin-bottom:4px;">RUTA</div>
+    <div style="font-size:14px;color:var(--muted2);margin-bottom:16px;line-height:1.65;">Aquí exploras una muestra gratuita del método de Daniel Flores: microlecciones, previews del Manual y ejercicios para empezar a tocar hoy.</div>
+
+    <div class="card2" style="margin-bottom:18px;">
+      <div style="font-size:12px;font-weight:900;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Cómo se divide la app</div>
+      <div style="font-size:13px;color:var(--muted2);line-height:1.7;">
+        <strong style="color:var(--text);">Ruta</strong> te muestra las lecciones gratuitas y el camino de aprendizaje.
+        <br><strong style="color:var(--text);">Practicar</strong> te deja escuchar acordes, escalas, licks y usar el metrónomo.
+      </div>
+    </div>
 
     ${cats.map(cat=>{
       const catLessons=LESSONS.filter(l=>l.cat===cat.id);
@@ -1039,18 +1167,26 @@ function renderLearn(){
       `;
     }).join('')}
 
-    <!-- Fragment del Manual -->
-    <div style="background:linear-gradient(135deg,#12100a,#0e0c08);border:1px solid rgba(240,192,64,.2);border-radius:16px;padding:20px;margin-bottom:12px;">
-      <div style="font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">📖 Manual de Supervivencia Para Guitarristas</div>
-      <div style="font-size:14px;font-weight:600;margin-bottom:8px;">Fragmento gratuito</div>
-      <div style="border-left:3px solid var(--gold);padding:12px 14px;background:rgba(0,0,0,.3);border-radius:0 8px 8px 0;margin-bottom:12px;">
-        <p style="font-size:13px;color:var(--muted2);line-height:1.75;font-style:italic;">
-          "¿Sientes que te has estancado en la guitarra? ¿Estás atrapado en la misma pentatónica menor de siempre? ¿Tienes miedo de que, cuando llegue el momento de improvisar en vivo, no tengas las herramientas necesarias? Si te pasa algo de esto, no necesitas más ejercicios al azar. Necesitas orientación, estructura y una comunidad que te ayude a avanzar en la dirección correcta."
-        </p>
-        <div style="font-size:11px;color:var(--muted);margin-top:10px;">— Daniel Flores · Manual de Supervivencia Para Guitarristas</div>
+    <div class="card" style="margin-bottom:12px;">
+      <div style="font-size:12px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:1.4px;margin-bottom:10px;">📚 Libros de Daniel</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;margin-bottom:8px;">La ruta completa vive en los libros</div>
+      <div style="font-size:13px;color:var(--muted2);line-height:1.7;margin-bottom:14px;">
+        Esta app te da una muestra interactiva basada en las primeras páginas del método. En Patreon puedes acceder a los libros completos y profundizar la ruta.
       </div>
-      <button class="btn btn-ghost" style="font-size:13px;padding:11px;" onclick="track('view_book_preview',{book:'manual'});openPatreon('learn_book')">
-        Continuar la ruta completa en Patreon →
+
+      <div style="display:grid;gap:10px;margin-bottom:14px;">
+        <div class="card2">
+          <div style="font-size:14px;font-weight:900;margin-bottom:4px;">Manual de Supervivencia Para Guitarristas</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.55;">Método por cinturones para ordenar acordes, escalas, arpegios, modos e improvisación desde fundamentos hasta recursos avanzados.</div>
+        </div>
+        <div class="card2">
+          <div style="font-size:14px;font-weight:900;margin-bottom:4px;">Taller de Armonía Para Guitarristas</div>
+          <div style="font-size:12px;color:var(--muted2);line-height:1.55;">Inversiones, tensiones, voicings, Drop 2, Drop 3 y armonía aplicada al instrumento.</div>
+        </div>
+      </div>
+
+      <button class="btn btn-pat" style="font-size:13px;padding:12px;" onclick="track('view_book_preview',{book:'books'});openPatreon('learn_books')">
+        Ver libros completos en Patreon →
       </button>
     </div>
   `;
@@ -1062,7 +1198,8 @@ let practiceTab='chords', metroRunning=false, metroInt=null, metroBPM=60, metroB
 function renderPractice(){
   track('page_view',{page:'practice'});
   document.getElementById('practice-body').innerHTML=`
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:30px;margin-bottom:14px;">PRÁCTICA</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:30px;margin-bottom:4px;">PRÁCTICA</div>
+    <div style="font-size:13px;color:var(--muted2);margin-bottom:14px;line-height:1.65;">Escucha y practica acordes, escalas, licks y tempo con herramientas interactivas.</div>
     <div class="tabs" id="ptabs">
       <div class="tab on"  onclick="switchTab('chords')">Acordes</div>
       <div class="tab"     onclick="switchTab('scale')">Escala</div>
@@ -1124,7 +1261,7 @@ function renderChordDisplay(n){
       </div>
       ${buildChordDiag(n,ch)}
       <div style="font-size:12px;color:var(--muted2);background:var(--s2);border-radius:9px;padding:10px;margin:12px 0 14px;">💡 ${ch.tip}</div>
-      <button class="play-btn" onclick="strumChord(${JSON.stringify(ch.map)});this.classList.add('on');setTimeout(()=>this.classList.remove('on'),900);">
+      <button class="play-btn" onclick="playChordNow('${n}', this)">
         ▶ Tocar ${n}
       </button>
     </div>
@@ -1264,7 +1401,8 @@ function updBPM(val){
   if(metroRunning){stopMetro();startMetro();}
 }
 function toggleMetro(){if(metroRunning) stopMetro(); else startMetro();}
-function startMetro(){
+async function startMetro(){
+  await primeAudio();
   const btn=document.getElementById('metro-btn');
   if(btn){btn.textContent='⏹ Parar';btn.style.background='var(--fire)';btn.style.color='#fff';}
   metroRunning=true; metroBeat=0;
@@ -1290,57 +1428,46 @@ function stopMetro(){
 function renderCommunity(){
   track('view_patreon_benefits');
   document.getElementById('community-body').innerHTML=`
-    <!-- Daniel hero -->
-    <div style="background:linear-gradient(160deg,#141008,#0a0808);border:1px solid rgba(240,192,64,.2);border-radius:18px;padding:20px;margin-bottom:14px;">
+    <div style="background:linear-gradient(160deg,#2f3030,#171717);border:1px solid rgba(217,154,43,.28);border-radius:22px;padding:22px;margin-bottom:16px;color:#fff;">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-        <div style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--fire));display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">🎸</div>
-        <!-- ▸ Foto real: <img src="daniel.jpg" style="width:50px;height:50px;border-radius:50%;object-fit:cover;"> -->
+        <div style="width:54px;height:54px;border-radius:18px;background:rgba(217,154,43,.14);border:1px solid rgba(217,154,43,.28);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">🎸</div>
         <div>
-          <div style="font-size:15px;font-weight:700;color:var(--gold);">Daniel Flores</div>
-          <div style="font-size:12px;color:var(--muted2);">Guitarrista · Lima, Perú</div>
-          <div style="font-size:11px;color:var(--muted);">International Music College Freiburg (Berklee)</div>
+          <div style="font-size:18px;font-weight:900;color:#D99A2B;">Daniel Flores Music</div>
+          <div style="font-size:12px;color:rgba(255,248,241,.68);">Guitarrista · Educador · Autor</div>
         </div>
       </div>
-      <p style="font-size:13px;color:var(--muted2);line-height:1.72;">
-        Esta app es la versión interactiva de lo que enseño en Patreon. Si sientes que te está aportando, la comunidad es el siguiente paso natural — ahí está el contenido completo, el acompañamiento y las personas que están en el mismo proceso que tú.
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:.98;margin-bottom:10px;">
+        LA APP ES EL INICIO.<br><span style="color:#D99A2B;">PATREON ES LA RUTA COMPLETA.</span>
+      </div>
+      <p style="font-size:13px;color:rgba(255,248,241,.75);line-height:1.72;">
+        Aquí practicas con una muestra interactiva. En Patreon accedes al método completo: libros, clases, videos, análisis, comunidad y material para avanzar con estructura.
       </p>
     </div>
 
-    <!-- Gratis vs Patreon -->
-    <div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">App gratis vs. Comunidad Patreon</div>
-    <div class="card" style="margin-bottom:14px;">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:10px;overflow:hidden;">
-        <div style="background:var(--s2);padding:14px;border-right:1px solid var(--border);">
-          <div style="font-size:10px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">App (gratis)</div>
-          ${['Acordes interactivos con audio','Pentatónica Am pos. 1','2 licks con tablatura','Metrónomo 40–220 BPM','Reto diario','Progreso y cinturones'].map(f=>`
-            <div style="font-size:12px;color:var(--muted2);margin-bottom:7px;display:flex;gap:6px;align-items:flex-start;">
-              <span style="color:var(--green);flex-shrink:0;">✓</span>${f}
-            </div>
-          `).join('')}
+    <div style="font-size:11px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Qué desbloqueas en Patreon</div>
+    <div style="display:grid;gap:10px;margin-bottom:14px;">
+      ${[
+        {icon:'📚',title:'Libros completos',desc:'Manual de Supervivencia, Taller de Armonía y materiales descargables.'},
+        {icon:'🎥',title:'Clases y videos exclusivos',desc:'Explicaciones más profundas para conectar teoría con práctica real.'},
+        {icon:'⚡',title:'Licks, arpegios y análisis',desc:'Recursos aplicados para improvisar, acompañar y entender canciones.'},
+        {icon:'💬',title:'Comunidad y acompañamiento',desc:'Espacio para resolver dudas, seguir rutas y practicar con más dirección.'},
+      ].map(x=>`
+        <div class="card" style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:40px;height:40px;border-radius:14px;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">${x.icon}</div>
+          <div>
+            <div style="font-size:14px;font-weight:900;margin-bottom:3px;">${x.title}</div>
+            <div style="font-size:12px;color:var(--muted2);line-height:1.55;">${x.desc}</div>
+          </div>
         </div>
-        <div style="background:rgba(249,104,84,.06);padding:14px;">
-          <div style="font-size:10px;font-weight:800;color:var(--pat);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Patreon</div>
-          ${['Manual de Supervivencia (PDF completo)','Taller de Armonía (PDF completo)','Todos los licks y arpegios','Videos exclusivos semanales','Taller de Arpegios en vivo (sábados)','Análisis de solos (eliges cuál)','Clases en vivo + grabaciones','Q&A mensual con Daniel','Grupo de WhatsApp activo','Descuentos en masterclasses'].map(f=>`
-            <div style="font-size:12px;color:var(--muted2);margin-bottom:7px;display:flex;gap:6px;align-items:flex-start;">
-              <span style="color:var(--pat);flex-shrink:0;">★</span>${f}
-            </div>
-          `).join('')}
-        </div>
-      </div>
+      `).join('')}
     </div>
 
-    <!-- CTA -->
     <div class="com-banner" style="margin-bottom:12px;">
-      <div style="font-size:15px;font-weight:700;margin-bottom:4px;">Únete a la comunidad</div>
+      <div style="font-size:15px;font-weight:900;margin-bottom:5px;">Continúa con Daniel</div>
       <div style="font-size:13px;color:var(--muted2);margin-bottom:16px;line-height:1.65;">
-        Hay niveles gratuitos y de pago. Puedes entrar gratis, conocer la comunidad y el contenido, y decidir. Sin presión.
+        Si esta práctica te sirvió, el siguiente paso es entrar a Patreon y seguir el contenido completo.
       </div>
-      <button class="btn btn-pat" onclick="openPatreon('community_main')">Unirme a Patreon →</button>
-    </div>
-
-    <div style="text-align:center;font-size:11px;color:var(--muted);line-height:1.9;margin-bottom:8px;">
-      🔒 Patreon gestiona los pagos de forma segura.<br>
-      Esta app no procesa pagos ni almacena datos de pago.
+      <button class="btn btn-pat" onclick="openPatreon('community_main')">Ir al Patreon de Daniel →</button>
     </div>
   `;
 }
@@ -1348,11 +1475,12 @@ function renderCommunity(){
 /* ═══════ ABOUT DANIEL ═══════ */
 function renderAbout(){
   document.getElementById('about-body').innerHTML=`
-    <div style="text-align:center;padding:28px 0 24px;">
-      <div style="width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#2a1a04,#1a1004);border:3px solid rgba(240,192,64,.35);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:38px;">🎸</div>
-      <!-- ▸ Reemplaza con: <img src="daniel.jpg" style="width:88px;height:88px;border-radius:50%;object-fit:cover;border:3px solid rgba(240,192,64,.35);"> -->
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:1px;color:var(--gold);">DANIEL FLORES</div>
-      <div style="font-size:13px;color:var(--muted2);margin-top:2px;">Guitarrista · Músico · Educador · Lima, Perú</div>
+    <div style="text-align:center;padding:28px 0 22px;">
+      <div style="width:88px;height:88px;border-radius:24px;background:var(--s2);border:1px solid var(--border2);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+        <img src="icons/icon-192.png?v=9" alt="DFM" style="width:100%;height:100%;object-fit:cover;display:block;">
+      </div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:1px;color:var(--gold);">DANIEL FLORES MUSIC</div>
+      <div style="font-size:13px;color:var(--muted2);margin-top:2px;font-weight:700;">Guitarrista · Educador · Autor</div>
     </div>
 
     <div class="card fu" style="margin-bottom:12px;">
@@ -1360,18 +1488,15 @@ function renderAbout(){
         🎓 Egresado de guitarra eléctrica en la <strong style="color:var(--text);">International Music College Freiburg</strong> (Berklee International Network) en Alemania.
       </div>
       <div style="font-size:13px;color:var(--muted2);line-height:1.8;margin-bottom:12px;">
-        🎓 Docente y coordinador de guitarra y armonía en la <strong style="color:var(--text);">Universidad de Ciencias Aplicadas (UPC)</strong> de Lima (2011–2021).
-      </div>
-      <div style="font-size:13px;color:var(--muted2);line-height:1.8;margin-bottom:12px;">
-        🎸 Director musical del cantante <strong style="color:var(--text);">Gian Marco</strong>. Dos discos como solista: <em>"Seguir"</em> y <em>"RoundTrip"</em>.
+        🎓 Docente y coordinador de guitarra y armonía en la <strong style="color:var(--text);">Universidad Peruana de Ciencias Aplicadas (UPC)</strong> entre 2011 y 2021.
       </div>
       <div style="font-size:13px;color:var(--muted2);line-height:1.8;">
         📚 Autor del <strong style="color:var(--text);">Manual de Supervivencia Para Guitarristas</strong> y el <strong style="color:var(--text);">Taller de Armonía Para Guitarristas</strong>.
       </div>
     </div>
 
-    <div class="card fu2" style="margin-bottom:12px;background:rgba(240,192,64,.04);border-color:rgba(240,192,64,.15);">
-      <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:10px;letter-spacing:.5px;">SU FILOSOFÍA</div>
+    <div class="card fu2" style="margin-bottom:12px;background:rgba(217,154,43,.08);border-color:rgba(217,154,43,.22);">
+      <div style="font-size:11px;font-weight:800;color:var(--gold);margin-bottom:10px;letter-spacing:.5px;">ENFOQUE</div>
       <div class="daniel-q" style="font-size:14px;">
         "No necesitas más ejercicios al azar. Necesitas orientación, estructura y una comunidad que te ayude a avanzar en la dirección correcta."
       </div>
@@ -1379,7 +1504,7 @@ function renderAbout(){
     </div>
 
     <div class="card fu3" style="margin-bottom:12px;">
-      <div style="font-size:12px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Encuéntrame en</div>
+      <div style="font-size:12px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Encuéntrame en</div>
       ${[
         {icon:'⭐',label:'Patreon',sub:'Libros, clases y comunidad',action:`openPatreon('about')`},
         {icon:'▶',label:'YouTube',sub:'Clases y lecciones gratuitas',action:`window.open('https://www.youtube.com/danielfloresmusic','_blank')`},
@@ -1387,28 +1512,33 @@ function renderAbout(){
       ].map(s=>`
         <button onclick="${s.action}" style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--s2);border-radius:12px;width:100%;text-align:left;margin-bottom:8px;">
           <div style="width:36px;height:36px;border-radius:10px;background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:18px;">${s.icon}</div>
-          <div style="flex:1;"><div style="font-size:14px;font-weight:600;">${s.label}</div><div style="font-size:11px;color:var(--muted2);">${s.sub}</div></div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;">${s.label}</div><div style="font-size:11px;color:var(--muted2);">${s.sub}</div></div>
           <div style="color:var(--muted2);">›</div>
         </button>
       `).join('')}
     </div>
 
-    <button class="btn btn-pat fu4" onclick="openPatreon('about_cta')">Unirme a la comunidad →</button>
+    <button class="btn btn-pat fu4" onclick="openPatreon('about_cta')">Ir al Patreon de Daniel →</button>
 
-    <!-- Perfil personal -->
     <div class="card" style="margin-top:12px;">
-      <div style="font-size:12px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Mi perfil en la app</div>
-      <div style="font-size:14px;margin-bottom:4px;">👤 <strong>${ST.name}</strong></div>
-      ${ST.email?`<div style="font-size:13px;color:var(--muted2);">✉ ${ST.email}</div>`:''}
-      ${ST.phone?`<div style="font-size:13px;color:var(--muted2);">📱 ${ST.phone}</div>`:''}
-      <div style="margin-top:14px;">
-        <button onclick="if(confirm('¿Resetear todo el progreso?')){localStorage.removeItem('dfm4');location.reload();}"
-          style="width:100%;padding:12px;background:transparent;border:1px solid rgba(255,80,80,.3);border-radius:12px;color:var(--fire);font-size:13px;font-weight:600;">
-          Resetear progreso
-        </button>
-      </div>
+      <div style="font-size:12px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Personaliza la app</div>
+      <label class="field-label">Tu nombre en la app</label>
+      <input id="profile-name" class="field" type="text" maxlength="40" placeholder="Escribe tu nombre" value="${ST.name && ST.name!=='Tu nombre' ? ST.name : ''}"/>
+      <button onclick="saveAppName()" class="btn btn-ghost" style="margin-top:10px;padding:12px;font-size:13px;">Guardar nombre</button>
+      <button onclick="if(confirm('¿Resetear todo el progreso?')){localStorage.removeItem('dfm4');location.reload();}"
+        style="width:100%;padding:12px;background:transparent;border:1px solid rgba(217,72,15,.3);border-radius:12px;color:var(--fire);font-size:13px;font-weight:700;margin-top:10px;">
+        Resetear progreso
+      </button>
     </div>
   `;
+}
+
+function saveAppName(){
+  const val=document.getElementById('profile-name')?.value.trim();
+  ST.name = val || 'Tu nombre';
+  save();
+  renderAbout();
+  if(CUR==='s-home') renderHome();
 }
 
 /* ═══════ PROGRESS ═══════ */
@@ -1498,7 +1628,7 @@ function renderLesStep(){
       <div style="font-size:13px;color:var(--muted2);margin-bottom:16px;">${ch.tip}</div>
       <div class="card" style="margin-bottom:12px;">
         ${buildChordDiag(step.chord,ch)}
-        <div style="margin-top:14px;"><button class="play-btn" onclick="strumChord(${JSON.stringify(ch.map)});this.classList.add('on');setTimeout(()=>this.classList.remove('on'),900);">▶ Tocar ${step.chord}</button></div>
+        <div style="margin-top:14px;"><button class="play-btn" onclick="playChordNow('${step.chord}', this)">▶ Tocar ${step.chord}</button></div>
       </div>
       <button class="btn btn-gold" onclick="nextStep()">Ya lo tengo →</button>
     </div>`;
@@ -1540,7 +1670,8 @@ function renderLesStep(){
   else if(step.type==='exercise'){
     body.innerHTML=`<div style="padding-top:16px;">
       <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;margin-bottom:4px;">${step.title}</div>
-      <div style="font-size:14px;color:var(--muted2);margin-bottom:24px;">${step.desc}</div>
+      <div style="font-size:14px;color:var(--muted2);margin-bottom:12px;">${step.desc}</div>
+      ${buildPracticeVisual(step)}
       <div style="text-align:center;margin-bottom:24px;">
         <div class="tring">
           <svg width="116" height="116" viewBox="0 0 116 116"><circle cx="58" cy="58" r="50" fill="none" stroke="var(--border2)" stroke-width="6"/><circle id="tr" cx="58" cy="58" r="50" fill="none" stroke="var(--gold)" stroke-width="6" stroke-dasharray="314.2" stroke-dashoffset="314.2" stroke-linecap="round"/></svg>
@@ -1632,7 +1763,7 @@ function openChallenge(id){
   track('start_challenge',{challenge_id:id});
   openLesson({id:'ch_'+id,cat:'daily',belt:'white',title:ch.title,icon:ch.icon,xp:ch.xp,steps:[
     {type:'text',title:ch.title,icon:ch.icon,body:ch.desc},
-    {type:'exercise',title:'¡A practicar!',desc:ch.desc,time:ch.time,xp:ch.xp},
+    {type:'exercise',title:'¡A practicar!',desc:ch.desc,time:ch.time,xp:ch.xp,visual:ch.visual,chord:ch.chord,chords:ch.chords,lick:ch.lick},
     {type:'complete',title:'¡Reto completado!',xp:ch.xp},
   ]});
 }
