@@ -1,282 +1,231 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<meta name="theme-color" content="#F2F3F1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<meta name="theme-color" content="#F3F4F2" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="apple-mobile-web-app-title" content="MSPG" />
 <title>MSPG · Manual de Supervivencia Para Guitarristas</title>
-<meta name="description" content="MSPG, demo interactiva del Manual de Supervivencia Para Guitarristas by Daniel Flores." />
 <link rel="manifest" href="manifest.json" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
 <style>
-:root{
-  --bg:#F2F3F1;
-  --card:#FFFFFF;
-  --soft:#ECEBE7;
-  --soft2:#E2DFD8;
-  --line:#D4D0C8;
-  --text:#151515;
-  --muted:#706D66;
-  --gold:#D89A2B;
-  --gold2:#A66D13;
-  --black:#1D1D1D;
-  --patreon:#F96854;
-  --blue:#4564D6;
-  --purple:#7357B8;
-  --brown:#7A4E2E;
-  --danger:#D9480F;
-}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;overflow:hidden;}
-button,input{font-family:inherit;color:inherit;} button{border:0;background:none;cursor:pointer;} input{outline:none;}
-#app{max-width:430px;height:100vh;height:100dvh;margin:0 auto;background:var(--bg);position:relative;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.05);}
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);transition:.28s ease;}
-.screen.hidden{opacity:0;transform:translateX(100%);pointer-events:none;}
-.scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:18px 18px 108px;}
-.scroll::-webkit-scrollbar{display:none;}
-.topbar{height:62px;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border-bottom:1px solid var(--line);background:rgba(242,243,241,.92);backdrop-filter:blur(18px);z-index:5;}
-.brand-kicker{font-size:9px;font-weight:900;letter-spacing:1.7px;color:var(--gold);text-transform:uppercase;line-height:1;}
-.brand-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1.2px;line-height:.95;color:var(--text);}
-.signature{height:32px;max-width:88px;object-fit:contain;display:block;}
-.icon-btn{width:38px;height:38px;border-radius:14px;border:1px solid var(--line);background:var(--soft);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;}
-.nav{position:absolute;bottom:0;left:0;right:0;height:76px;padding:8px 0 max(8px,env(safe-area-inset-bottom));display:flex;border-top:1px solid var(--line);background:rgba(242,243,241,.96);backdrop-filter:blur(20px);z-index:10;}
-.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);position:relative;}
-.nav button.on{color:var(--gold2);} .nav button.on:before{content:'';position:absolute;top:-8px;left:30%;right:30%;height:3px;border-radius:0 0 6px 6px;background:var(--gold);}
-.nav .ico{font-size:20px;line-height:1;}
-.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 12px 30px rgba(0,0,0,.035);}
-.soft-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:14px;}
-.btn{width:100%;padding:15px 16px;border-radius:16px;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s;}
-.btn:active{transform:scale(.98);} .btn-gold{background:var(--gold);color:#111;} .btn-dark{background:var(--black);color:#fff;} .btn-ghost{background:var(--card);border:1.5px solid var(--line);} .btn-pat{background:linear-gradient(135deg,#F96854,#E74031);color:#fff;}
-.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800;color:var(--muted);}
-.book-badge{font-size:10px;font-weight:900;letter-spacing:1.3px;text-transform:uppercase;color:var(--gold2);}
-.hero{min-height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:24px 22px 28px;}
-.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;}
-.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,15vw,76px);line-height:.9;letter-spacing:.4px;margin:28px 0 16px;}
-.hero p{font-size:15px;line-height:1.72;color:var(--muted);max-width:330px;}
-.mspg-logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;line-height:.9;color:var(--text);} .mspg-logo span{font-size:14px;letter-spacing:1.2px;color:var(--gold2);} .mspg-by{font-size:11px;color:var(--muted);font-weight:900;margin-top:5px;}
-.exercise-card{overflow:hidden;padding:0;}
-.exercise-cover{padding:18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,#F7F7F4);}
-.exercise-title{font-size:26px;font-weight:900;line-height:1.05;letter-spacing:-.7px;margin:9px 0 8px;}
-.exercise-desc{font-size:13px;line-height:1.62;color:var(--muted);}
-.exercise-meta{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 0;}
-.book-img-wrap{background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.02);}
-.book-img{width:100%;display:block;border-radius:12px;background:#fff;object-fit:contain;max-height:355px;}
-.step-img{width:100%;display:block;border-radius:14px;background:white;border:1px solid var(--line);max-height:310px;object-fit:contain;}
-.notice{font-size:12px;line-height:1.55;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:13px;}
-.section-title{display:flex;align-items:center;justify-content:space-between;margin:20px 2px 10px;}
-.section-title h2{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.6px;color:var(--muted);} .section-title button{font-size:12px;font-weight:900;color:var(--gold2);}
-.belts{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:12px 0;}
-.belt{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:9px 5px;text-align:center;min-height:64px;} .belt .dot{width:18px;height:18px;border-radius:50%;margin:0 auto 5px;border:1px solid rgba(0,0,0,.15);} .belt b{display:block;font-size:8px;letter-spacing:.5px;text-transform:uppercase;} .belt span{font-size:8px;color:var(--muted);}
-.timer-box{text-align:center;margin-top:14px;} .timer-num{font-family:'Bebas Neue',sans-serif;font-size:60px;line-height:1;color:var(--text);letter-spacing:1px;}
-.timer-controls{display:flex;gap:9px;margin-top:12px;}.timer-controls button{flex:1;}
-.step-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:12px;}.step-count{font-size:12px;font-weight:900;color:var(--gold2);}.step-name{font-size:23px;font-weight:900;line-height:1.08;letter-spacing:-.5px;margin-bottom:6px;}.step-copy{font-size:13px;color:var(--muted);line-height:1.62;}
-.progress{height:7px;background:var(--soft2);border-radius:999px;overflow:hidden;margin:12px 0 0}.progress div{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:999px;transition:.25s;}
-.tabs{display:flex;background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:4px;margin-bottom:14px;}.tab{flex:1;border-radius:12px;padding:10px 6px;font-size:12px;font-weight:900;color:var(--muted);}.tab.on{background:var(--card);color:var(--text);box-shadow:0 4px 14px rgba(0,0,0,.04);}
-.chord-buttons{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:13px;}.chord-buttons button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:9px 14px;font-weight:900;font-size:13px;}.chord-buttons button.on{background:var(--gold);border-color:var(--gold);color:#111;}
-.chord-diag{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin:12px 0;}.grid{display:grid;grid-template-columns:repeat(6,1fr);border-top:4px solid #333;border-left:1px solid var(--line);}.cell{height:42px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center;}.finger{width:23px;height:23px;border-radius:50%;background:var(--gold);font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;}
-.metro-dots{display:flex;justify-content:center;gap:12px;margin:16px 0 22px}.metro-dot{width:14px;height:14px;border-radius:50%;background:var(--line);}.metro-dot.hit{background:var(--gold);box-shadow:0 0 0 6px rgba(216,154,43,.16)}.metro-dot.one{background:var(--danger);}
-.range{width:100%;accent-color:var(--gold);}.link-row{display:flex;gap:12px;align-items:center;width:100%;padding:14px;border-radius:17px;background:var(--card);border:1px solid var(--line);text-align:left;margin-bottom:9px}.link-row .li{width:42px;height:42px;border-radius:14px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:20px;}.link-row b{font-size:14px;}.link-row p{font-size:12px;color:var(--muted);line-height:1.35;margin-top:2px;}.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;}.compare .col{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px}.compare h3{font-size:13px;margin-bottom:10px}.compare ul{list-style:none;display:grid;gap:9px}.compare li{font-size:12px;color:var(--muted);line-height:1.35}.audio-nudge{position:absolute;left:16px;right:16px;bottom:88px;background:#111;color:#fff;border-radius:16px;padding:12px 14px;display:none;align-items:center;gap:10px;z-index:99;font-size:13px}.audio-nudge.show{display:flex}.audio-nudge button{margin-left:auto;background:var(--gold);border-radius:12px;padding:9px 12px;font-weight:900;}
-.modal{position:absolute;inset:0;background:rgba(20,20,20,.82);z-index:100;display:none;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}.modal img{max-width:100%;max-height:86%;background:white;border-radius:14px}.modal button{position:absolute;top:18px;right:18px;background:white;border-radius:14px;padding:11px 14px;font-weight:900;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--bg:#F3F4F2;--card:#FFFFFF;--card2:#EEEDEA;--line:#D8D6D1;--text:#151515;--muted:#74716B;--muted2:#5F5C57;--gold:#D99A2B;--gold2:#A76D0B;--dark:#191919;--red:#F05B45;--blue:#3563D8;--green:#2F9E44;--purple:#7752C9;--brown:#835236;--black:#161616;--shadow:0 16px 40px rgba(20,20,20,.08)}
+html,body{height:100%;overflow:hidden;background:var(--bg);font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--text)}
+button{font:inherit;border:0;background:transparent;color:inherit;cursor:pointer}a{color:inherit;text-decoration:none}
+#app{height:100dvh;max-width:440px;margin:0 auto;background:var(--bg);position:relative;overflow:hidden}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);transition:.28s ease;overflow:hidden}.screen.hidden{transform:translateX(104%);opacity:0;pointer-events:none}.screen.prev{transform:translateX(-104%);opacity:0;pointer-events:none}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:102px}.scroll::-webkit-scrollbar{display:none}
+.top{height:64px;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:rgba(243,244,242,.94);backdrop-filter:blur(18px);border-bottom:1px solid var(--line);z-index:4;flex-shrink:0}.top-title{font-family:'Bebas Neue',sans-serif;font-size:25px;letter-spacing:3px;color:var(--text);line-height:.9}.top-sub{font-size:9px;font-weight:900;letter-spacing:1.6px;color:var(--gold);text-transform:uppercase}.sig{width:82px;height:auto;display:block}.sig-small{width:58px;height:auto;display:block}.icon-btn{width:42px;height:42px;border-radius:14px;background:var(--card2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:900}.bottom{position:absolute;left:0;right:0;bottom:0;z-index:10;display:grid;grid-template-columns:1fr 1fr;background:rgba(243,244,242,.96);backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:7px 10px max(9px,env(safe-area-inset-bottom));gap:9px}.navbtn{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:10px 8px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:900;color:var(--muted2);text-transform:uppercase;letter-spacing:.6px}.navbtn.on{background:var(--text);color:white;border-color:var(--text)}.navbtn span{font-size:19px;line-height:1}
+.brand{font-family:'Bebas Neue',sans-serif;letter-spacing:3px;line-height:.95}.gold{color:var(--gold)}.muted{color:var(--muted)}.pill{display:inline-flex;align-items:center;gap:7px;background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:9px 14px;font-weight:900;color:var(--muted2);font-size:13px}.btn{width:100%;border-radius:20px;padding:17px 18px;font-weight:900;font-size:16px;display:flex;align-items:center;justify-content:center;gap:9px;transition:.15s ease}.btn:active{transform:scale(.985)}.btn-primary{background:var(--gold);color:#101010;box-shadow:0 12px 22px rgba(217,154,43,.18)}.btn-dark{background:var(--dark);color:white}.btn-ghost{background:var(--card);border:1.5px solid var(--line);color:var(--text)}.btn-red{background:var(--red);color:white}.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:var(--shadow)}.card.flat{box-shadow:none}.kicker{font-size:11px;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold)}
+/* Welcome */
+.welcome{min-height:100dvh;display:flex;flex-direction:column;padding:42px 24px 24px}.welcome-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:auto}.mspg{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:4px;line-height:.85;color:var(--text)}.manual{margin-top:18px;font-family:'Bebas Neue',sans-serif;font-size:27px;line-height:1.18;letter-spacing:3.2px;color:var(--gold)}.by{margin-top:14px;font-weight:900;color:#5f5f5f;font-size:17px}.welcome-body{padding:34px 0 0}.welcome-title{font-family:'Bebas Neue',sans-serif;font-size:56px;line-height:.92;letter-spacing:1px;margin:24px 0 18px;max-width:340px}.welcome-copy{font-size:18px;line-height:1.72;color:var(--muted2);max-width:360px}.welcome-actions{margin-top:auto;display:grid;gap:13px;padding-top:28px}
+/* Practice */
+.practice-wrap{padding:18px 18px 112px}.exercise-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}.belt{font-size:11px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;padding:8px 11px;border-radius:999px;border:1px solid var(--line);background:var(--card)}.belt.white{color:#696A75}.belt.blue{color:var(--blue)}.belt.purple{color:var(--purple)}.belt.brown{color:var(--brown)}.belt.black{color:var(--black)}.exercise-title{font-size:27px;line-height:1.1;font-weight:900;letter-spacing:-.6px;margin:9px 0 7px}.exercise-desc{font-size:13px;line-height:1.62;color:var(--muted2)}.source{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);margin-top:12px}.source strong{color:var(--text)}.book-img{width:100%;border-radius:18px;border:1px solid var(--line);display:block;background:white;box-shadow:inset 0 0 0 1px #fff;max-height:430px;object-fit:contain}.img-shell{background:white;border-radius:20px;padding:10px;border:1px solid var(--line);margin:14px 0}.tap-note{text-align:center;font-size:11px;color:var(--muted);margin-top:8px}.step-card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px;margin:14px 0}.step-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}.step-count{font-size:11px;color:var(--muted);font-weight:900}.step-name{font-size:19px;font-weight:900;line-height:1.2}.step-inst{font-size:13px;line-height:1.62;color:var(--muted2);margin-top:6px}.progress{height:7px;background:var(--card2);border:1px solid var(--line);border-radius:99px;overflow:hidden;margin-top:12px}.progress>div{height:100%;background:linear-gradient(90deg,var(--gold),#EFBC58);border-radius:99px;transition:.25s}.timer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0}.timer-num{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:2px}.mini-btn{border:1px solid var(--line);background:var(--card2);border-radius:14px;padding:12px 14px;font-weight:900}.actions{display:grid;gap:11px;margin-top:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.complete{background:#ECF8EF;border:1px solid #CFEED8;color:#1F7D3B;border-radius:18px;padding:14px;text-align:center;font-weight:900;margin-top:12px}
+/* Community */
+.com-wrap{padding:18px 18px 112px}.hero-card{background:var(--dark);color:white;border-radius:26px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}.hero-card .kicker{color:var(--gold)}.hero-card p{color:rgba(255,255,255,.78);line-height:1.68;font-size:13.5px}.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:13px 0}.compare-col{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px}.compare-col h3{font-size:14px;margin-bottom:10px}.compare-col ul{list-style:none;display:grid;gap:8px}.compare-col li{font-size:12px;color:var(--muted2);line-height:1.35}.books{display:grid;gap:9px}.book-row{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:13px;display:flex;gap:12px}.book-dot{width:12px;height:12px;border-radius:50%;margin-top:4px;flex-shrink:0}.book-row h4{font-size:13px;margin-bottom:4px}.book-row p{font-size:11.5px;color:var(--muted2);line-height:1.45}.links{display:grid;gap:10px;margin-top:14px}.link{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:13px}.link-ico{width:40px;height:40px;border-radius:14px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:20px}.link-title{font-weight:900;font-size:14px}.link-sub{font-size:12px;color:var(--muted)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.82);display:none;align-items:center;justify-content:center;z-index:50;padding:18px}.modal.show{display:flex}.modal img{max-width:100%;max-height:82vh;border-radius:14px;background:white}.modal button{position:absolute;top:20px;right:20px;color:white;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:10px 13px;font-weight:900}
+.audio-nudge{position:fixed;left:14px;right:14px;bottom:84px;background:var(--dark);color:white;border-radius:18px;padding:12px 13px;display:none;align-items:center;gap:10px;z-index:60;font-size:13px;box-shadow:var(--shadow)}.audio-nudge.show{display:flex}.audio-nudge button{margin-left:auto;background:var(--gold);color:#111;border-radius:12px;padding:9px 12px;font-weight:900;font-size:12px}
+@media(max-height:720px){.welcome{padding-top:28px}.welcome-title{font-size:46px}.welcome-copy{font-size:15px;line-height:1.6}.manual{font-size:23px}.mspg{font-size:46px}.sig{width:74px}.welcome-body{padding-top:20px}}
 </style>
 </head>
 <body>
 <div id="app">
-  <section class="screen" id="welcome">
-    <div class="hero">
-      <div class="hero-top">
+  <section class="screen" id="s-welcome">
+    <div class="welcome">
+      <div class="welcome-head">
         <div>
-          <div class="mspg-logo">MSPG<br><span>MANUAL DE SUPERVIVENCIA<br>PARA GUITARRISTAS</span></div>
-          <div class="mspg-by">by Daniel Flores</div>
+          <div class="mspg">MSPG</div>
+          <div class="manual">MANUAL DE SUPERVIVENCIA<br>PARA GUITARRISTAS</div>
+          <div class="by">by Daniel Flores</div>
         </div>
-        <img class="signature" src="assets/signature.png" alt="Firma Daniel Flores">
+        <img class="sig" src="assets/signature.png" alt="Firma Daniel Flores" />
       </div>
-      <div>
-        <div class="pill">5 libros · 5 cinturones</div>
-        <h1>DEJA DE<br><span style="color:var(--gold)">PRACTICAR</span><br>AL AZAR</h1>
-        <p>Una demo interactiva del método de Daniel Flores. Recibe un ejercicio autorizado del manual, practícalo por pasos y sigue la ruta completa en Patreon.</p>
+      <div class="welcome-body">
+        <span class="pill">5 libros · 5 cinturones</span>
+        <h1 class="welcome-title">MANUAL DE SUPERVIVENCIA PARA GUITARRISTAS</h1>
+        <p class="welcome-copy">Una ruleta de práctica con ejercicios autorizados del manual. Recibe un ejercicio al azar, practícalo por pasos y continúa el método completo en Patreon.</p>
       </div>
-      <div style="display:grid;gap:10px;">
-        <button class="btn btn-gold" onclick="startApp()">Empezar práctica →</button>
-        <button class="btn btn-ghost" onclick="showScreen('community')">Conocer MSPG</button>
+      <div class="welcome-actions">
+        <button class="btn btn-primary" onclick="startApp('practice')">Practicar →</button>
+        <button class="btn btn-ghost" onclick="startApp('community')">Comunidad</button>
       </div>
     </div>
   </section>
 
-  <section class="screen hidden" id="home">
-    <div class="topbar">
+  <section class="screen hidden" id="s-practice">
+    <div class="top">
       <div>
-        <div class="brand-kicker">MSPG</div>
-        <div class="brand-title">Manual de Supervivencia<br>Para Guitarristas</div>
+        <div class="top-title">MSPG</div>
+        <div class="top-sub">Ruleta de práctica</div>
       </div>
-      <img class="signature" src="assets/signature.png" alt="DF">
+      <img class="sig-small" src="assets/signature.png" alt="Daniel Flores" />
     </div>
-    <div class="scroll" id="home-body"></div>
-    <div class="nav"><button class="on" onclick="nav('home')"><span class="ico">🏠</span>Inicio</button><button onclick="nav('practice')"><span class="ico">🎸</span>Practicar</button><button onclick="nav('community')"><span class="ico">🌟</span>Comunidad</button></div>
+    <div class="scroll practice-wrap" id="practiceBody"></div>
+    <nav class="bottom">
+      <button class="navbtn on" onclick="showScreen('practice')"><span>🎲</span>Practicar</button>
+      <button class="navbtn" onclick="showScreen('community')"><span>🌟</span>Comunidad</button>
+    </nav>
   </section>
 
-  <section class="screen hidden" id="practice">
-    <div class="topbar"><div><div class="brand-kicker">Herramientas</div><div class="brand-title">Practicar</div></div><button class="icon-btn" onclick="nav('home')">⌂</button></div>
-    <div class="scroll" id="practice-body"></div>
-    <div class="nav"><button onclick="nav('home')"><span class="ico">🏠</span>Inicio</button><button class="on" onclick="nav('practice')"><span class="ico">🎸</span>Practicar</button><button onclick="nav('community')"><span class="ico">🌟</span>Comunidad</button></div>
+  <section class="screen hidden" id="s-community">
+    <div class="top">
+      <div>
+        <div class="top-title">MSPG</div>
+        <div class="top-sub">Comunidad</div>
+      </div>
+      <img class="sig-small" src="assets/signature.png" alt="Daniel Flores" />
+    </div>
+    <div class="scroll com-wrap" id="communityBody"></div>
+    <nav class="bottom">
+      <button class="navbtn" onclick="showScreen('practice')"><span>🎲</span>Practicar</button>
+      <button class="navbtn on" onclick="showScreen('community')"><span>🌟</span>Comunidad</button>
+    </nav>
   </section>
-
-  <section class="screen hidden" id="community">
-    <div class="topbar"><div><div class="brand-kicker">Comunidad</div><div class="brand-title">Daniel Flores Music</div></div><img class="signature" src="assets/signature.png" alt="DF"></div>
-    <div class="scroll" id="community-body"></div>
-    <div class="nav"><button onclick="nav('home')"><span class="ico">🏠</span>Inicio</button><button onclick="nav('practice')"><span class="ico">🎸</span>Practicar</button><button class="on" onclick="nav('community')"><span class="ico">🌟</span>Comunidad</button></div>
-  </section>
-
-  <section class="screen hidden" id="exercise">
-    <div class="topbar"><button class="icon-btn" onclick="closeExercise()">←</button><div style="text-align:center"><div class="brand-kicker" id="ex-kicker">MSPG</div><div class="brand-title" id="ex-top">Ejercicio</div></div><button class="icon-btn" onclick="pickRandomExercise(); openCurrentExercise();">↻</button></div>
-    <div class="scroll" id="exercise-body"></div>
-  </section>
-
-  <div class="audio-nudge" id="audio-nudge">🔊 Toca para activar audio <button onclick="primeAudio()">Activar</button></div>
-  <div class="modal" id="img-modal" onclick="closeImageModal()"><button>Cerrar</button><img id="modal-img" src="" alt="Vista ampliada"></div>
 </div>
+
+<div class="modal" id="imgModal" onclick="closeModal()"><button>Cerrar</button><img id="modalImg" src="" alt="Ejercicio ampliado"></div>
+<div id="audioNudge" class="audio-nudge">🔊 Toca para activar el audio <button onclick="primeAudio(event)">Activar</button></div>
+
 <script>
 const PATREON='https://www.patreon.com/danielfloresmusic';
-const LS='mspg_v12';
-const state=JSON.parse(localStorage.getItem(LS)||'{}');
-if(!state.current) state.current='b1';
-if(!state.done) state.done=[];
-function save(){localStorage.setItem(LS,JSON.stringify(state));}
-function track(e,p={}){console.log('[event]',e,p);}
+const YOUTUBE='https://www.youtube.com/danielfloresmusic';
+const INSTAGRAM='https://www.instagram.com/danielfloresmusic/';
 
-const books={
-  b1:{id:'b1', book:'Libro I', belt:'Cinturón Blanco', color:'#EEEFF2', name:'Pentatónica mayor de C', short:'C pentatónica mayor', type:'Escala · zonas', full:'assets/exercises/book1-full.png', desc:'Practica las cinco zonas de la pentatónica mayor de C. La meta es ubicar la posición, tocarla lento y repetirla hasta que tus dedos sepan por dónde ir.', steps:[
-    ['Zona 1','Toca la zona 1 subiendo y bajando. Repite 5 veces lento.','assets/exercises/b1-zona-1.png',60],
-    ['Zona 2','Cambia de zona sin correr. Mira menos el gráfico en cada repetición.','assets/exercises/b1-zona-2.png',60],
-    ['Zona 3','Repite la posición completa y escucha la relación entre las notas.','assets/exercises/b1-zona-3.png',60],
-    ['Zona 4','Mantén el pulso y conecta la digitación con claridad.','assets/exercises/b1-zona-4.png',60],
-    ['Zona 5','Cierra el recorrido de las cinco zonas y vuelve a la zona 1.','assets/exercises/b1-zona-5.png',60]
+const EXERCISES=[
+  {id:'b1',book:'Libro I',belt:'Cinturón Blanco',beltClass:'white',title:'Pentatónica mayor de C',subtitle:'Zonas 1–5',img:'assets/book1-pentatonica.png',time:60,type:'sequence',accent:'#8B8D98',desc:'Practica las posiciones de la pentatónica mayor de C. Trabaja una zona a la vez: lento, claro y sin cortar el sonido.',audio:'penta',steps:[
+    ['Zona 1','Toca la posición completa subiendo y bajando. Repite 3 veces antes de pasar a la siguiente zona.'],
+    ['Zona 2','Ubica la nueva zona sin perder la referencia de C. Practica con la misma digitación visual del diagrama.'],
+    ['Zona 3','Toca lento. La meta es reconocer la forma, no correr.'],
+    ['Zona 4','Repite la posición completa y revisa que cada nota suene limpia.'],
+    ['Zona 5','Cierra conectando la zona 5 con la 1 para entender el mapa completo.']
   ]},
-  b2:{id:'b2', book:'Libro II', belt:'Cinturón Azul', color:'#4564D6', name:'Arpegios m7 · Cm7', short:'Cm7 · 4ta cuerda', type:'Arpegio · digitaciones', full:'assets/exercises/book2-full.png', desc:'Practica el arpegio menor 7 ubicando sus funciones: 1, ♭3, 5 y ♭7. Trabaja una digitación a la vez antes de unirlas.', steps:[
-    ['Cm7 · dedo 1','Empieza desde la digitación con dedo 1. Identifica primero la tónica.','assets/exercises/b2-dedo-1.png',75],
-    ['Cm7 · dedo 2','Repite el arpegio con la digitación de dedo 2, sin perder claridad.','assets/exercises/b2-dedo-2.png',75],
-    ['Cm7 · dedo 4','Completa la tercera digitación y luego intenta conectar las tres.','assets/exercises/b2-dedo-3.png',75]
+  {id:'b2',book:'Libro II',belt:'Cinturón Azul',beltClass:'blue',title:'Arpegios m7',subtitle:'Cm7 · 4ta cuerda',img:'assets/book2-arpegios-m7.png',time:60,type:'sequence',accent:'#3563D8',desc:'Ejercicio de arpegio menor 7. Ubica tónica, tercera menor, quinta y séptima menor antes de aumentar la velocidad.',audio:'arpeggio',steps:[
+    ['Dedo 1','Practica la digitación con dedo 1. Primero ubica la tónica y luego recorre 1 · ♭3 · 5 · ♭7.'],
+    ['Dedo 2','Repite el patrón desde la segunda digitación. Mantén claridad en cada nota.'],
+    ['Dedo 4','Completa la tercera digitación y luego intenta unir las tres posiciones lentamente.']
   ]},
-  b3:{id:'b3', book:'Libro III', belt:'Cinturón Morado', color:'#7357B8', name:'Drop 2 de 4ta cuerda · Maj7', short:'Cmaj7 Drop 2', type:'Voicings · inversiones', full:'assets/exercises/book3-full.png', desc:'Recorre las cuatro posiciones de Cmaj7 en Drop 2. El objetivo es mover el acorde por el mástil sin perder la función de cada nota.', steps:[
-    ['Posición fundamental','Toca el voicing fundamental y escucha la sonoridad Maj7.','assets/exercises/b3-pos-1.png',75],
-    ['1ra inversión','Pasa a la primera inversión manteniendo el mismo color del acorde.','assets/exercises/b3-pos-2.png',75],
-    ['2da inversión','Practica la segunda inversión, lento y sin cortar el sonido.','assets/exercises/b3-pos-3.png',75],
-    ['3ra inversión','Cierra el recorrido y luego toca las cuatro posiciones seguidas.','assets/exercises/b3-pos-4.png',75]
+  {id:'b3',book:'Libro III',belt:'Cinturón Morado',beltClass:'purple',title:'Drop 2 de 4ta cuerda',subtitle:'Maj7 · 1–3–5–7',img:'assets/book3-drop2-maj7.png',time:75,type:'sequence',accent:'#7752C9',desc:'Recorre las posiciones de Cmaj7 en Drop 2. Este tipo de voicing ayuda a tocar con más elegancia en ensambles.',audio:'maj7',steps:[
+    ['Posición fundamental','Toca el voicing inicial y escucha la relación 1 · 3 · 5 · 7.'],
+    ['1ra inversión','Cambia de inversión sin perder la calidad del sonido.'],
+    ['2da inversión','Identifica cómo cambia el bajo y cómo se mantiene la función del acorde.'],
+    ['3ra inversión','Cierra el recorrido y repite las cuatro posiciones en cadena.']
   ]},
-  b4:{id:'b4', book:'Libro IV', belt:'Cinturón Marrón', color:'#7A4E2E', name:'Menor melódica · 4ta cuerda', short:'C menor melódica', type:'Modo · digitaciones', full:'assets/exercises/book4-full.png', desc:'Practica menor melódica por digitaciones. Primero trabaja cada forma por separado; luego une las posiciones lentamente.', steps:[
-    ['Dedo 1','Practica la digitación de dedo 1 y ubica el recorrido completo.','assets/exercises/b4-dedo-1.png',80],
-    ['Dedo 2','Repite desde dedo 2. Busca consistencia, no velocidad.','assets/exercises/b4-dedo-2.png',80],
-    ['Dedo 4','Completa la tercera digitación y conecta las tres formas.','assets/exercises/b4-dedo-3.png',80]
+  {id:'b4',book:'Libro IV',belt:'Cinturón Marrón',beltClass:'brown',title:'Menor melódica',subtitle:'4ta cuerda',img:'assets/book4-menor-melodica.png',time:60,type:'sequence',accent:'#835236',desc:'Practica las digitaciones de menor melódica por separado. La meta es ubicar cada forma y luego conectarlas con control.',audio:'melodicMinor',steps:[
+    ['Dedo 1','Practica la posición del dedo 1. Mantén el sonido parejo entre cuerdas.'],
+    ['Dedo 2','Pasa a la segunda digitación y repite lento.'],
+    ['Dedo 4','Practica la tercera digitación y luego conecta las tres sin apurarte.']
   ]},
-  b5:{id:'b5', book:'Libro V', belt:'Cinturón Negro', color:'#111111', name:'Chord Melody · Alterada', short:'C7 · top notes', type:'Chord Melody · pasos', full:'assets/exercises/book5-full.png', desc:'En este nivel, la melodía y la armonía se fusionan. Recorre cada posición escuchando cómo cambia el color del acorde según la nota superior.', steps:[
-    ['C7 · top en 1','Construye el voicing desde la nota superior 1.','assets/exercises/b5-step-1.png',60],
-    ['C7 · top en ♭9','Repite con ♭9 arriba y escucha la tensión.','assets/exercises/b5-step-2.png',60],
-    ['C7 · top en 7','Practica el voicing con 7 como nota superior.','assets/exercises/b5-step-3.png',60],
-    ['C7 · top en 9','Ubica la 9 como nota superior.','assets/exercises/b5-step-4.png',60],
-    ['C7 · top en 3','Cambia el color llevando la tercera arriba.','assets/exercises/b5-step-5.png',60],
-    ['C7 · top en #11','Trabaja el color #11 sin perder la estructura.','assets/exercises/b5-step-6.png',60],
-    ['C7 · top en T13','Practica la tensión 13 como nota superior.','assets/exercises/b5-step-7.png',60],
-    ['C7 · top en ♭7','Cierra el recorrido y une las ocho posiciones.','assets/exercises/b5-step-8.png',60]
+  {id:'b5',book:'Libro V',belt:'Cinturón Negro',beltClass:'black',title:'Chord Melody',subtitle:'Alterada · 2da cuerda',img:'assets/book5-chord-melody.png',time:45,type:'sequence',accent:'#161616',desc:'Nivel avanzado: la melodía y la armonía funcionan como una unidad. Recorre cada top note y escucha cómo cambia el color del acorde.',audio:'altered',steps:[
+    ['C7 · top en 1','Empieza con la nota superior en 1. Toca lento y escucha el color del voicing.'],
+    ['C7 · top en ♭9','Siente la tensión de la ♭9 como nota superior.'],
+    ['C7 · top en 7','Ubica el voicing con la séptima arriba.'],
+    ['C7 · top en 9','Cambia al top en 9 y mantén continuidad.'],
+    ['C7 · top en 3','Escucha cómo la tercera define el color del acorde.'],
+    ['C7 · top en #11','Trabaja el color #11 sin correr.'],
+    ['C7 · top en T13','Practica la tensión 13 como melodía.'],
+    ['C7 · top en ♭7','Cierra la secuencia y luego intenta tocar todas las posiciones como una línea.']
   ]}
-};
-const ids=Object.keys(books);
-function startApp(){showScreen('home');renderHome();}
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');updateNav(id); if(id==='home')renderHome(); if(id==='practice')renderPractice(); if(id==='community')renderCommunity();}
-function nav(id){showScreen(id);}
-function updateNav(id){document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('on'));document.querySelectorAll(`#${id} .nav button`).forEach(b=>{ if((id==='home'&&b.textContent.includes('Inicio'))||(id==='practice'&&b.textContent.includes('Practicar'))||(id==='community'&&b.textContent.includes('Comunidad'))) b.classList.add('on');});}
-function currentBook(){return books[state.current]||books.b1;}
-function pickRandomExercise(){const old=state.current; let next=ids[Math.floor(Math.random()*ids.length)]; if(ids.length>1){let guard=0; while(next===old && guard++<10) next=ids[Math.floor(Math.random()*ids.length)];} state.current=next; state.step=0; save(); renderHome();}
-function renderHome(){
- const b=currentBook();
- document.getElementById('home-body').innerHTML=`
-  <div class="section-title"><h2>Ejercicio demo</h2><button onclick="pickRandomExercise()">Otro ejercicio</button></div>
-  <div class="card exercise-card">
-    <div class="exercise-cover">
-      <div class="book-badge">${b.book} · ${b.belt}</div>
-      <div class="exercise-title">${b.name}</div>
-      <div class="exercise-desc">${b.desc}</div>
-      <div class="exercise-meta"><span class="pill">${b.type}</span><span class="pill">${b.steps.length} pasos</span><span class="pill">Demo autorizada</span></div>
-    </div>
-    <div style="padding:16px;display:grid;gap:13px;">
-      <div class="book-img-wrap"><img class="book-img" src="${b.steps[0][2]}" onclick="openImage('${b.full}')" alt="${b.name}"></div>
-      <div class="notice">Este ejercicio es una muestra gratuita de MSPG. El método completo, con los cinco libros y la comunidad de Daniel Flores, está disponible en Patreon.</div>
-      <button class="btn btn-gold" onclick="openCurrentExercise()">Empezar práctica →</button>
-      <button class="btn btn-ghost" onclick="openPatreon('home')">Ver libro completo en Patreon</button>
-    </div>
-  </div>
-  <div class="section-title"><h2>Camino MSPG</h2></div>
-  <div class="belts">${ids.map(id=>{const x=books[id];return `<button class="belt" onclick="state.current='${id}';state.step=0;save();renderHome();"><span class="dot" style="background:${x.color}"></span><b>${x.book.replace('Libro ','')}</b><span>${x.belt.replace('Cinturón ','')}</span></button>`}).join('')}</div>
- `;
-}
-function openCurrentExercise(){state.step=state.step||0;save();showScreen('exercise');renderExercise();}
-function closeExercise(){showScreen('home');}
-let timer=null, timeLeft=60;
-function renderExercise(){
- const b=currentBook(), s=b.steps[state.step||0], pct=((state.step||0)+1)/b.steps.length*100;
- document.getElementById('ex-kicker').textContent=`${b.book} · ${b.belt}`;
- document.getElementById('ex-top').textContent=b.short;
- timeLeft=s[3];
- document.getElementById('exercise-body').innerHTML=`
-  <div class="step-head"><div><div class="step-count">Paso ${(state.step||0)+1} de ${b.steps.length}</div><div class="step-name">${s[0]}</div><div class="step-copy">${s[1]}</div></div></div>
-  <div class="progress"><div style="width:${pct}%"></div></div>
-  <div style="height:14px"></div>
-  <img class="step-img" src="${s[2]}" onclick="openImage('${s[2]}')" alt="${s[0]}">
-  <div class="timer-box card" style="margin-top:14px;">
-    <div class="book-badge">Práctica sugerida</div>
-    <div class="timer-num" id="timer-num">${fmt(timeLeft)}</div>
-    <div style="font-size:12px;color:var(--muted);line-height:1.5;">Toca lento. La meta no es velocidad: es orientación, sonido y memoria muscular.</div>
-    <div class="timer-controls"><button class="btn btn-gold" onclick="toggleTimer()" id="timer-btn">▶ Iniciar</button><button class="btn btn-ghost" onclick="completeStep()">✓ Listo</button></div>
-  </div>
-  <div style="display:flex;gap:10px;margin-top:12px;">
-    <button class="btn btn-ghost" onclick="prevStep()" ${state.step?'' :'disabled'}>← Anterior</button>
-    <button class="btn btn-dark" onclick="nextStep()">${state.step<b.steps.length-1?'Siguiente →':'Finalizar'}</button>
-  </div>
-  <button class="btn btn-pat" style="margin-top:12px;" onclick="openPatreon('exercise')">Ver ${b.book} completo en Patreon →</button>
- `;
-}
-function fmt(s){const m=Math.floor(s/60),r=s%60;return m?`${m}:${String(r).padStart(2,'0')}`:`${r}s`;}
-function toggleTimer(){ if(timer){clearInterval(timer);timer=null;document.getElementById('timer-btn').textContent='▶ Continuar';return;} primeAudio(); document.getElementById('timer-btn').textContent='⏸ Pausar'; timer=setInterval(()=>{timeLeft--; document.getElementById('timer-num').textContent=fmt(Math.max(0,timeLeft)); if(timeLeft<=0){clearInterval(timer);timer=null;beep();document.getElementById('timer-btn').textContent='▶ Repetir';}},1000);}
-function completeStep(){if(timer){clearInterval(timer);timer=null;} nextStep();}
-function nextStep(){const b=currentBook(); if((state.step||0)<b.steps.length-1){state.step=(state.step||0)+1;save();renderExercise();} else { if(!state.done.includes(b.id)) state.done.push(b.id); save(); document.getElementById('exercise-body').innerHTML=`<div class="card" style="text-align:center;margin-top:20px;"><div style="font-size:58px;margin-bottom:10px;">🎉</div><div class="exercise-title">Práctica completa</div><p class="exercise-desc">Terminaste la muestra de ${b.book}. Si quieres seguir con el método completo, continúa en Patreon.</p><div style="display:grid;gap:10px;margin-top:18px;"><button class="btn btn-gold" onclick="pickRandomExercise();openCurrentExercise();">Otro ejercicio</button><button class="btn btn-pat" onclick="openPatreon('complete')">Ir a Patreon →</button><button class="btn btn-ghost" onclick="closeExercise()">Volver al inicio</button></div></div>`;}}
-function prevStep(){if((state.step||0)>0){state.step--;save();renderExercise();}}
-function openImage(src){document.getElementById('modal-img').src=src;document.getElementById('img-modal').classList.add('show');}
-function closeImageModal(){document.getElementById('img-modal').classList.remove('show');}
-function openPatreon(src){track('click_patreon',{src}); window.open(PATREON,'_blank');}
+];
 
-// Audio tools
-let AC=null,audioUnlocked=false,metro=null,metroBPM=60,metroBeat=0,curTab='chords',curChord='Am';
-function getAC(){if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C();}return AC;}
-async function primeAudio(){const ac=getAC(); if(!ac)return false; try{if(ac.state==='suspended') await ac.resume(); audioUnlocked=true; document.getElementById('audio-nudge').classList.remove('show'); return true;}catch(e){document.getElementById('audio-nudge').classList.add('show');return false;}}
-document.addEventListener('pointerdown',()=>primeAudio(),{passive:true});
-function note(freq,t,d=.8,v=.18){const ac=getAC(); if(!ac)return; [1,2,.5].forEach((mul,i)=>{const o=ac.createOscillator(),g=ac.createGain();o.type=i?'sine':'sawtooth';o.frequency.value=freq*mul;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v/(i+1),t+.01);g.gain.exponentialRampToValueAtTime(.001,t+d);o.start(t);o.stop(t+d+.05);});}
-const OPEN=[82.41,110,146.83,196,246.94,329.63];function ff(s,f){return OPEN[s]*Math.pow(2,f/12)};
-const CHORDS={Am:[null,0,2,2,1,0],Em:[0,2,2,0,0,0],G:[3,2,0,0,0,3],D:[null,null,0,2,3,2],C:[null,3,2,0,1,0],A:[null,0,2,2,2,0]};
-async function playChord(name){await primeAudio(); const ac=getAC(); const map=CHORDS[name]||CHORDS.Am; const t=ac.currentTime+.05; map.forEach((f,i)=>{if(f!==null)note(ff(i,f),t+i*.035,1.2,.18);});}
-async function playScale(){await primeAudio(); const seq=[[0,5],[0,8],[1,5],[1,7],[2,5],[2,7],[3,5],[3,7],[4,5],[4,8],[5,5],[5,8]]; const ac=getAC(); let t=ac.currentTime+.05; seq.forEach(([s,f])=>{note(ff(s,f),t,.25,.22);t+=.18;});}
-async function playLick(){await primeAudio(); const seq=[[5,8,.25],[5,5,.25],[4,8,.45],[5,8,.25],[5,5,.25],[4,8,.6]]; const ac=getAC(); let t=ac.currentTime+.05; seq.forEach(([s,f,d])=>{note(ff(s,f),t,d,.22);t+=d;});}
-function beep(){const ac=getAC();if(!ac)return;const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.frequency.value=880;g.gain.setValueAtTime(.25,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.15);o.start();o.stop(ac.currentTime+.18);}
-function renderPractice(){document.getElementById('practice-body').innerHTML=`<div class="tabs"><button class="tab ${curTab==='chords'?'on':''}" onclick="curTab='chords';renderPractice()">Acordes</button><button class="tab ${curTab==='scale'?'on':''}" onclick="curTab='scale';renderPractice()">Escala</button><button class="tab ${curTab==='lick'?'on':''}" onclick="curTab='lick';renderPractice()">Lick</button><button class="tab ${curTab==='metro'?'on':''}" onclick="curTab='metro';renderPractice()">Metro</button></div><div id="tool"></div>`; renderTool();}
-function renderTool(){const el=document.getElementById('tool'); if(curTab==='chords'){el.innerHTML=`<div class="card"><div class="chord-buttons">${Object.keys(CHORDS).map(c=>`<button class="${c===curChord?'on':''}" onclick="curChord='${c}';renderTool();playChord('${c}')">${c}</button>`).join('')}</div><div class="chord-diag">${chordDiag(curChord)}</div><button class="btn btn-gold" onclick="playChord(curChord)">▶ Tocar ${curChord}</button></div>`;} if(curTab==='scale'){el.innerHTML=`<div class="card"><div class="exercise-title" style="font-size:24px;">Pentatónica Am</div><p class="exercise-desc">Escucha una referencia simple para practicar lento.</p><button class="btn btn-gold" style="margin-top:14px;" onclick="playScale()">▶ Escuchar escala</button></div>`;} if(curTab==='lick'){el.innerHTML=`<div class="card"><div class="exercise-title" style="font-size:24px;">Lick blues corto</div><p class="exercise-desc">Un lick demo para escuchar y repetir.</p><button class="btn btn-gold" style="margin-top:14px;" onclick="playLick()">▶ Escuchar lick</button></div>`;} if(curTab==='metro'){el.innerHTML=`<div class="card" style="text-align:center;"><div class="timer-num" id="bpm">${metroBPM}</div><div style="color:var(--muted);font-size:13px;">BPM</div><div class="metro-dots">${[0,1,2,3].map(i=>`<span class="metro-dot" id="md${i}"></span>`).join('')}</div><input class="range" type="range" min="40" max="180" value="${metroBPM}" oninput="metroBPM=parseInt(this.value);document.getElementById('bpm').textContent=metroBPM;if(metro){stopMetro();startMetro();}"><div style="display:flex;gap:10px;margin-top:16px;"><button class="btn btn-ghost" onclick="metroBPM=Math.max(40,metroBPM-5);renderTool()">−</button><button class="btn btn-gold" id="metroBtn" onclick="toggleMetro()">▶ Iniciar</button><button class="btn btn-ghost" onclick="metroBPM=Math.min(180,metroBPM+5);renderTool()">+</button></div></div>`;}}
-function chordDiag(c){const map=CHORDS[c]||CHORDS.Am; let out='<div class="grid">'; for(let f=1;f<=4;f++){for(let s=5;s>=0;s--){let idx=5-s; let has=map[s]===f; out+=`<div class="cell">${has?'<span class="finger"></span>':''}</div>`}} return out+'</div>';}
-function toggleMetro(){metro?stopMetro():startMetro();}
-async function startMetro(){await primeAudio(); metroBeat=0; const btn=document.getElementById('metroBtn'); if(btn)btn.textContent='⏹ Parar'; metro=setInterval(()=>{tickMetro()},60000/metroBPM); tickMetro();}
-function stopMetro(){clearInterval(metro);metro=null;document.querySelectorAll('.metro-dot').forEach(d=>d.classList.remove('hit','one')); const btn=document.getElementById('metroBtn'); if(btn)btn.textContent='▶ Iniciar';}
-function tickMetro(){const ac=getAC(); if(ac){const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type='square';o.frequency.value=metroBeat===0?1050:740;g.gain.setValueAtTime(.24,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.04);o.start();o.stop(ac.currentTime+.05);} document.querySelectorAll('.metro-dot').forEach((d,i)=>{d.classList.toggle('hit',i===metroBeat);d.classList.toggle('one',i===metroBeat&&metroBeat===0);}); metroBeat=(metroBeat+1)%4;}
-function renderCommunity(){document.getElementById('community-body').innerHTML=`
- <div class="card" style="margin-bottom:14px;"><div style="display:flex;align-items:center;gap:14px;"><img class="signature" src="assets/signature.png" style="height:52px;max-width:120px"><div><div class="exercise-title" style="font-size:23px;margin:0;">Daniel Flores</div><div style="font-size:13px;font-weight:800;color:var(--muted);">Guitarrista · Educador · Autor</div></div></div><p class="exercise-desc" style="margin-top:12px;">Creador del Manual de Supervivencia Para Guitarristas y del Taller de Armonía Para Guitarristas.</p></div>
- <div class="card" style="margin-bottom:14px;"><div class="book-badge">Qué es MSPG</div><div class="exercise-title" style="font-size:24px;">Cinco libros. Cinco cinturones.</div><p class="exercise-desc">MSPG organiza las posiciones de acordes, escalas y arpegios que un guitarrista necesita dominar para sobrevivir en situaciones reales. Se empieza en el cinturón blanco y se avanza hasta el negro.</p><div class="belts">${ids.map(id=>{const x=books[id];return `<div class="belt"><span class="dot" style="background:${x.color}"></span><b>${x.book.replace('Libro ','')}</b><span>${x.belt.replace('Cinturón ','')}</span></div>`}).join('')}</div></div>
- <div class="section-title"><h2>App vs Patreon</h2></div><div class="compare" style="margin-bottom:14px;"><div class="col"><h3>En la app</h3><ul><li>✓ Ejercicios demo autorizados</li><li>✓ Práctica por pasos</li><li>✓ Herramientas básicas</li><li>✓ Primer contacto con el método</li></ul></div><div class="col"><h3>En Patreon</h3><ul><li>✓ Libros completos</li><li>✓ Clases y videos</li><li>✓ Licks, análisis y comunidad</li><li>✓ Ruta completa con Daniel</li></ul></div></div>
- <button class="btn btn-pat" onclick="openPatreon('community')" style="margin-bottom:14px;">Unirme al Patreon →</button>
- <div class="section-title"><h2>Redes</h2></div>
- ${links()}
- `;}
-function links(){return `<button class="link-row" onclick="openPatreon('social')"><span class="li">⭐</span><span><b>Patreon</b><p>Libros, clases y comunidad</p></span></button><button class="link-row" onclick="window.open('https://www.youtube.com/danielfloresmusic','_blank')"><span class="li">▶</span><span><b>YouTube</b><p>Clases y contenido gratuito</p></span></button><button class="link-row" onclick="window.open('https://www.instagram.com/danielfloresmusic','_blank')"><span class="li">📸</span><span><b>Instagram</b><p>@danielfloresmusic</p></span></button>`}
-if(localStorage.getItem('mspg_seen')) startApp(); else localStorage.setItem('mspg_seen','1');
+let current=EXERCISES[0], step=0, timer=null, timeLeft=0, running=false, lastId=null;
+
+function startApp(tab){ showScreen(tab); if(tab==='practice') pickExercise(); }
+function showScreen(tab){
+  const p=document.getElementById('s-practice'), c=document.getElementById('s-community'), w=document.getElementById('s-welcome');
+  w.classList.add('prev');
+  p.classList.toggle('hidden',tab!=='practice'); c.classList.toggle('hidden',tab!=='community');
+  p.classList.remove('prev'); c.classList.remove('prev');
+  document.querySelectorAll('.bottom .navbtn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll(`#s-${tab} .bottom .navbtn`).forEach((b,i)=>{ if((tab==='practice'&&i===0)||(tab==='community'&&i===1)) b.classList.add('on'); });
+  if(tab==='practice') renderPractice(); else renderCommunity();
+}
+function pickExercise(){
+  let pool=EXERCISES.filter(x=>x.id!==lastId); current=pool[Math.floor(Math.random()*pool.length)]; lastId=current.id; step=0; stopTimer(); renderPractice();
+}
+function renderPractice(){
+  const total=current.steps.length, pct=((step+1)/total)*100, s=current.steps[step];
+  document.getElementById('practiceBody').innerHTML=`
+    <div class="exercise-head">
+      <div><span class="belt ${current.beltClass}">${current.book} · ${current.belt}</span><h2 class="exercise-title">${current.title}</h2><p class="exercise-desc">${current.subtitle}</p></div>
+      <button class="icon-btn" onclick="pickExercise()" aria-label="Otro ejercicio">🎲</button>
+    </div>
+    <div class="card flat">
+      <div class="kicker">Ejercicio autorizado del manual</div>
+      <p class="exercise-desc" style="margin-top:8px">${current.desc}</p>
+      <div class="source">📘 <span>Fuente: <strong>MSPG · ${current.book}</strong></span></div>
+      <div class="img-shell" onclick="openModal('${current.img}')"><img class="book-img" src="${current.img}" alt="${current.title}"><div class="tap-note">Toca la imagen para ampliarla</div></div>
+      <div class="step-card">
+        <div class="step-top"><div class="kicker">Paso ${step+1} de ${total}</div><div class="step-count">${Math.round(pct)}%</div></div>
+        <div class="step-name">${s[0]}</div>
+        <div class="step-inst">${s[1]}</div>
+        <div class="progress"><div style="width:${pct}%;background:${current.accent}"></div></div>
+      </div>
+      <div class="timer">
+        <div><div class="kicker">Tiempo sugerido</div><div class="timer-num" id="timerNum">${fmt(current.time)}</div></div>
+        <div style="display:flex;gap:8px"><button class="mini-btn" onclick="adjustTime(-15)">−15s</button><button class="mini-btn" onclick="adjustTime(15)">+15s</button></div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" id="timerBtn" onclick="toggleTimer()">▶ Practicar este paso</button>
+        <button class="btn btn-ghost" onclick="playReference()">🔊 Escuchar referencia</button>
+        <div class="two"><button class="btn btn-ghost" onclick="prevStep()">← Paso anterior</button><button class="btn btn-dark" onclick="nextStep()">${step===total-1?'Finalizar':'Siguiente paso →'}</button></div>
+        <button class="btn btn-red" onclick="openPatreon('exercise')">Ver libro completo en Patreon →</button>
+        <button class="btn btn-ghost" onclick="pickExercise()">Dame otro ejercicio</button>
+      </div>
+      <div id="doneBox"></div>
+    </div>`;
+  timeLeft=current.time; updateTimerUI();
+}
+function nextStep(){ stopTimer(); if(step<current.steps.length-1){step++; renderPractice();} else {document.getElementById('doneBox').innerHTML='<div class="complete">Práctica completada. Esto fue solo una muestra del método completo.</div>';}}
+function prevStep(){ stopTimer(); if(step>0){step--; renderPractice();}}
+function fmt(s){s=Math.max(0,s|0);const m=Math.floor(s/60),r=String(s%60).padStart(2,'0');return `${m}:${r}`}
+function adjustTime(n){ timeLeft=Math.max(15,(timeLeft||current.time)+n); updateTimerUI(); }
+function updateTimerUI(){const n=document.getElementById('timerNum'); if(n) n.textContent=fmt(timeLeft||current.time);}
+function toggleTimer(){ running?stopTimer():startTimer(); }
+function startTimer(){ primeAudio(); running=true; const b=document.getElementById('timerBtn'); if(b) b.textContent='⏸ Pausar'; timer=setInterval(()=>{timeLeft--; updateTimerUI(); if(timeLeft<=0){stopTimer(); beepDone(); document.getElementById('doneBox').innerHTML='<div class="complete">Paso completado. Sigue con el siguiente.</div>'; }},1000);}
+function stopTimer(){ if(timer) clearInterval(timer); timer=null; running=false; const b=document.getElementById('timerBtn'); if(b) b.textContent='▶ Practicar este paso'; }
+function openModal(src){document.getElementById('modalImg').src=src;document.getElementById('imgModal').classList.add('show')}
+function closeModal(){document.getElementById('imgModal').classList.remove('show')}
+function openPatreon(src){ window.open(PATREON+'?utm_source=mspg_app&utm_medium=demo&utm_campaign='+src,'_blank'); }
+
+function renderCommunity(){
+ document.getElementById('communityBody').innerHTML=`
+  <div class="hero-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px"><div><div class="kicker">Manual de Supervivencia Para Guitarristas</div><h2 class="brand" style="font-size:38px;margin-top:8px">MSPG</h2></div><img class="sig-small" style="filter:invert(1);opacity:.9" src="assets/signature.png" alt="Daniel Flores"></div><p>MSPG es un método de 5 libros creado por Daniel Flores para ordenar las posiciones de acordes, escalas y arpegios que un guitarrista necesita dominar. Esta app funciona como una ruleta de práctica con ejercicios autorizados de muestra.</p></div>
+  <div class="card flat" style="margin-bottom:14px"><div class="kicker">Daniel Flores</div><h2 style="font-size:23px;margin:6px 0 6px">Guitarrista · Educador · Autor</h2><p class="exercise-desc">Autor del Manual de Supervivencia Para Guitarristas y del Taller de Armonía Para Guitarristas. La comunidad completa vive en Patreon.</p></div>
+  <div class="kicker" style="margin:18px 0 9px">5 libros · 5 cinturones</div><div class="books">
+    ${books().map(b=>`<div class="book-row"><span class="book-dot" style="background:${b.c}"></span><div><h4>${b.t}</h4><p>${b.d}</p></div></div>`).join('')}
+  </div>
+  <div class="compare"><div class="compare-col"><h3>En esta app</h3><ul><li>Ejercicios autorizados de muestra</li><li>Ruleta de práctica aleatoria</li><li>Práctica por pasos</li><li>Primer contacto con el método</li></ul></div><div class="compare-col"><h3>En Patreon</h3><ul><li>Los 5 libros completos</li><li>Clases, videos y análisis</li><li>Material descargable</li><li>Comunidad y ruta completa</li></ul></div></div>
+  <button class="btn btn-red" onclick="openPatreon('community')">Unirme a Patreon →</button>
+  <div class="links"><button class="link" onclick="openPatreon('community_link')"><div class="link-ico">⭐</div><div><div class="link-title">Patreon</div><div class="link-sub">Libros, clases y comunidad</div></div></button><button class="link" onclick="window.open(YOUTUBE,'_blank')"><div class="link-ico">▶</div><div><div class="link-title">YouTube</div><div class="link-sub">Clases y contenido gratuito</div></div></button><button class="link" onclick="window.open(INSTAGRAM,'_blank')"><div class="link-ico">📸</div><div><div class="link-title">Instagram</div><div class="link-sub">@danielfloresmusic</div></div></button></div>
+ `;
+}
+function books(){return[
+ {t:'Libro I · Cinturón Blanco',c:'#BFC1CB',d:'Fundamentos: primeras posiciones, escalas, arpegios, triadas e inversiones.'},
+ {t:'Libro II · Cinturón Azul',c:'#3563D8',d:'Arpegios, núcleos con tensiones y expansión de posiciones.'},
+ {t:'Libro III · Cinturón Morado',c:'#7752C9',d:'Drop 2, ensambles, menor armónica y arpegios derivados.'},
+ {t:'Libro IV · Cinturón Marrón',c:'#835236',d:'Drop 3, menor melódica, dominantes y arpegios con novena.'},
+ {t:'Libro V · Cinturón Negro',c:'#161616',d:'Chord melody, escalas simétricas y unión entre melodía y armonía.'}
+]}
+
+let AC=null,audioUnlocked=false;
+function getAC(){if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C()}return AC}
+async function primeAudio(ev){if(ev)ev.stopPropagation();const ac=getAC();if(!ac)return false;try{if(ac.state==='suspended')await ac.resume();const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.frequency.value=440;g.gain.setValueAtTime(.0001,ac.currentTime);g.gain.exponentialRampToValueAtTime(.01,ac.currentTime+.01);g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+.05);o.start(ac.currentTime);o.stop(ac.currentTime+.06);audioUnlocked=true;document.getElementById('audioNudge').classList.remove('show');return true}catch(e){document.getElementById('audioNudge').classList.add('show');return false}}
+['touchstart','pointerdown','click'].forEach(e=>document.addEventListener(e,()=>primeAudio(),{passive:true}));
+const OPEN=[82.41,110,146.83,196,246.94,329.63];
+function freq(s,f){return OPEN[s]*Math.pow(2,f/12)}
+function note(fr,t,d=.5,v=.18){const ac=getAC(); if(!ac)return; const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type='sawtooth';o.frequency.value=fr;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.001,t+d);o.start(t);o.stop(t+d+.04)}
+async function playReference(){await primeAudio();const ac=getAC(); if(!ac)return; let t=ac.currentTime+.08; const maps={penta:[[0,8],[0,10],[1,8],[1,10],[2,7],[2,9],[3,7],[3,10]],arpeggio:[[1,8],[2,8],[3,8],[4,10]],maj7:[[2,5],[3,4],[4,3],[5,3]],melodicMinor:[[0,8],[0,10],[1,8],[1,10],[2,7],[2,9],[3,7],[3,9]],altered:[[0,8],[1,9],[2,8],[3,8],[4,9]]};(maps[current.audio]||maps.penta).forEach(([s,f])=>{note(freq(s,f),t,.42,.2);t+=.28})}
+async function beepDone(){await primeAudio();const ac=getAC(); if(!ac)return; note(880,ac.currentTime,.12,.16); note(1320,ac.currentTime+.15,.12,.13)}
+
+window.addEventListener('load',()=>{ renderCommunity(); });
+if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{})); }
 </script>
 </body>
 </html>
